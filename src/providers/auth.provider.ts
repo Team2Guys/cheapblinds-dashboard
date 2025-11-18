@@ -139,7 +139,11 @@ export const authProvider: AuthProvider = {
     };
   },
 
-  getPermissions: async () => null,
+  getPermissions: async () => {
+    const userString = localStorage.getItem("user");
+    const user = userString ? JSON.parse(userString) : null;
+    return user ? user.role : null;
+  },
 
   getIdentity: async () => {
     const userString = localStorage.getItem("user");
