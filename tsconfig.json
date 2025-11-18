@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "#components": ["src/components/index.ts"],
+      "#components/*": ["src/components/*"],
+
+      "#constants": ["src/constants/index.ts"],
+      "#constants/*": ["src/constants/*"],
+
+      "#context": ["src/context/index.ts"],
+      "#context/*": ["src/context/*"],
+
+      "#pages": ["src/pages/index.ts"],
+      "#pages/*": ["src/pages/*"],
+
+      "#providers": ["src/providers/index.ts"],
+      "#providers/*": ["src/providers/*"],
+
+      "#utils": ["src/utils/index.ts*"],
+      "#utils/*": ["src/utils/*"]
+    }
+  },
+  "include": ["src", "vite-env.d.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
