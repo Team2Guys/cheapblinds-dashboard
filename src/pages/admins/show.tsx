@@ -12,21 +12,29 @@ export const AdminShow = () => {
     <Show isLoading={isLoading}>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight="bold">
-          {"ID"}
+          ID
         </Typography>
         <TextField value={record?.id} />
+
         <Typography variant="body1" fontWeight="bold">
-          {"Name"}
+          Name
         </Typography>
         <TextField value={record?.name} />
+
         <Typography variant="body1" fontWeight="bold">
-          {"Email"}
+          Email
         </Typography>
         <TextField value={record?.email} />
+
         <Typography variant="body1" fontWeight="bold">
-          {"Password"}
+          Password
         </Typography>
         <TextField value={record?.password} />
+
+        <Typography variant="body1" fontWeight="bold">
+          Permissions
+        </Typography>
+        <TextField value={record?.permissions?.join(", ")} />
       </Stack>
     </Show>
   );

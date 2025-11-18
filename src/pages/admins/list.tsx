@@ -16,19 +16,14 @@ export const AdminList = () => {
         align: "left",
         headerAlign: "left",
       },
+      { field: "name", flex: 1, headerName: "Name", minWidth: 200, display: "flex" },
+      { field: "email", flex: 1, headerName: "Email", minWidth: 200, display: "flex" },
       {
-        field: "name",
+        field: "permissions",
         flex: 1,
-        headerName: "Name",
+        headerName: "Permissions",
         minWidth: 200,
-        display: "flex",
-      },
-      {
-        field: "email",
-        flex: 1,
-        headerName: "Email",
-        minWidth: 200,
-        display: "flex",
+        renderCell: ({ row }) => row.permissions?.join(", "),
       },
       {
         field: "actions",
@@ -38,15 +33,13 @@ export const AdminList = () => {
         minWidth: 120,
         sortable: false,
         display: "flex",
-        renderCell: function render({ row }) {
-          return (
-            <>
-              <EditButton hideText recordItemId={row.id} />
-              <ShowButton hideText recordItemId={row.id} />
-              <DeleteButton hideText recordItemId={row.id} />
-            </>
-          );
-        },
+        renderCell: ({ row }) => (
+          <>
+            <EditButton hideText recordItemId={row.id} />
+            <ShowButton hideText recordItemId={row.id} />
+            <DeleteButton hideText recordItemId={row.id} />
+          </>
+        ),
       },
     ],
     [],
