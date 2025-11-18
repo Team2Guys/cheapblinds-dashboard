@@ -20,9 +20,25 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 import { authProvider, dataProvider } from "#providers";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
-import { Login } from "./pages/login";
-import { CategoryCreate, CategoryEdit, CategoryList, CategoryShow } from "./pages/categories";
-import { AdminCreate, AdminEdit, AdminList, AdminShow } from "#pages/admins";
+import {
+  Login,
+  AdminCreate,
+  AdminEdit,
+  AdminList,
+  AdminShow,
+  CategoryCreate,
+  CategoryEdit,
+  CategoryList,
+  CategoryShow,
+  SubcategoryCreate,
+  SubcategoryEdit,
+  SubcategoryList,
+  SubcategoryShow,
+  ProductCreate,
+  ProductEdit,
+  ProductList,
+  ProductShow,
+} from "./pages";
 
 function App() {
   return (
@@ -111,6 +127,19 @@ function App() {
                     <Route path="edit/:id" element={<CategoryEdit />} />
                     <Route path="show/:id" element={<CategoryShow />} />
                   </Route>
+                  <Route path="/subcategories">
+                    <Route index element={<SubcategoryList />} />
+                    <Route path="create" element={<SubcategoryCreate />} />
+                    <Route path="edit/:id" element={<SubcategoryEdit />} />
+                    <Route path="show/:id" element={<SubcategoryShow />} />
+                  </Route>
+                  <Route path="/products">
+                    <Route index element={<ProductList />} />
+                    <Route path="create" element={<ProductCreate />} />
+                    <Route path="edit/:id" element={<ProductEdit />} />
+                    <Route path="show/:id" element={<ProductShow />} />
+                  </Route>
+
                   <Route path="*" element={<ErrorComponent />} />
                 </Route>
 
