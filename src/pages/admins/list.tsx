@@ -5,6 +5,8 @@ import React from "react";
 export const AdminList = () => {
   const { dataGridProps } = useDataGrid({});
 
+  console.log("dataGridProps:", dataGridProps);
+
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
@@ -17,9 +19,16 @@ export const AdminList = () => {
         headerAlign: "left",
       },
       {
-        field: "title",
+        field: "name",
         flex: 1,
-        headerName: "Title",
+        headerName: "Name",
+        minWidth: 200,
+        display: "flex",
+      },
+      {
+        field: "email",
+        flex: 1,
+        headerName: "Email",
         minWidth: 200,
         display: "flex",
       },

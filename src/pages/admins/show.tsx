@@ -16,9 +16,17 @@ export const AdminShow = () => {
         </Typography>
         <TextField value={record?.id} />
         <Typography variant="body1" fontWeight="bold">
-          {"Title"}
+          {"Name"}
         </Typography>
-        <TextField value={record?.title} />
+        <TextField value={record?.name} />
+        <Typography variant="body1" fontWeight="bold">
+          {"Email"}
+        </Typography>
+        <TextField value={record?.email} />
+        <Typography variant="body1" fontWeight="bold">
+          {"Password"}
+        </Typography>
+        <TextField value={record?.password} />
       </Stack>
     </Show>
   );

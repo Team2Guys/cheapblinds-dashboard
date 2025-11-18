@@ -2,13 +2,27 @@ import { Box, TextField } from "@mui/material";
 import { Create } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 
+interface IAdminCreate {
+  name: string;
+  email: string;
+  password: string;
+  role: "ADMIN";
+}
+
 export const AdminCreate = () => {
   const {
     saveButtonProps,
     refineCore: { formLoading },
     register,
     formState: { errors },
-  } = useForm({});
+  } = useForm<IAdminCreate>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      role: "ADMIN",
+    },
+  });
 
   return (
     <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
