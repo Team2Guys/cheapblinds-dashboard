@@ -149,10 +149,11 @@ export const authProvider: AuthProvider = {
       return null;
     }
 
+    console.log("user", user);
+
     return {
-      id: user.user._id,
-      name: user.firstName + " " + user.lastName,
-      avatar: user.avatar || "",
+      id: user.user.id,
+      name: user.role,
     };
   },
 };
