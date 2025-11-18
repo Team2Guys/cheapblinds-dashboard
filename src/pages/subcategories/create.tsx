@@ -2,7 +2,7 @@ import { Box, TextField } from "@mui/material";
 import { Create } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 
-export const CategoryCreate = () => {
+export const SubcategoryCreate = () => {
   const {
     saveButtonProps,
     refineCore: { formLoading },

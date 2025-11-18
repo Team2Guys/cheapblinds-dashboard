@@ -16,8 +16,8 @@ export const AdminEdit = () => {
           {...register("title", {
             required: "This field is required",
           })}
-          error={!!(errors as any)?.title}
-          helperText={(errors as any)?.title?.message}
+          error={!!errors?.title}
+          helperText={!!errors?.title?.message}
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}

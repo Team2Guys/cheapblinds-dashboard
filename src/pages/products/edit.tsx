@@ -1,17 +1,16 @@
 import { Box, TextField } from "@mui/material";
-import { Create } from "@refinedev/mui";
+import { Edit } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 
-export const CategoryCreate = () => {
+export const ProductEdit = () => {
   const {
     saveButtonProps,
-    refineCore: { formLoading },
     register,
     formState: { errors },
   } = useForm({});
 
   return (
-    <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
+    <Edit saveButtonProps={saveButtonProps}>
       <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
         <TextField
           {...register("title", {
@@ -27,6 +26,6 @@ export const CategoryCreate = () => {
           name="title"
         />
       </Box>
-    </Create>
+    </Edit>
   );
 };

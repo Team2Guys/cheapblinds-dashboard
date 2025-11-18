@@ -59,11 +59,24 @@ function App() {
                   },
                 },
                 {
-                  name: "admins",
-                  list: "/admins",
-                  create: "/admins/create",
-                  edit: "/admins/edit/:id",
-                  show: "/admins/show/:id",
+                  name: "subcategories",
+                  list: "/subcategories",
+                  create: "/subcategories/create",
+                  edit: "/subcategories/edit/:id",
+                  show: "/subcategories/show/:id",
+                  meta: {
+                    canDelete: true,
+                  },
+                },
+                {
+                  name: "products",
+                  list: "/products",
+                  create: "/products/create",
+                  edit: "/products/edit/:id",
+                  show: "/products/show/:id",
+                  meta: {
+                    canDelete: true,
+                  },
                 },
               ]}
               options={{
