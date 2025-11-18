@@ -24,8 +24,8 @@
       "#constants": ["src/constants/index.ts"],
       "#constants/*": ["src/constants/*"],
 
-      "#context": ["src/context/index.ts"],
-      "#context/*": ["src/context/*"],
+      "#contexts": ["src/contexts/index.ts"],
+      "#contexts/*": ["src/contexts/*"],
 
       "#pages": ["src/pages/index.ts"],
       "#pages/*": ["src/pages/*"],

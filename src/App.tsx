@@ -20,10 +20,9 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 import { authProvider, dataProvider } from "#providers";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
-import { CategoryCreate, CategoryEdit, CategoryList, CategoryShow } from "./pages/categories";
-import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
-import { Register } from "./pages/register";
+import { CategoryCreate, CategoryEdit, CategoryList, CategoryShow } from "./pages/categories";
+import { AdminCreate, AdminEdit, AdminList, AdminShow } from "#pages/admins";
 
 function App() {
   return (
@@ -40,6 +39,16 @@ function App() {
               authProvider={authProvider}
               resources={[
                 {
+                  name: "admins",
+                  list: "/admins",
+                  create: "/admins/create",
+                  edit: "/admins/edit/:id",
+                  show: "/admins/show/:id",
+                  meta: {
+                    canDelete: true,
+                  },
+                },
+                {
                   name: "categories",
                   list: "/categories",
                   create: "/categories/create",
@@ -48,6 +57,13 @@ function App() {
                   meta: {
                     canDelete: true,
                   },
+                },
+                {
+                  name: "admins",
+                  list: "/admins",
+                  create: "/admins/create",
+                  edit: "/admins/edit/:id",
+                  show: "/admins/show/:id",
                 },
               ]}
               options={{
@@ -69,7 +85,13 @@ function App() {
                     </Authenticated>
                   }
                 >
-                  <Route index element={<NavigateToResource resource="categories" />} />
+                  <Route index element={<NavigateToResource resource="admins" />} />
+                  <Route path="/admins">
+                    <Route index element={<AdminList />} />
+                    <Route path="create" element={<AdminCreate />} />
+                    <Route path="edit/:id" element={<AdminEdit />} />
+                    <Route path="show/:id" element={<AdminShow />} />
+                  </Route>
                   <Route path="/categories">
                     <Route index element={<CategoryList />} />
                     <Route path="create" element={<CategoryCreate />} />
@@ -87,8 +109,6 @@ function App() {
                   }
                 >
                   <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
                 </Route>
               </Routes>
 
