@@ -5,8 +5,6 @@ import React from "react";
 export const AdminList = () => {
   const { dataGridProps } = useDataGrid({});
 
-  console.log("dataGridProps:", dataGridProps);
-
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {

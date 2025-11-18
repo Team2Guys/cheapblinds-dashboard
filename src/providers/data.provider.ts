@@ -19,8 +19,6 @@ export const dataProvider: DataProvider = {
         data: { data },
       } = await requestAPI("GET", `/${resource}${id ? `/${id}` : ""}`);
 
-      console.log("getOne data:", data);
-
       return {
         data: data as TData,
       };
