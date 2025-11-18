@@ -14,7 +14,7 @@ export const AdminCreate = () => {
     <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
         <TextField
-          {...register("title", {
+          {...register("name", {
             required: "This field is required",
           })}
           error={!!errors?.title}
@@ -23,8 +23,34 @@ export const AdminCreate = () => {
           fullWidth
           InputLabelProps={{ shrink: true }}
           type="text"
-          label={"Title"}
-          name="title"
+          label={"Name"}
+          name="name"
+        />
+        <TextField
+          {...register("email", {
+            required: "This field is required",
+          })}
+          error={!!errors?.title}
+          helperText={!!errors?.title?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="text"
+          label={"Email"}
+          name="email"
+        />
+        <TextField
+          {...register("password", {
+            required: "This field is required",
+          })}
+          error={!!errors?.title}
+          helperText={!!errors?.title?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          type="password"
+          label={"Password"}
+          name="password"
         />
       </Box>
     </Create>

@@ -1,9 +1,19 @@
-import type { DataProvider } from "@refinedev/core";
+import type {
+  DataProvider,
+  GetOneParams,
+  GetOneResponse,
+  BaseRecord,
+  CreateParams,
+  CreateResponse,
+} from "@refinedev/core";
 
-import { requestAPI } from "#utils/index";
+import { getErrorMessage, requestAPI } from "#utils/index";
 
 export const dataProvider: DataProvider = {
-  getOne: async ({ resource, id }) => {
+  getOne: async <TData extends BaseRecord = BaseRecord>({
+    resource,
+    id,
+  }: GetOneParams): Promise<GetOneResponse<TData>> => {
     try {
       const {
         data: { data },
@@ -12,28 +22,18 @@ export const dataProvider: DataProvider = {
       console.log("getOne data:", data);
 
       return {
-        data: {} as any,
-        error: {
-          name: "Data Fetch Error",
-          message: `Failed to fetch ${resource} with ID ${id}`,
-        },
+        data: data as TData,
       };
-    } catch (error: any) {
-      return {
-        data: {} as any,
-        error: {
-          name: "Data Fetch Error",
-          message: `Failed to fetch ${resource} with ID ${id}: ${
-            error?.response?.data?.message ?? ""
-          }`,
-        },
-      };
+    } catch (error: unknown) {
+      const err = new Error(getErrorMessage(error));
+      err.name = "Data Fetch Error";
+      throw err;
     }
   },
 
   getList: async ({ resource, filters }) => {
     try {
-      const params: any = [];
+      const params: string[] = [];
       if (filters) {
         filters.forEach((filter) => {
           if ("field" in filter) {
@@ -48,46 +48,27 @@ export const dataProvider: DataProvider = {
         data: data.data,
         total: data.data.length,
       };
-    } catch (error: any) {
-      return {
-        data: [],
-        total: 0,
-        error: {
-          name: "Data Fetch Error",
-          message: `Failed to fetch ${resource}: ${error?.response?.data?.message ?? ""}`,
-        },
-      };
+    } catch (error: unknown) {
+      const err = new Error(getErrorMessage(error));
+      err.name = "Data Fetch Error";
+      throw err;
     }
   },
 
-  create: async ({
+  create: async <TData extends BaseRecord = BaseRecord, TVariables = unknown>({
     resource,
     variables,
-    meta,
-  }: {
-    resource: string;
-    variables: any;
-    meta?: any;
-  }) => {
+  }: CreateParams<TVariables>): Promise<CreateResponse<TData>> => {
     try {
-      const headers = meta?.headers ?? {};
-      const { data } = await requestAPI("POST", `/${resource}`, variables, {
-        headers,
-      });
-
-      data.data && localStorage.setItem("romulus-user-profile", JSON.stringify(data.data));
+      const { data } = await requestAPI("POST", `/${resource}`, variables);
 
       return {
         data: data.data,
-      };
-    } catch (error: any) {
-      return {
-        data: {} as any,
-        error: {
-          name: "Data Creation Error",
-          message: `Failed to create ${resource}: ${error?.response?.data?.message ?? ""}`,
-        },
-      };
+      } as CreateResponse<TData>;
+    } catch (error: unknown) {
+      const err = new Error(getErrorMessage(error));
+      err.name = "Data Fetch Error";
+      throw err;
     }
   },
 
@@ -95,76 +76,35 @@ export const dataProvider: DataProvider = {
     resource,
     id,
     variables,
-    meta,
   }: {
     resource: string;
-    id: any;
-    variables: any;
-    meta?: any;
+    id: unknown;
+    variables: unknown;
   }) => {
     try {
-      const { data } = await requestAPI("PATCH", `/${resource}/${id}`, variables, meta);
+      const { data } = await requestAPI("PATCH", `/${resource}/${id}`, variables);
 
       return {
         data: data.data,
       };
-    } catch (error: any) {
-      return {
-        data: {} as any,
-        error: {
-          name: "Data Update Error",
-          message: `Failed to update ${resource} with ID ${id}: ${
-            error?.response?.data?.message ?? ""
-          }`,
-        },
-      };
+    } catch (error: unknown) {
+      const err = new Error(getErrorMessage(error));
+      err.name = "Data Fetch Error";
+      throw err;
     }
   },
 
-  deleteOne: async ({ resource, id }: { resource: string; id: any }) => {
+  deleteOne: async ({ resource, id }: { resource: string; id: unknown }) => {
     try {
       const { data } = await requestAPI("DELETE", `/${resource}/${id}`);
 
       return {
         data: data.data,
       };
-    } catch (error: any) {
-      return {
-        data: {} as any,
-        error: {
-          name: "Data Deletion Error",
-          message: `Failed to delete ${resource} with ID ${id}: ${
-            error?.response?.data?.message ?? ""
-          }`,
-        },
-      };
-    }
-  },
-
-  custom: async ({ url, method, filters, sorters, payload, query, headers }) => {
-    try {
-      const { data } = await requestAPI(method, url, payload, {
-        params: {
-          filters,
-          sorters,
-          query,
-        },
-        headers,
-      });
-
-      return {
-        data: data.data,
-      };
-    } catch (error: any) {
-      return {
-        data: {} as any,
-        error: {
-          name: "Custom Request Error",
-          message: `Failed to perform custom request to ${url}: ${
-            error?.response?.data?.message ?? ""
-          }`,
-        },
-      };
+    } catch (error: unknown) {
+      const err = new Error(getErrorMessage(error));
+      err.name = "Data Fetch Error";
+      throw err;
     }
   },
 

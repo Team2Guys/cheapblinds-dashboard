@@ -1,7 +1,6 @@
-import { jwtDecode } from "jwt-decode";
 import type { AuthProvider } from "@refinedev/core";
 
-import { requestAPI } from "#utils/index";
+import { getErrorMessage, requestAPI } from "#utils/index";
 
 export const authProvider: AuthProvider = {
   login: async (params) => {
@@ -17,12 +16,12 @@ export const authProvider: AuthProvider = {
         redirectTo: "/",
         data,
       };
-    } catch (error) {
+    } catch (error: unknown) {
       return {
         success: false,
         error: {
           message: "Login failed",
-          name: error.response.data.message || error.message,
+          name: getErrorMessage(error),
         },
       };
     }
@@ -39,12 +38,12 @@ export const authProvider: AuthProvider = {
           message: data.message || "Registration successful",
         },
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
         error: {
           message: "Register failed",
-          name: error?.response?.data?.message,
+          name: getErrorMessage(error),
         },
       };
     }
@@ -62,18 +61,18 @@ export const authProvider: AuthProvider = {
           description: "Your password has been changed.",
         },
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
         error: {
           message: "Update password failed",
-          name: error.response.data.message || error.message,
+          name: getErrorMessage(error),
         },
       };
     }
   },
 
-  forgotPassword: async (params: any) => {
+  forgotPassword: async (params: unknown) => {
     try {
       const { data } = await requestAPI("POST", "/auth/forgot-password", params);
 
@@ -85,12 +84,12 @@ export const authProvider: AuthProvider = {
           description: "Please check your email for further instructions.",
         },
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
         error: {
           message: "Forgot password failed",
-          name: error?.response?.data?.message,
+          name: getErrorMessage(error),
         },
       };
     }
@@ -105,13 +104,13 @@ export const authProvider: AuthProvider = {
         success: true,
         redirectTo: "/login",
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         logout: true,
         success: false,
         error: {
           message: "Logout failed",
-          name: error?.response?.data?.message || error.message,
+          name: getErrorMessage(error),
         },
       };
     }
@@ -133,8 +132,6 @@ export const authProvider: AuthProvider = {
     if (!user) {
       return { authenticated: false, redirectTo: "/login" };
     }
-
-    console.log("Auth Check - User:", user);
 
     return {
       authenticated: true,
