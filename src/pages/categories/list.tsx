@@ -10,36 +10,69 @@ export const CategoryList = () => {
       {
         field: "id",
         headerName: "ID",
-        type: "number",
+        type: "string",
         minWidth: 50,
-        display: "flex",
+        flex: 0,
         align: "left",
         headerAlign: "left",
+        display: "flex",
+        sortable: false,
+        filterable: false,
       },
       {
-        field: "title",
-        flex: 1,
-        headerName: "Title",
+        field: "name",
+        headerName: "Name",
+        type: "string",
         minWidth: 200,
+        flex: 1,
+        align: "left",
+        headerAlign: "left",
         display: "flex",
+        sortable: false,
+        filterable: false,
+      },
+      {
+        field: "customUrl",
+        headerName: "Custom URL",
+        type: "string",
+        minWidth: 200,
+        flex: 1,
+        align: "left",
+        headerAlign: "left",
+        display: "flex",
+        sortable: false,
+        filterable: false,
+      },
+      {
+        field: "status",
+        headerName: "Status",
+        type: "string",
+        minWidth: 120,
+        flex: 0,
+        align: "left",
+        headerAlign: "left",
+        display: "flex",
+        sortable: false,
+        filterable: false,
       },
       {
         field: "actions",
         headerName: "Actions",
+        type: "actions",
+        minWidth: 120,
+        flex: 0,
         align: "right",
         headerAlign: "right",
-        minWidth: 120,
-        sortable: false,
         display: "flex",
-        renderCell: function render({ row }) {
-          return (
-            <>
-              <EditButton hideText recordItemId={row.id} />
-              <ShowButton hideText recordItemId={row.id} />
-              <DeleteButton hideText recordItemId={row.id} />
-            </>
-          );
-        },
+        sortable: false,
+        filterable: false,
+        renderCell: ({ row }) => (
+          <>
+            <EditButton hideText recordItemId={row.id} />
+            <ShowButton hideText recordItemId={row.id} />
+            <DeleteButton hideText recordItemId={row.id} />
+          </>
+        ),
       },
     ],
     [],

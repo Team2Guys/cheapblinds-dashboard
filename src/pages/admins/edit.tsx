@@ -12,7 +12,13 @@ import { Edit } from "@refinedev/mui";
 import { useForm as useRefineForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form"; // <- import Controller here
 
-const availablePermissions = ["CREATE_USER", "EDIT_USER", "DELETE_USER", "VIEW_REPORTS"];
+type Permission = "CREATE_USER" | "EDIT_USER" | "DELETE_USER" | "VIEW_REPORTS";
+const availablePermissions: Permission[] = [
+  "CREATE_USER",
+  "EDIT_USER",
+  "DELETE_USER",
+  "VIEW_REPORTS",
+];
 
 export const AdminEdit = () => {
   const {
