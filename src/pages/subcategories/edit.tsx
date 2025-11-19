@@ -1,7 +1,22 @@
-import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Grid } from "@mui/material";
+import { getErrorMessage } from "#utils/index";
+import {
+  Box,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Grid,
+  Button,
+  Typography,
+  Paper,
+  Divider,
+} from "@mui/material";
 import { Edit } from "@refinedev/mui";
 import { useForm as useRefineForm } from "@refinedev/react-hook-form";
 import { useList } from "@refinedev/core";
+import axios from "axios";
+import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 
 type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
@@ -25,196 +40,373 @@ interface ISubcategoryEdit {
 const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
 
 export const SubcategoryEdit = () => {
-  const { result: categoryData } = useList({
+  const [uploading, setUploading] = useState(false);
+
+  const { result: categoriesData } = useList({
     resource: "categories",
   });
 
-  const categories = categoryData?.data || [];
+  const categories =
+    categoriesData?.data?.map(({ id, name }) => ({ value: id, label: name })) ?? [];
 
   const {
     saveButtonProps,
+    refineCore: { formLoading },
     register,
     control,
+    setValue,
     formState: { errors },
   } = useRefineForm<ISubcategoryEdit>();
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+    const url = `https://api.cloudinary.com/v1_1/${
+      import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+    }/image/upload`;
+
+    try {
+      const response = await axios.post(url, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      const data = response.data;
+
+      if (data.secure_url) {
+        setValue("thumbnailUrl", data.secure_url);
+      } else {
+        console.error("Upload failed:", data);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      }
+    } catch (error) {
+      console.error("Upload failed:", getErrorMessage(error));
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <Box component="form" autoComplete="off">
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              {...register("name", { required: "This field is required" })}
-              error={!!errors?.name}
-              helperText={!!errors?.name?.message}
-              fullWidth
-              label="Name"
-              InputLabelProps={{ shrink: true }}
-            />
+        <Grid container spacing={3}>
+          {/* Primary Content Section */}
+          <Grid item xs={12} lg={8}>
+            <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: "divider" }}>
+              <Typography variant="h6" gutterBottom fontWeight={600}>
+                Basic Information
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Enter the subcategory name and descriptions
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
+
+              <TextField
+                {...register("name", { required: "This field is required" })}
+                error={!!errors?.name}
+                helperText={!!errors?.name?.message}
+                margin="normal"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                type="text"
+                label="Name"
+                placeholder="e.g., Smartphones, Women's Shoes, NBA"
+                required
+              />
+
+              <TextField
+                {...register("shortDescription")}
+                error={!!errors?.shortDescription}
+                helperText={!!errors?.shortDescription?.message}
+                margin="normal"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                type="text"
+                label="Short Description"
+                placeholder="Brief description (50-100 characters)"
+              />
+
+              <TextField
+                {...register("description")}
+                error={!!errors?.description}
+                helperText={!!errors?.description?.message}
+                margin="normal"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                type="text"
+                label="Description"
+                multiline
+                minRows={4}
+                placeholder="Detailed description of this subcategory"
+              />
+
+              <TextField
+                {...register("customUrl")}
+                error={!!errors?.customUrl}
+                helperText={!!errors?.customUrl?.message}
+                margin="normal"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                type="text"
+                label="Custom URL Slug"
+                placeholder="e.g., smartphones-tech"
+              />
+            </Paper>
+
+            {/* SEO Section */}
+            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+              <Typography variant="h6" gutterBottom fontWeight={600}>
+                SEO Settings
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Optimize your subcategory for search engines
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
+
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    {...register("metaTitle")}
+                    error={!!errors?.metaTitle}
+                    helperText={!!errors?.metaTitle?.message || "Recommended: 50-60 characters"}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="text"
+                    label="Meta Title"
+                    placeholder="SEO-friendly title"
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    {...register("metaDescription")}
+                    error={!!errors?.metaDescription}
+                    helperText={
+                      !!errors?.metaDescription?.message || "Recommended: 150-160 characters"
+                    }
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="text"
+                    label="Meta Description"
+                    multiline
+                    minRows={3}
+                    placeholder="Description that appears in search results"
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    {...register("canonicalTag")}
+                    error={!!errors?.canonicalTag}
+                    helperText={!!errors?.canonicalTag?.message}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="text"
+                    label="Canonical URL"
+                    placeholder="https://example.com/subcategory"
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    {...register("breadCrumb")}
+                    error={!!errors?.breadCrumb}
+                    helperText={!!errors?.breadCrumb?.message}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="text"
+                    label="Breadcrumb"
+                    placeholder="Home > Category > Subcategory"
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    {...register("seoSchema")}
+                    error={!!errors?.seoSchema}
+                    helperText={!!errors?.seoSchema?.message}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="text"
+                    label="SEO Schema (JSON-LD)"
+                    multiline
+                    minRows={5}
+                    placeholder='{"@context": "https://schema.org", "@type": "CollectionPage", ...}'
+                  />
+                </Grid>
+              </Grid>
+            </Paper>
           </Grid>
 
-          <Grid item xs={12} md={6}>
-            <TextField
-              {...register("customUrl")}
-              error={!!errors?.customUrl}
-              helperText={!!errors?.customUrl?.message}
-              fullWidth
-              label="Custom URL"
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
+          {/* Sidebar Section */}
+          <Grid item xs={12} lg={4}>
+            {/* Parent Category & Publishing */}
+            <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: "divider" }}>
+              <Typography variant="h6" gutterBottom fontWeight={600}>
+                Category & Publishing
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
 
-          <Grid item xs={12} md={6}>
-            <TextField
-              {...register("metaTitle")}
-              error={!!errors?.metaTitle}
-              helperText={!!errors?.metaTitle?.message}
-              fullWidth
-              label="Meta Title"
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
+              <Controller
+                name="categoryId"
+                control={control}
+                rules={{ required: "Parent category is required" }}
+                render={({ field }) => (
+                  <FormControl fullWidth margin="normal" error={!!errors?.categoryId}>
+                    <InputLabel id="category-label">Parent Category *</InputLabel>
+                    <Select
+                      labelId="category-label"
+                      value={field.value}
+                      onChange={field.onChange}
+                      label="Parent Category *"
+                    >
+                      {categories.map((cat) => (
+                        <MenuItem key={cat.value} value={cat.value}>
+                          {cat.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {!!errors?.categoryId && (
+                      <Typography variant="caption" color="error" sx={{ mt: 0.5, ml: 1.75 }}>
+                        {!!errors.categoryId.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
+              />
 
-          <Grid item xs={12} md={6}>
-            <TextField
-              {...register("metaDescription")}
-              error={!!errors?.metaDescription}
-              helperText={!!errors?.metaDescription?.message}
-              fullWidth
-              label="Meta Description"
-              multiline
-              minRows={2}
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
+              <Controller
+                name="status"
+                control={control}
+                render={({ field }) => (
+                  <FormControl fullWidth margin="normal">
+                    <InputLabel id="status-label">Status</InputLabel>
+                    <Select
+                      labelId="status-label"
+                      value={field.value}
+                      onChange={field.onChange}
+                      label="Status"
+                    >
+                      {statusOptions.map((status) => (
+                        <MenuItem key={status} value={status}>
+                          {status}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                )}
+              />
 
-          <Grid item xs={12}>
-            <TextField
-              {...register("description")}
-              error={!!errors?.description}
-              helperText={!!errors?.description?.message}
-              fullWidth
-              label="Description"
-              multiline
-              minRows={3}
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
+              <TextField
+                {...register("lastEditedBy")}
+                error={!!errors?.lastEditedBy}
+                helperText={!!errors?.lastEditedBy?.message}
+                margin="normal"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                type="text"
+                label="Last Edited By"
+                disabled
+                size="small"
+              />
+            </Paper>
 
-          <Grid item xs={12} md={6}>
-            <TextField
-              {...register("shortDescription")}
-              error={!!errors?.shortDescription}
-              helperText={!!errors?.shortDescription?.message}
-              fullWidth
-              label="Short Description"
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
+            {/* Media Section */}
+            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+              <Typography variant="h6" gutterBottom fontWeight={600}>
+                Featured Image
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Upload a thumbnail for this subcategory
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
 
-          <Grid item xs={12} md={6}>
-            <TextField
-              {...register("canonicalTag")}
-              error={!!errors?.canonicalTag}
-              helperText={!!errors?.canonicalTag?.message}
-              fullWidth
-              label="Canonical Tag"
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
+              <Button
+                variant="outlined"
+                component="label"
+                fullWidth
+                disabled={uploading}
+                sx={{ mb: 2 }}
+              >
+                {uploading ? "Uploading..." : "Choose Image"}
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  ref={fileInputRef}
+                />
+              </Button>
 
-          <Grid item xs={12} md={6}>
-            <TextField
-              {...register("breadCrumb")}
-              error={!!errors?.breadCrumb}
-              helperText={!!errors?.breadCrumb?.message}
-              fullWidth
-              label="Breadcrumb"
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              {...register("thumbnailUrl")}
-              error={!!errors?.thumbnailUrl}
-              helperText={!!errors?.thumbnailUrl?.message}
-              fullWidth
-              label="Thumbnail URL"
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              {...register("lastEditedBy")}
-              error={!!errors?.lastEditedBy}
-              helperText={!!errors?.lastEditedBy?.message}
-              fullWidth
-              label="Last Edited By"
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              {...register("seoSchema")}
-              error={!!errors?.seoSchema}
-              helperText={!!errors?.seoSchema?.message}
-              fullWidth
-              label="SEO Schema"
-              multiline
-              minRows={4}
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Controller
-              name="categoryId"
-              control={control}
-              render={({ field }) => (
-                <FormControl fullWidth>
-                  <InputLabel id="category-label">Parent Category</InputLabel>
-                  <Select
-                    labelId="category-label"
-                    value={field.value || ""}
-                    onChange={field.onChange}
-                    label="Parent Category"
-                  >
-                    {categories.map((cat) => (
-                      <MenuItem key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+              {control._formValues.thumbnailUrl && (
+                <Box
+                  sx={{
+                    position: "relative",
+                    width: "100%",
+                    paddingTop: "56.25%", // 16:9 aspect ratio
+                    overflow: "hidden",
+                    borderRadius: 1,
+                    border: 1,
+                    borderColor: "divider",
+                  }}
+                >
+                  <img
+                    src={control._formValues.thumbnailUrl}
+                    alt="Subcategory Thumbnail"
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Box>
               )}
-            />
-          </Grid>
 
-          <Grid item xs={12} md={6}>
-            <Controller
-              name="status"
-              control={control}
-              render={({ field }) => (
-                <FormControl fullWidth>
-                  <InputLabel id="status-label">Status</InputLabel>
-                  <Select
-                    labelId="status-label"
-                    value={field.value}
-                    onChange={field.onChange}
-                    label="Status"
+              {!control._formValues.thumbnailUrl && (
+                <Box
+                  sx={{
+                    width: "100%",
+                    paddingTop: "56.25%",
+                    bgcolor: "action.hover",
+                    borderRadius: 1,
+                    border: 1,
+                    borderColor: "divider",
+                    position: "relative",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      textAlign: "center",
+                    }}
                   >
-                    {statusOptions.map((status) => (
-                      <MenuItem key={status} value={status}>
-                        {status}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                    <Typography variant="body2" color="text.secondary">
+                      No image selected
+                    </Typography>
+                  </Box>
+                </Box>
               )}
-            />
+            </Paper>
           </Grid>
         </Grid>
       </Box>
