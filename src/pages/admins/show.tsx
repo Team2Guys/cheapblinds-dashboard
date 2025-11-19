@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useShow } from "@refinedev/core";
 import { Show, TextFieldComponent as TextField } from "@refinedev/mui";
 
@@ -10,32 +10,42 @@ export const AdminShow = () => {
 
   return (
     <Show isLoading={isLoading}>
-      <Stack gap={1}>
-        <Typography variant="body1" fontWeight="bold">
-          ID
-        </Typography>
-        <TextField value={record?.id} />
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            ID
+          </Typography>
+          <TextField value={record?.id} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Name
-        </Typography>
-        <TextField value={record?.name} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Name
+          </Typography>
+          <TextField value={record?.name} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Email
-        </Typography>
-        <TextField value={record?.email} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Email
+          </Typography>
+          <TextField value={record?.email} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Password
-        </Typography>
-        <TextField value={record?.password} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Password
+          </Typography>
+          <TextField value={record?.password} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Permissions
-        </Typography>
-        <TextField value={record?.permissions?.join(", ")} />
-      </Stack>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Permissions
+          </Typography>
+          <TextField value={record?.permissions?.join(", ")} />
+        </Grid>
+      </Grid>
     </Show>
   );
 };

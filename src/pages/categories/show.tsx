@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useShow } from "@refinedev/core";
 import { Show, TextFieldComponent as TextField } from "@refinedev/mui";
 
@@ -10,82 +10,112 @@ export const CategoryShow = () => {
 
   return (
     <Show isLoading={isLoading}>
-      <Stack gap={1}>
-        <Typography variant="body1" fontWeight="bold">
-          ID
-        </Typography>
-        <TextField value={record?.id} />
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            ID
+          </Typography>
+          <TextField value={record?.id} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Name
-        </Typography>
-        <TextField value={record?.name} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Name
+          </Typography>
+          <TextField value={record?.name} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Description
-        </Typography>
-        <TextField value={record?.description} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Description
+          </Typography>
+          <TextField value={record?.description} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Short Description
-        </Typography>
-        <TextField value={record?.shortDescription} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Short Description
+          </Typography>
+          <TextField value={record?.shortDescription} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Custom URL
-        </Typography>
-        <TextField value={record?.customUrl} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Custom URL
+          </Typography>
+          <TextField value={record?.customUrl} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Meta Title
-        </Typography>
-        <TextField value={record?.metaTitle} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Meta Title
+          </Typography>
+          <TextField value={record?.metaTitle} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Meta Description
-        </Typography>
-        <TextField value={record?.metaDescription} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Meta Description
+          </Typography>
+          <TextField value={record?.metaDescription} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Canonical Tag
-        </Typography>
-        <TextField value={record?.canonicalTag} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Canonical Tag
+          </Typography>
+          <TextField value={record?.canonicalTag} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Breadcrumb
-        </Typography>
-        <TextField value={record?.breadCrumb} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Breadcrumb
+          </Typography>
+          <TextField value={record?.breadCrumb} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Thumbnail URL
-        </Typography>
-        <TextField value={record?.thumbnailUrl} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Thumbnail URL
+          </Typography>
+          <TextField value={record?.thumbnailUrl} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Last Edited By
-        </Typography>
-        <TextField value={record?.lastEditedBy} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Last Edited By
+          </Typography>
+          <TextField value={record?.lastEditedBy} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          SEO Schema
-        </Typography>
-        <TextField value={record?.seoSchema} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            SEO Schema
+          </Typography>
+          <TextField value={record?.seoSchema} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Status
-        </Typography>
-        <TextField value={record?.status} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Status
+          </Typography>
+          <TextField value={record?.status} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Created At
-        </Typography>
-        <TextField value={record?.createdAt} />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Created At
+          </Typography>
+          <TextField value={record?.createdAt} />
+        </Grid>
 
-        <Typography variant="body1" fontWeight="bold">
-          Updated At
-        </Typography>
-        <TextField value={record?.updatedAt} />
-      </Stack>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1" fontWeight="bold">
+            Updated At
+          </Typography>
+          <TextField value={record?.updatedAt} />
+        </Grid>
+      </Grid>
     </Show>
   );
 };

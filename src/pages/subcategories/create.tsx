@@ -1,4 +1,4 @@
-import { Box, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { Grid, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { Create } from "@refinedev/mui";
 import { useForm as useRefineForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
@@ -58,178 +58,204 @@ export const SubcategoryCreate = () => {
 
   return (
     <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
-      <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
-        <TextField
-          {...register("name", { required: "This field is required" })}
-          error={!!errors?.name}
-          helperText={!!errors?.name?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Name"
-        />
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            {...register("name", { required: "This field is required" })}
+            error={!!errors?.name}
+            helperText={!!errors?.name?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Name"
+          />
+        </Grid>
 
-        <TextField
-          {...register("description")}
-          error={!!errors?.description}
-          helperText={!!errors?.description?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Description"
-          multiline
-          minRows={3}
-        />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            {...register("description")}
+            error={!!errors?.description}
+            helperText={!!errors?.description?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Description"
+            multiline
+            minRows={3}
+          />
+        </Grid>
 
-        <TextField
-          {...register("shortDescription")}
-          error={!!errors?.shortDescription}
-          helperText={!!errors?.shortDescription?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Short Description"
-        />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            {...register("shortDescription")}
+            error={!!errors?.shortDescription}
+            helperText={!!errors?.shortDescription?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Short Description"
+          />
+        </Grid>
 
-        <TextField
-          {...register("customUrl")}
-          error={!!errors?.customUrl}
-          helperText={!!errors?.customUrl?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Custom URL"
-        />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            {...register("customUrl")}
+            error={!!errors?.customUrl}
+            helperText={!!errors?.customUrl?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Custom URL"
+          />
+        </Grid>
 
-        <TextField
-          {...register("metaTitle")}
-          error={!!errors?.metaTitle}
-          helperText={!!errors?.metaTitle?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Meta Title"
-        />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            {...register("metaTitle")}
+            error={!!errors?.metaTitle}
+            helperText={!!errors?.metaTitle?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Meta Title"
+          />
+        </Grid>
 
-        <TextField
-          {...register("metaDescription")}
-          error={!!errors?.metaDescription}
-          helperText={!!errors?.metaDescription?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Meta Description"
-          multiline
-          minRows={2}
-        />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            {...register("metaDescription")}
+            error={!!errors?.metaDescription}
+            helperText={!!errors?.metaDescription?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Meta Description"
+            multiline
+            minRows={2}
+          />
+        </Grid>
 
-        <TextField
-          {...register("canonicalTag")}
-          error={!!errors?.canonicalTag}
-          helperText={!!errors?.canonicalTag?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Canonical Tag"
-        />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            {...register("canonicalTag")}
+            error={!!errors?.canonicalTag}
+            helperText={!!errors?.canonicalTag?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Canonical Tag"
+          />
+        </Grid>
 
-        <TextField
-          {...register("breadCrumb")}
-          error={!!errors?.breadCrumb}
-          helperText={!!errors?.breadCrumb?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Breadcrumb"
-        />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            {...register("breadCrumb")}
+            error={!!errors?.breadCrumb}
+            helperText={!!errors?.breadCrumb?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Breadcrumb"
+          />
+        </Grid>
 
-        <TextField
-          {...register("thumbnailUrl")}
-          error={!!errors?.thumbnailUrl}
-          helperText={!!errors?.thumbnailUrl?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Thumbnail URL"
-        />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            {...register("thumbnailUrl")}
+            error={!!errors?.thumbnailUrl}
+            helperText={!!errors?.thumbnailUrl?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Thumbnail URL"
+          />
+        </Grid>
 
-        <TextField
-          {...register("lastEditedBy")}
-          error={!!errors?.lastEditedBy}
-          helperText={!!errors?.lastEditedBy?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="Last Edited By"
-        />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            {...register("lastEditedBy")}
+            error={!!errors?.lastEditedBy}
+            helperText={!!errors?.lastEditedBy?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Last Edited By"
+          />
+        </Grid>
 
-        <TextField
-          {...register("seoSchema")}
-          error={!!errors?.seoSchema}
-          helperText={!!errors?.seoSchema?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label="SEO Schema"
-          multiline
-          minRows={4}
-        />
+        <Grid item xs={12}>
+          <TextField
+            {...register("seoSchema")}
+            error={!!errors?.seoSchema}
+            helperText={!!errors?.seoSchema?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="SEO Schema"
+            multiline
+            minRows={4}
+          />
+        </Grid>
 
-        <Controller
-          name="categoryId"
-          control={control}
-          render={({ field }) => (
-            <FormControl margin="normal" fullWidth>
-              <InputLabel id="category-label">Category</InputLabel>
-              <Select
-                labelId="category-label"
-                value={field.value}
-                onChange={field.onChange}
-                label="Category"
-              >
-                {categories.map((cat) => (
-                  <MenuItem key={cat.label} value={cat.value}>
-                    {cat.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
-        />
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="categoryId"
+            control={control}
+            render={({ field }) => (
+              <FormControl margin="normal" fullWidth>
+                <InputLabel id="category-label">Category</InputLabel>
+                <Select
+                  labelId="category-label"
+                  value={field.value}
+                  onChange={field.onChange}
+                  label="Category"
+                >
+                  {categories.map((cat) => (
+                    <MenuItem key={cat.label} value={cat.value}>
+                      {cat.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          />
+        </Grid>
 
-        <Controller
-          name="status"
-          control={control}
-          render={({ field }) => (
-            <FormControl margin="normal" fullWidth>
-              <InputLabel id="status-label">Status</InputLabel>
-              <Select
-                labelId="status-label"
-                value={field.value}
-                onChange={field.onChange}
-                label="Status"
-              >
-                {statusOptions.map((status) => (
-                  <MenuItem key={status} value={status}>
-                    {status}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
-        />
-      </Box>
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <FormControl margin="normal" fullWidth>
+                <InputLabel id="status-label">Status</InputLabel>
+                <Select
+                  labelId="status-label"
+                  value={field.value}
+                  onChange={field.onChange}
+                  label="Status"
+                >
+                  {statusOptions.map((status) => (
+                    <MenuItem key={status} value={status}>
+                      {status}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          />
+        </Grid>
+      </Grid>
     </Create>
   );
 };
