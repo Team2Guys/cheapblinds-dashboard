@@ -1,6 +1,6 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Chip, Paper, Stack, Typography } from "@mui/material";
 import { useShow } from "@refinedev/core";
-import { Show, TextFieldComponent as TextField } from "@refinedev/mui";
+import { Show } from "@refinedev/mui";
 
 export const CategoryShow = () => {
   const { query } = useShow({});
@@ -8,114 +8,111 @@ export const CategoryShow = () => {
 
   const record = data?.data;
 
+  const InfoField = ({ label, value }: { label: string; value?: string }) => (
+    <div style={{ marginBottom: "1rem" }}>
+      <Typography
+        variant="caption"
+        style={{
+          color: "text.secondary",
+          fontWeight: 600,
+          textTransform: "uppercase",
+          letterSpacing: "0.5px",
+          fontSize: "0.7rem",
+        }}
+      >
+        {label}
+      </Typography>
+      <div style={{ marginTop: "0.5rem" }}>
+        {value && value.startsWith("http") ? (
+          <img
+            src={value}
+            alt={label}
+            style={{ maxWidth: "150px", maxHeight: "150px", objectFit: "cover" }}
+          />
+        ) : (
+          <Typography variant="body1" style={{ color: "text.primary" }}>
+            {value || "—"}
+          </Typography>
+        )}
+      </div>
+    </div>
+  );
+
+  const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+    <Typography
+      variant="h6"
+      sx={{
+        fontWeight: 600,
+        mb: 2,
+        color: "primary.main",
+        fontSize: "1rem",
+      }}
+    >
+      {children}
+    </Typography>
+  );
+
   return (
     <Show isLoading={isLoading}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            ID
-          </Typography>
-          <TextField value={record?.id} />
-        </Grid>
+      <Stack spacing={3}>
+        {/* Basic Information */}
+        <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
+          <SectionTitle>Basic Information</SectionTitle>
+          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
+            <InfoField label="ID" value={record?.id?.toString()} />
+            <InfoField label="Last Edited By" value={record?.lastEditedBy?.toString()} />
+            <InfoField label="Created At" value={record?.createdAt?.toString()} />
+            <InfoField label="Updated At" value={record?.updatedAt?.toString()} />
 
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Name
-          </Typography>
-          <TextField value={record?.name} />
-        </Grid>
+            <Box>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "text.secondary",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                  fontSize: "0.7rem",
+                }}
+              >
+                Status
+              </Typography>
+              <Box sx={{ mt: 0.5 }}>
+                <Chip
+                  label={record?.status || "Unknown"}
+                  size="small"
+                  color={record?.status === "active" ? "success" : "default"}
+                  sx={{ fontWeight: 500 }}
+                />
+              </Box>
+            </Box>
+          </Box>
+        </Paper>
 
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Description
-          </Typography>
-          <TextField value={record?.description} />
-        </Grid>
+        {/* SEO & URLs */}
+        <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
+          <SectionTitle>SEO & URLs</SectionTitle>
+          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
+            <InfoField label="Custom URL" value={record?.customUrl} />
+            <InfoField label="Meta Title" value={record?.metaTitle} />
+            <InfoField label="Meta Description" value={record?.metaDescription} />
+            <InfoField label="Canonical Tag" value={record?.canonicalTag} />
+            <InfoField label="Breadcrumb" value={record?.breadCrumb} />
+            <InfoField label="SEO Schema" value={record?.seoSchema} />
+          </Box>
+        </Paper>
 
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Short Description
-          </Typography>
-          <TextField value={record?.shortDescription} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Custom URL
-          </Typography>
-          <TextField value={record?.customUrl} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Meta Title
-          </Typography>
-          <TextField value={record?.metaTitle} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Meta Description
-          </Typography>
-          <TextField value={record?.metaDescription} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Canonical Tag
-          </Typography>
-          <TextField value={record?.canonicalTag} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Breadcrumb
-          </Typography>
-          <TextField value={record?.breadCrumb} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Thumbnail URL
-          </Typography>
-          <TextField value={record?.thumbnailUrl} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Last Edited By
-          </Typography>
-          <TextField value={record?.lastEditedBy} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            SEO Schema
-          </Typography>
-          <TextField value={record?.seoSchema} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Status
-          </Typography>
-          <TextField value={record?.status} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Created At
-          </Typography>
-          <TextField value={record?.createdAt} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Typography variant="body1" fontWeight="bold">
-            Updated At
-          </Typography>
-          <TextField value={record?.updatedAt} />
-        </Grid>
-      </Grid>
+        {/* Media & Metadata */}
+        <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
+          <SectionTitle>Media & Metadata</SectionTitle>
+          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
+            <InfoField label="Thumbnail URL" value={record?.thumbnailUrl} />
+            <InfoField label="Last Edited By" value={record?.lastEditedBy} />
+            <InfoField label="Created At" value={record?.createdAt} />
+            <InfoField label="Updated At" value={record?.updatedAt} />
+          </Box>
+        </Paper>
+      </Stack>
     </Show>
   );
 };

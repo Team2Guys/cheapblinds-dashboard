@@ -68,13 +68,17 @@ export const ProductEdit = () => {
 
   const {
     saveButtonProps,
-    refineCore: { formLoading, queryResult },
+    refineCore: { formLoading, query: queryResult },
     register,
     control,
     setValue,
     watch,
     formState: { errors },
-  } = useRefineForm<IProductEdit>();
+  } = useRefineForm<IProductEdit>({
+    refineCoreProps: {
+      action: "edit",
+    },
+  });
 
   const selectedCategoryId = watch("categoryId");
   const thumbnailInputRef = useRef<HTMLInputElement | null>(null);

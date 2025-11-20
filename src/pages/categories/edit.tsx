@@ -19,6 +19,22 @@ import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 
 type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
+
+interface ICategoryEdit {
+  name: string;
+  description?: string;
+  shortDescription?: string;
+  customUrl?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  canonicalTag?: string;
+  breadCrumb?: string;
+  thumbnailUrl?: string;
+  lastEditedBy?: string;
+  seoSchema?: string;
+  status: ContentStatus;
+}
+
 const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
 
 export const CategoryEdit = () => {
@@ -31,7 +47,11 @@ export const CategoryEdit = () => {
     control,
     setValue,
     formState: { errors },
-  } = useRefineForm();
+  } = useRefineForm<ICategoryEdit>({
+    refineCoreProps: {
+      action: "edit",
+    },
+  });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 

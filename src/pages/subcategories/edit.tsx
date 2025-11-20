@@ -16,7 +16,7 @@ import { Edit } from "@refinedev/mui";
 import { useForm as useRefineForm } from "@refinedev/react-hook-form";
 import { useList } from "@refinedev/core";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Controller } from "react-hook-form";
 
 type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
@@ -51,12 +51,20 @@ export const SubcategoryEdit = () => {
 
   const {
     saveButtonProps,
-    refineCore: { formLoading },
+    refineCore: { formLoading, query: queryResult },
     register,
     control,
     setValue,
     formState: { errors },
   } = useRefineForm<ISubcategoryEdit>();
+
+  // Update lastEditedBy with current user when form data is loaded
+  useEffect(() => {
+    if (queryResult?.data?.data) {
+      const currentUser = JSON.parse(localStorage.getItem("user") || "{}").name || "";
+      setValue("lastEditedBy", currentUser);
+    }
+  }, [queryResult?.data?.data, setValue]);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 

@@ -67,10 +67,10 @@ export const SubcategoryCreate = () => {
       canonicalTag: "",
       breadCrumb: "",
       thumbnailUrl: "",
-      lastEditedBy: "",
+      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
       seoSchema: "",
       categoryId: "",
-      status: "PUBLISHED",
+      status: "DRAFT",
     },
   });
 

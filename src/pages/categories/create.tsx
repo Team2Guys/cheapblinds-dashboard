@@ -58,9 +58,12 @@ export const CategoryCreate = () => {
       canonicalTag: "",
       breadCrumb: "",
       thumbnailUrl: "",
-      lastEditedBy: "",
+      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
       seoSchema: "",
-      status: "PUBLISHED",
+      status: "DRAFT",
+    },
+    refineCoreProps: {
+      action: "create",
     },
   });
 
