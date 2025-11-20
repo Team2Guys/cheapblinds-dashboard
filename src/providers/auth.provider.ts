@@ -1,163 +1,85 @@
 import type { AuthProvider } from "@refinedev/core";
+import { client } from "../graphql/client";
+import { SIGNIN, SIGNUP, SIGNOUT } from "../graphql/mutations";
+import { getErrorMessage } from "#utils/index";
 
-import { getErrorMessage, requestAPI } from "#utils/index";
-
-export const authProvider: AuthProvider = {
-  login: async (params) => {
+export const authProviderGraphql: AuthProvider = {
+  register: async ({ email, password, role }) => {
     try {
-      const {
-        data: { data },
-      } = await requestAPI("POST", "/auth/signin", params);
+      const result = await client
+        .mutation(SIGNUP, { input: { email, password, role } })
+        .toPromise();
 
-      localStorage.setItem("user", JSON.stringify(data));
+      if (result.error) throw result.error;
 
-      return {
-        success: true,
-        redirectTo: "/",
-        data,
-      };
+      return { success: true, redirectTo: "/login" };
     } catch (error: unknown) {
-      return {
-        success: false,
-        error: {
-          message: "Login failed",
-          name: getErrorMessage(error),
-        },
-      };
+      const err = new Error(getErrorMessage(error));
+      err.name = "Registration Failed";
+      throw err;
     }
   },
 
-  register: async (params) => {
+  login: async ({ email, password, role }) => {
     try {
-      const { data } = await requestAPI("POST", "/auth/signup", params);
+      const result = await client
+        .mutation(SIGNIN, { input: { email, password, role } })
+        .toPromise();
 
-      return {
-        data: data.data,
-        success: true,
-        successNotification: {
-          message: data.message || "Registration successful",
-        },
-      };
+      if (result.error) throw result.error;
+
+      const user = result.data?.signin?.data;
+      localStorage.setItem("user", JSON.stringify(user));
+
+      return { success: true, redirectTo: "/", data: user };
     } catch (error: unknown) {
-      return {
-        success: false,
-        error: {
-          message: "Register failed",
-          name: getErrorMessage(error),
-        },
-      };
-    }
-  },
-
-  updatePassword: async (params) => {
-    try {
-      const { data } = await requestAPI("PATCH", "/auth/update-password", params);
-
-      return {
-        data: data.data,
-        success: true,
-        successNotification: {
-          message: data.message || "Password updated successfully",
-          description: "Your password has been changed.",
-        },
-      };
-    } catch (error: unknown) {
-      return {
-        success: false,
-        error: {
-          message: "Update password failed",
-          name: getErrorMessage(error),
-        },
-      };
-    }
-  },
-
-  forgotPassword: async (params: unknown) => {
-    try {
-      const { data } = await requestAPI("POST", "/auth/forgot-password", params);
-
-      return {
-        data: data.data,
-        success: true,
-        successNotification: {
-          message: data.message || "Forgot password successful",
-          description: "Please check your email for further instructions.",
-        },
-      };
-    } catch (error: unknown) {
-      return {
-        success: false,
-        error: {
-          message: "Forgot password failed",
-          name: getErrorMessage(error),
-        },
-      };
+      const err = new Error(getErrorMessage(error));
+      err.name = "Login Failed";
+      throw err;
     }
   },
 
   logout: async () => {
     try {
-      requestAPI("POST", "/auth/signout");
+      const result = await client.mutation(SIGNOUT, {}).toPromise();
+      if (result.error) throw result.error;
+
       localStorage.clear();
-
-      return {
-        success: true,
-        redirectTo: "/login",
-      };
-    } catch (error: unknown) {
-      return {
-        logout: true,
-        success: false,
-        error: {
-          message: "Logout failed",
-          name: getErrorMessage(error),
-        },
-      };
+      return { success: true, redirectTo: "/login" };
+    } catch {
+      return { success: false };
     }
-  },
-
-  onError: async (error) => {
-    if (error.response?.status === 401) {
-      return {
-        logout: true,
-      };
-    }
-
-    return { error };
   },
 
   check: async () => {
     const user = localStorage.getItem("user");
-
-    if (!user) {
-      return { authenticated: false, redirectTo: "/login" };
-    }
-
-    return {
-      authenticated: true,
-      redirectTo: "/",
-    };
+    return user ? { authenticated: true } : { authenticated: false, redirectTo: "/login" };
   },
 
   getPermissions: async () => {
-    const userString = localStorage.getItem("user");
-    const user = userString ? JSON.parse(userString) : null;
-    return user ? user.role : null;
+    const userStr = localStorage.getItem("user");
+    return userStr ? JSON.parse(userStr).role : null;
   },
 
   getIdentity: async () => {
-    const userString = localStorage.getItem("user");
-    const user = userString ? JSON.parse(userString) : null;
+    const userStr = localStorage.getItem("user");
+    return userStr ? JSON.parse(userStr) : null;
+  },
 
-    if (!user) {
-      return null;
-    }
+  onError: async (error) => {
+    console.error("Auth error:", error);
+    return { error };
+  },
 
-    console.log("user", user);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  forgotPassword: async (_params) => {
+    console.warn("forgotPassword not implemented");
+    return { success: false };
+  },
 
-    return {
-      id: user.user.id,
-      name: user.role,
-    };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  updatePassword: async (_params) => {
+    console.warn("updatePassword not implemented");
+    return { success: false };
   },
 };

@@ -1,9 +1,15 @@
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { DeleteButton, EditButton, List, ShowButton, useDataGrid } from "@refinedev/mui";
 import React from "react";
+import { GET_ADMIN_LIST } from "../../graphql";
 
 export const AdminList = () => {
-  const { dataGridProps } = useDataGrid({});
+  const { dataGridProps } = useDataGrid({
+    meta: {
+      gqlQuery: GET_ADMIN_LIST,
+      dataMapper: (response: any) => response.data.getAdminList.data,
+    },
+  });
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
