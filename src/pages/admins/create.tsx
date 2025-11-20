@@ -21,7 +21,22 @@ interface IAdminCreate {
   permissions: string[];
 }
 
-const availablePermissions = ["CREATE_USER", "EDIT_USER", "DELETE_USER", "VIEW_REPORTS"];
+const availablePermissions = [
+  "ADD_PRODUCTS",
+  "EDIT_PRODUCTS",
+  "DELETE_PRODUCTS",
+  "ADD_CATEGORY",
+  "DELETE_CATEGORY",
+  "EDIT_CATEGORY",
+  "CHECK_PROFIT",
+  "CHECK_REVENUE",
+  "CHECK_VISITORS",
+  "VIEW_USERS",
+  "VIEW_SALES",
+  "VIEW ADMINS",
+  "VIEW_TOTAL_PRODUCTS",
+  "VIEW_TOTAL_CATEGORIES",
+];
 
 export const AdminCreate = () => {
   const {
