@@ -27,6 +27,7 @@
     "@refinedev/react-hook-form": "^5.0.0",
     "@refinedev/react-router": "^2.0.0",
     "@refinedev/simple-rest": "^6.0.0",
+    "@tinymce/tinymce-react": "^6.3.0",
     "axios": "^1.13.2",
     "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
