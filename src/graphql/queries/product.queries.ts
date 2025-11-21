@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_PRODUCT_LIST = gql`
+export const PRODUCT_LIST_QUERY = gql`
   query GetProductList {
     getProductList {
       status
@@ -44,7 +44,7 @@ export const GET_PRODUCT_LIST = gql`
   }
 `;
 
-export const GET_PRODUCT_BY_ID = gql`
+export const PRODUCT_BY_ID_QUERY = gql`
   query GetProductById($input: GetProductByIdInput!) {
     getProductById(input: $input) {
       status

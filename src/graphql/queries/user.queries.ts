@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_USER_LIST = gql`
+export const USER_LIST_QUERY = gql`
   query GetUserList {
     getUserList {
       status
@@ -20,7 +20,7 @@ export const GET_USER_LIST = gql`
   }
 `;
 
-export const GET_USER_BY_ID = gql`
+export const USER_BY_ID_QUERY = gql`
   query GetUserById($input: GetUserByIdInput!) {
     getUserById(input: $input) {
       status

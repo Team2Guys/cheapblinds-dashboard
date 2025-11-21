@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 
-// Get all categories
-export const GET_CATEGORY_LIST = gql`
+export const CATEGORY_LIST_QUERY = gql`
   query GetCategoryList {
     getCategoryList {
       status
@@ -27,8 +26,7 @@ export const GET_CATEGORY_LIST = gql`
   }
 `;
 
-// Get single category by ID
-export const GET_CATEGORY_BY_ID = gql`
+export const CATEGORY_BY_ID_QUERY = gql`
   query GetCategoryById($input: GetCategoryByIdInput!) {
     getCategoryById(input: $input) {
       status

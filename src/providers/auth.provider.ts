@@ -1,13 +1,12 @@
 import type { AuthProvider } from "@refinedev/core";
-import { client } from "../graphql/client";
-import { SIGNIN, SIGNUP, SIGNOUT } from "../graphql/mutations";
-import { getErrorMessage } from "#utils/index";
+import { SIGNIN_MUTATION, SIGNUP_MUTATION, SIGNOUT_MUTATION } from "../graphql/mutations";
+import { getErrorMessage, gqlClient } from "#utils/index";
 
-export const authProviderGraphql: AuthProvider = {
+export const authProvider: AuthProvider = {
   register: async ({ email, password, role }) => {
     try {
-      const result = await client
-        .mutation(SIGNUP, { input: { email, password, role } })
+      const result = await gqlClient
+        .mutation(SIGNUP_MUTATION, { input: { email, password, role } })
         .toPromise();
 
       if (result.error) throw result.error;
@@ -22,8 +21,8 @@ export const authProviderGraphql: AuthProvider = {
 
   login: async ({ email, password, role }) => {
     try {
-      const result = await client
-        .mutation(SIGNIN, { input: { email, password, role } })
+      const result = await gqlClient
+        .mutation(SIGNIN_MUTATION, { input: { email, password, role } })
         .toPromise();
 
       if (result.error) throw result.error;
@@ -41,7 +40,7 @@ export const authProviderGraphql: AuthProvider = {
 
   logout: async () => {
     try {
-      const result = await client.mutation(SIGNOUT, {}).toPromise();
+      const result = await gqlClient.mutation(SIGNOUT_MUTATION, {}).toPromise();
       if (result.error) throw result.error;
 
       localStorage.clear();

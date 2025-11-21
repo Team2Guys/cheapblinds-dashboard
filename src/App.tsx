@@ -17,7 +17,7 @@ import routerProvider, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router";
-import { authProviderGraphql, dataProviderGraphql } from "#providers";
+import { authProvider, dataProvider } from "#providers";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import {
@@ -49,10 +49,10 @@ function App() {
           <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
           <RefineSnackbarProvider>
             <Refine
-              dataProvider={dataProviderGraphql}
-              notificationProvider={useNotificationProvider}
               routerProvider={routerProvider}
-              authProvider={authProviderGraphql}
+              authProvider={authProvider}
+              dataProvider={dataProvider}
+              notificationProvider={useNotificationProvider}
               resources={[
                 {
                   name: "admins",

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_ADMIN_LIST = gql`
+export const ADMIN_LIST_QUERY = gql`
   query GetAdminList {
     getAdminList {
       status
@@ -19,7 +19,7 @@ export const GET_ADMIN_LIST = gql`
   }
 `;
 
-export const GET_ADMIN_BY_ID = gql`
+export const ADMIN_BY_ID_QUERY = gql`
   query GetAdminById($input: GetAdminByIdInput!) {
     getAdminById(input: $input) {
       status

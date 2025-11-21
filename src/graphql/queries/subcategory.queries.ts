@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 // Get all subcategories
-export const GET_SUBCATEGORY_LIST = gql`
+export const SUBCATEGORY_LIST_QUERY = gql`
   query GetSubcategoryList {
     getSubcategoryList {
       status
@@ -29,7 +29,7 @@ export const GET_SUBCATEGORY_LIST = gql`
 `;
 
 // Get single subcategory by ID
-export const GET_SUBCATEGORY_BY_ID = gql`
+export const SUBCATEGORY_BY_ID_QUERY = gql`
   query GetSubcategoryById($input: GetSubcategoryByIdInput!) {
     getSubcategoryById(input: $input) {
       status

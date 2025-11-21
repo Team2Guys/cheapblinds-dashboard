@@ -1,2 +1,2 @@
-export { authProviderGraphql } from "./auth.provider";
-export { dataProviderGraphql } from "./data.provider";
+export { authProvider } from "./auth.provider";
+export { dataProvider } from "./data.provider";

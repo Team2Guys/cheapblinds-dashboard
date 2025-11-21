@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-export const SIGNUP = gql`
-  mutation Signup($input: SignupInput!) {
+export const SIGNUP_MUTATION = gql`
+  mutation Signup($input: SIGNUP_MUTATIONInput!) {
     signup(input: $input) {
       status
       message
@@ -9,7 +9,7 @@ export const SIGNUP = gql`
   }
 `;
 
-export const SIGNIN = gql`
+export const SIGNIN_MUTATION = gql`
   mutation Signin($input: SigninInput!) {
     signin(input: $input) {
       status
@@ -22,7 +22,7 @@ export const SIGNIN = gql`
   }
 `;
 
-export const SIGNOUT = gql`
+export const SIGNOUT_MUTATION = gql`
   mutation Signout {
     signout {
       status
@@ -31,7 +31,7 @@ export const SIGNOUT = gql`
   }
 `;
 
-export const REQUEST_PASSWORD_RESET = gql`
+export const REQUEST_PASSWORD_RESET_MUTATION = gql`
   mutation RequestPasswordReset($input: PasswordResetRequestInput!) {
     requestPasswordReset(input: $input) {
       status
@@ -40,7 +40,7 @@ export const REQUEST_PASSWORD_RESET = gql`
   }
 `;
 
-export const UPDATE_PASSWORD = gql`
+export const UPDATE_PASSWORDT_MUTATION = gql`
   mutation UpdatePassword($input: PasswordUpdateInput!) {
     updatePassword(input: $input) {
       status
