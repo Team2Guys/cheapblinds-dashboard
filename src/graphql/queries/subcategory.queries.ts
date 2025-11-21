@@ -4,26 +4,22 @@ import { gql } from "@apollo/client";
 export const SUBCATEGORY_LIST_QUERY = gql`
   query GetSubcategoryList {
     getSubcategoryList {
+      id
+      name
+      categoryId
+      description
+      shortDescription
+      customUrl
+      metaTitle
+      metaDescription
+      canonicalTag
+      thumbnailUrl
+      createdAt
+      updatedAt
+      lastEditedBy
+      breadCrumb
+      seoSchema
       status
-      message
-      data {
-        id
-        name
-        categoryId
-        description
-        shortDescription
-        customUrl
-        metaTitle
-        metaDescription
-        canonicalTag
-        thumbnailUrl
-        createdAt
-        updatedAt
-        lastEditedBy
-        breadCrumb
-        seoSchema
-        status
-      }
     }
   }
 `;
@@ -32,24 +28,20 @@ export const SUBCATEGORY_LIST_QUERY = gql`
 export const SUBCATEGORY_BY_ID_QUERY = gql`
   query GetSubcategoryById($input: GetSubcategoryByIdInput!) {
     getSubcategoryById(input: $input) {
-      status
-      message
-      data {
-        id
-        name
-        categoryId
-        description
-        shortDescription
-        customUrl
-        metaTitle
-        metaDescription
-        canonicalTag
-        thumbnailUrl
-        thumbnailPublicId
-        thumbnailText
-        createdAt
-        updatedAt
-      }
+      id
+      name
+      categoryId
+      description
+      shortDescription
+      customUrl
+      metaTitle
+      metaDescription
+      canonicalTag
+      thumbnailUrl
+      thumbnailPublicId
+      thumbnailText
+      createdAt
+      updatedAt
     }
   }
 `;

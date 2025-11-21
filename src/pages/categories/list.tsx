@@ -1,9 +1,16 @@
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { DeleteButton, EditButton, List, ShowButton, useDataGrid } from "@refinedev/mui";
 import React from "react";
+import { CATEGORY_LIST_QUERY } from "../../graphql";
 
 export const CategoryList = () => {
-  const { dataGridProps } = useDataGrid({});
+  const { dataGridProps } = useDataGrid({
+    resource: "categories",
+    meta: {
+      gqlQuery: CATEGORY_LIST_QUERY,
+      operationName: "getCategoryList",
+    },
+  });
 
   const columns = React.useMemo<GridColDef[]>(
     () => [

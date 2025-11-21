@@ -4,7 +4,6 @@ import { gql } from "@apollo/client";
 export const CREATE_PRODUCT = gql`
   mutation CreateProduct($input: CreateProductInput!) {
     createProduct(input: $input) {
-      status
       message
     }
   }
@@ -14,7 +13,6 @@ export const CREATE_PRODUCT = gql`
 export const UPDATE_PRODUCT_BY_ID = gql`
   mutation UpdateProductById($input: UpdateProductByIdInput!) {
     updateProductById(input: $input) {
-      status
       message
     }
   }
@@ -24,7 +22,6 @@ export const UPDATE_PRODUCT_BY_ID = gql`
 export const REMOVE_PRODUCT_BY_ID = gql`
   mutation RemoveProductById($input: RemoveProductByIdInput!) {
     removeProductById(input: $input) {
-      status
       message
     }
   }

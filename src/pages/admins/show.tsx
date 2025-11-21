@@ -1,9 +1,16 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
 import { useShow } from "@refinedev/core";
 import { Show } from "@refinedev/mui";
+import { ADMIN_BY_ID_QUERY } from "../../graphql";
 
 export const AdminShow = () => {
-  const { query } = useShow({});
+  const { query } = useShow({
+    resource: "admins",
+    meta: {
+      gqlQuery: ADMIN_BY_ID_QUERY,
+      operationName: "getAdminById",
+    },
+  });
   const { data, isLoading } = query;
 
   const record = data?.data;

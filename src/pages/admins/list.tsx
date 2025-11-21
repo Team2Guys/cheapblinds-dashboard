@@ -2,31 +2,28 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { DeleteButton, EditButton, List, ShowButton, useDataGrid } from "@refinedev/mui";
 import React from "react";
 import { ADMIN_LIST_QUERY } from "../../graphql";
-import { useList } from "@refinedev/core";
+
+interface IAdmin {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  permissions: string[];
+  createdAt: string;
+  updatedAt: string;
+}
 
 export const AdminList = () => {
-  const { dataGridProps } = useDataGrid({
+  const { dataGridProps } = useDataGrid<IAdmin>({
     resource: "admins",
     meta: {
       gqlQuery: ADMIN_LIST_QUERY,
-      dataMapper: (response: any) => response?.data?.adminList?.data || [],
-      getTotalCount: (response: any) => response?.data?.adminList?.data?.length || 0,
+      operationName: "getAdminList",
     },
   });
 
-  const { result } = useList({
-    resource: "admins",
-    meta: {
-      gqlQuery: ADMIN_LIST_QUERY,
-      dataMapper: (response: any) => response?.data?.adminList?.data || [],
-      getTotalCount: (response: any) => response?.data?.adminList?.data?.length || 0,
-    },
-  });
-
-  console.log("result:", result);
-  console.log("dataGridProps:", dataGridProps);
-
-  const columns = React.useMemo<GridColDef[]>(
+  const columns = React.useMemo<GridColDef<IAdmin>[]>(
     () => [
       {
         field: "id",
