@@ -1,4 +1,4 @@
-import { DataProvider } from "@refinedev/core";
+import type { DataProvider } from "@refinedev/core";
 import { gqlClient } from "#utils/gql-client";
 
 export const dataProvider: DataProvider = {

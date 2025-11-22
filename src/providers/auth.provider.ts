@@ -1,53 +1,39 @@
 import type { AuthProvider } from "@refinedev/core";
 import { SIGNIN_MUTATION, SIGNUP_MUTATION, SIGNOUT_MUTATION } from "../graphql/mutations";
-import { getErrorMessage, gqlClient } from "#utils/index";
+import { gqlClient } from "#utils/index";
 
 export const authProvider: AuthProvider = {
   register: async ({ email, password, role }) => {
-    try {
-      const result = await gqlClient
-        .mutation(SIGNUP_MUTATION, { input: { email, password, role } })
-        .toPromise();
+    const result = await gqlClient
+      .mutation(SIGNUP_MUTATION, { input: { email, password, role } })
+      .toPromise();
 
-      if (result.error) throw result.error;
+    if (result.error) throw result.error;
 
-      return { success: true, redirectTo: "/login" };
-    } catch (error: unknown) {
-      const err = new Error(getErrorMessage(error));
-      err.name = "Registration Failed";
-      throw err;
-    }
+    return { success: true, redirectTo: "/login" };
   },
 
   login: async ({ email, password, role }) => {
-    try {
-      const result = await gqlClient
-        .mutation(SIGNIN_MUTATION, { input: { email, password, role } })
-        .toPromise();
+    const result = await gqlClient
+      .mutation(SIGNIN_MUTATION, { input: { email, password, role } })
+      .toPromise();
 
-      if (result.error) throw result.error;
+    console.log("result", result);
 
-      const user = result.data?.signin?.data;
-      localStorage.setItem("user", JSON.stringify(user));
+    if (result.error) throw result.error;
 
-      return { success: true, redirectTo: "/", data: user };
-    } catch (error: unknown) {
-      const err = new Error(getErrorMessage(error));
-      err.name = "Login Failed";
-      throw err;
-    }
+    const user = result.data?.signin?.data;
+    localStorage.setItem("user", JSON.stringify(user));
+
+    return { success: true, redirectTo: "/", data: user };
   },
 
   logout: async () => {
-    try {
-      const result = await gqlClient.mutation(SIGNOUT_MUTATION, {}).toPromise();
-      if (result.error) throw result.error;
+    const result = await gqlClient.mutation(SIGNOUT_MUTATION, {}).toPromise();
+    if (result.error) throw result.error;
 
-      localStorage.clear();
-      return { success: true, redirectTo: "/login" };
-    } catch {
-      return { success: false };
-    }
+    localStorage.clear();
+    return { success: true, redirectTo: "/login" };
   },
 
   check: async () => {

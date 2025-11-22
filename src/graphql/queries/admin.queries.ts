@@ -20,7 +20,9 @@ export const ADMIN_BY_ID_QUERY = gql`
     getAdminById(input: $input) {
       id
       name
+      password
       email
+      permissions
       role
       createdAt
       updatedAt

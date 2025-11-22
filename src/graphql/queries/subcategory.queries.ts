@@ -5,21 +5,21 @@ export const SUBCATEGORY_LIST_QUERY = gql`
   query GetSubcategoryList {
     getSubcategoryList {
       id
-      name
       categoryId
+      name
       description
       shortDescription
       customUrl
       metaTitle
       metaDescription
       canonicalTag
-      thumbnailUrl
-      createdAt
-      updatedAt
-      lastEditedBy
       breadCrumb
+      thumbnailUrl
+      lastEditedBy
       seoSchema
       status
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -29,17 +29,19 @@ export const SUBCATEGORY_BY_ID_QUERY = gql`
   query GetSubcategoryById($input: GetSubcategoryByIdInput!) {
     getSubcategoryById(input: $input) {
       id
-      name
       categoryId
+      name
       description
       shortDescription
       customUrl
       metaTitle
       metaDescription
       canonicalTag
+      breadCrumb
       thumbnailUrl
-      thumbnailPublicId
-      thumbnailText
+      lastEditedBy
+      seoSchema
+      status
       createdAt
       updatedAt
     }
