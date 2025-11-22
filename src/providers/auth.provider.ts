@@ -18,8 +18,6 @@ export const authProvider: AuthProvider = {
       .mutation(SIGNIN_MUTATION, { input: { email, password, role } })
       .toPromise();
 
-    console.log("result", result);
-
     if (result.error) throw result.error;
 
     const user = result.data?.signin?.data;
