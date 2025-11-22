@@ -24,6 +24,9 @@
       "#contexts": ["src/contexts/index.ts"],
       "#contexts/*": ["src/contexts/*"],
 
+      "#graphql": ["src/graphql/index.ts"],
+      "#graphql/*": ["src/graphql/*"],
+
       "#pages": ["src/pages/index.ts"],
       "#pages/*": ["src/pages/*"],
 

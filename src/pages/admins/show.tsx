@@ -1,14 +1,20 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
-import { useShow } from "@refinedev/core";
+import { useParsed, useShow } from "@refinedev/core";
 import { Show } from "@refinedev/mui";
 import { ADMIN_BY_ID_QUERY } from "../../graphql";
 
 export const AdminShow = () => {
+  const { id } = useParsed(); // reads :id from the URL
+
   const { query } = useShow({
     resource: "admins",
+    id, // pass it explicitly so it’s available here
     meta: {
       gqlQuery: ADMIN_BY_ID_QUERY,
       operationName: "getAdminById",
+      variables: {
+        input: { id },
+      },
     },
   });
   const { data, isLoading } = query;

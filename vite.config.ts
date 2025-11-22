@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       "#components": path.resolve(__dirname, "src/components"),
       "#contexts": path.resolve(__dirname, "src/contexts"),
+      "#graphql": path.resolve(__dirname, "src/graphql"),
       "#pages": path.resolve(__dirname, "src/pages"),
       "#providers": path.resolve(__dirname, "src/providers"),
       "#utils": path.resolve(__dirname, "src/utils"),

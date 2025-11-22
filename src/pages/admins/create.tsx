@@ -1,3 +1,4 @@
+import { CREATE_ADMIN_MUTATION } from "#graphql";
 import {
   Box,
   TextField,
@@ -52,6 +53,13 @@ export const AdminCreate = () => {
       password: "",
       role: "ADMIN",
       permissions: [],
+    },
+    refineCoreProps: {
+      resource: "admins",
+      meta: {
+        gqlMutation: CREATE_ADMIN_MUTATION,
+        operationName: "createAdmin",
+      },
     },
   });
 

@@ -9,9 +9,11 @@ import {
   ListItemText,
   Grid,
 } from "@mui/material";
+import { useParsed } from "@refinedev/core";
 import { Edit } from "@refinedev/mui";
 import { useForm as useRefineForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
+import { ADMIN_BY_ID_QUERY, UPDATE_ADMIN_BY_ID_MUTATION } from "../../graphql";
 
 const availablePermissions = [
   "ADD_PRODUCTS",
@@ -31,12 +33,30 @@ const availablePermissions = [
 ];
 
 export const AdminEdit = () => {
+  const { id } = useParsed(); // reads :id from the URL
+
   const {
     saveButtonProps,
     register,
     control,
     formState: { errors },
-  } = useRefineForm();
+  } = useRefineForm({
+    refineCoreProps: {
+      resource: "admins",
+      id, // pass it explicitly so it’s available here
+      meta: {
+        // query used by getOne (edit load)
+        gqlQuery: ADMIN_BY_ID_QUERY,
+        operationName: "getAdminById",
+        // mutation used by update
+        gqlMutation: UPDATE_ADMIN_BY_ID_MUTATION,
+        // variables for update; for getOne most providers will ignore this
+        variables: {
+          input: { id },
+        },
+      },
+    },
+  });
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
