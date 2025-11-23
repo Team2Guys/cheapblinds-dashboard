@@ -8,7 +8,7 @@
     "build": "tsc && refine build",
     "deploy": "vercel --prod --yes",
     "format": "prettier --write \"./**/*.{ts,tsx,html,yaml,md,json,txt}\"",
-    "lint": "eslint \"./**/*.js\"",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
     "start": "refine start",
     "refine": "refine"
   },
