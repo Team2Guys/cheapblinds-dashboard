@@ -4,11 +4,10 @@ import { Show } from "@refinedev/mui";
 import { ADMIN_BY_ID_QUERY } from "../../graphql";
 
 export const AdminShow = () => {
-  const { id } = useParsed(); // reads :id from the URL
+  const { id } = useParsed();
 
   const { query } = useShow({
     resource: "admins",
-    id, // pass it explicitly so it’s available here
     meta: {
       gqlQuery: ADMIN_BY_ID_QUERY,
       operationName: "getAdminById",
@@ -64,7 +63,6 @@ export const AdminShow = () => {
             <InfoField label="ID" value={record?.id?.toString()} />
             <InfoField label="Name" value={record?.name} />
             <InfoField label="Email" value={record?.email} />
-            <InfoField label="Password" value={record?.password} />
             <InfoField label="Permissions" value={record?.permissions?.join(", ")} />
           </Box>
         </Paper>

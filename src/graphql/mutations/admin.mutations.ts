@@ -9,8 +9,8 @@ export const CREATE_ADMIN_MUTATION = gql`
 `;
 
 export const UPDATE_ADMIN_BY_ID_MUTATION = gql`
-  mutation UpdateAdminById($input: UpdateAdminByIdInput!) {
-    updateAdminById(input: $input) {
+  mutation UpdateAdminById($id: ID!, $input: UpdateAdminByIdInput!) {
+    updateAdminById(id: $id, input: $input) {
       message
     }
   }

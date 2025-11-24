@@ -33,7 +33,7 @@ const availablePermissions = [
 ];
 
 export const AdminEdit = () => {
-  const { id } = useParsed(); // reads :id from the URL
+  const { id } = useParsed();
 
   const {
     saveButtonProps,
@@ -43,17 +43,13 @@ export const AdminEdit = () => {
   } = useRefineForm({
     refineCoreProps: {
       resource: "admins",
-      id, // pass it explicitly so it’s available here
       meta: {
-        // query used by getOne (edit load)
         gqlQuery: ADMIN_BY_ID_QUERY,
         operationName: "getAdminById",
-        // mutation used by update
-        gqlMutation: UPDATE_ADMIN_BY_ID_MUTATION,
-        // variables for update; for getOne most providers will ignore this
         variables: {
           input: { id },
         },
+        gqlMutation: UPDATE_ADMIN_BY_ID_MUTATION,
       },
     },
   });

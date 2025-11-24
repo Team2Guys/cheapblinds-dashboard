@@ -5,7 +5,6 @@ export const ADMIN_LIST_QUERY = gql`
     getAdminList {
       id
       name
-      password
       email
       permissions
       role
@@ -20,7 +19,6 @@ export const ADMIN_BY_ID_QUERY = gql`
     getAdminById(input: $input) {
       id
       name
-      password
       email
       permissions
       role
