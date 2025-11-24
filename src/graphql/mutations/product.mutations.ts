@@ -1,27 +1,75 @@
 import { gql } from "@apollo/client";
 
 // Create a product
-export const CREATE_PRODUCT = gql`
+export const CREATE_PRODUCT_MUTATION = gql`
   mutation CreateProduct($input: CreateProductInput!) {
     createProduct(input: $input) {
-      message
+      id
+      categoryId
+      subcategoryId
+      name
+      description
+      shortDescription
+      customUrl
+      metaTitle
+      metaDescription
+      canonicalTag
+      breadCrumb
+      thumbnailUrl
+      productImages
+      lastEditedBy
+      seoSchema
+      price
+      discountPrice
+      stock
+      additionalInfo
+      measuringGuide
+      category
+      subcategory
+      status
+      createdAt
+      updatedAt
     }
   }
 `;
 
 // Update a product by ID
-export const UPDATE_PRODUCT_BY_ID = gql`
-  mutation UpdateProductById($input: UpdateProductByIdInput!) {
-    updateProductById(input: $input) {
-      message
+export const UPDATE_PRODUCT_BY_ID_MUTATION = gql`
+  mutation UpdateProductById($id: ID!, $input: UpdateProductByIdInput!) {
+    updateProductById(id: $id, input: $input) {
+      id
+      categoryId
+      subcategoryId
+      name
+      description
+      shortDescription
+      customUrl
+      metaTitle
+      metaDescription
+      canonicalTag
+      breadCrumb
+      thumbnailUrl
+      productImages
+      lastEditedBy
+      seoSchema
+      price
+      discountPrice
+      stock
+      additionalInfo
+      measuringGuide
+      category
+      subcategory
+      status
+      createdAt
+      updatedAt
     }
   }
 `;
 
 // Remove a product by ID
-export const REMOVE_PRODUCT_BY_ID = gql`
-  mutation RemoveProductById($input: RemoveProductByIdInput!) {
-    removeProductById(input: $input) {
+export const REMOVE_PRODUCT_BY_ID_MUTATION = gql`
+  mutation RemoveProductById($id: ID!) {
+    removeProductById(id: $id) {
       message
     }
   }

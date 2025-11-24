@@ -20,6 +20,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
+import { CATEGORY_LIST_QUERY, CREATE_SUBCATEGORY_MUTATION } from "#graphql";
 
 type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
@@ -73,6 +74,14 @@ export const SubcategoryCreate = () => {
       seoSchema: "",
       categoryId: "",
       status: "DRAFT",
+    },
+    refineCoreProps: {
+      resource: "subcategories",
+      meta: {
+        gqlQuery: CATEGORY_LIST_QUERY,
+        gqlMutation: CREATE_SUBCATEGORY_MUTATION,
+        operationName: "createSubcategory",
+      },
     },
   });
 

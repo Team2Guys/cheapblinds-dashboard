@@ -26,8 +26,8 @@ export const SUBCATEGORY_LIST_QUERY = gql`
 
 // Get single subcategory by ID
 export const SUBCATEGORY_BY_ID_QUERY = gql`
-  query GetSubcategoryById($input: GetSubcategoryByIdInput!) {
-    getSubcategoryById(input: $input) {
+  query GetSubcategoryById($id: ID!) {
+    getSubcategoryById(id: $id) {
       id
       categoryId
       name

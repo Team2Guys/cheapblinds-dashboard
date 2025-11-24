@@ -32,6 +32,8 @@ const availablePermissions = [
   "VIEW_TOTAL_CATEGORIES",
 ];
 
+const availableRoles = ["ADMIN", "SUPER_ADMIN"];
+
 export const AdminEdit = () => {
   const { id } = useParsed();
 
@@ -46,10 +48,10 @@ export const AdminEdit = () => {
       meta: {
         gqlQuery: ADMIN_BY_ID_QUERY,
         operationName: "getAdminById",
-        variables: {
-          input: { id },
-        },
         gqlMutation: UPDATE_ADMIN_BY_ID_MUTATION,
+        variables: {
+          id,
+        },
       },
     },
   });
@@ -60,7 +62,7 @@ export const AdminEdit = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("name", { required: "This field is required" })}
+              {...register("name")}
               error={!!errors?.name}
               helperText={!!errors?.name?.message}
               margin="normal"
@@ -73,7 +75,7 @@ export const AdminEdit = () => {
 
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("email", { required: "This field is required" })}
+              {...register("email")}
               error={!!errors?.email}
               helperText={!!errors?.email?.message}
               margin="normal"
@@ -85,15 +87,25 @@ export const AdminEdit = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField
-              {...register("password", { required: "This field is required" })}
-              error={!!errors?.password}
-              helperText={!!errors?.password?.message}
-              margin="normal"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              type="password"
-              label="Password"
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <FormControl fullWidth margin="normal">
+                  <InputLabel id="role-label">Role</InputLabel>
+                  <Select
+                    labelId="role-label"
+                    value={field.value || ""} // single value
+                    onChange={field.onChange}
+                  >
+                    {availableRoles.map((role) => (
+                      <MenuItem key={role} value={role}>
+                        {role}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
             />
           </Grid>
 

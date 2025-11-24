@@ -18,8 +18,8 @@ export const USER_LIST_QUERY = gql`
 `;
 
 export const USER_BY_ID_QUERY = gql`
-  query GetUserById($input: GetUserByIdInput!) {
-    getUserById(input: $input) {
+  query GetUserById($id: ID!) {
+    getUserById(id: $id) {
       id
       firstName
       lastName

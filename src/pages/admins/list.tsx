@@ -2,6 +2,7 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { DeleteButton, EditButton, List, ShowButton, useDataGrid } from "@refinedev/mui";
 import React from "react";
 import { ADMIN_LIST_QUERY } from "../../graphql";
+import { formatDateTime } from "#utils/time-format-converter";
 
 interface IAdmin {
   id: number;
@@ -25,18 +26,6 @@ export const AdminList = () => {
 
   const columns = React.useMemo<GridColDef<IAdmin>[]>(
     () => [
-      {
-        field: "id",
-        headerName: "ID",
-        type: "string",
-        minWidth: 50,
-        flex: 0,
-        align: "left",
-        headerAlign: "left",
-        display: "flex",
-        sortable: false,
-        filterable: false,
-      },
       {
         field: "name",
         headerName: "Name",
@@ -62,8 +51,8 @@ export const AdminList = () => {
         filterable: false,
       },
       {
-        field: "permissions",
-        headerName: "Permissions",
+        field: "role",
+        headerName: "Role",
         type: "string",
         minWidth: 200,
         flex: 1,
@@ -72,7 +61,19 @@ export const AdminList = () => {
         display: "flex",
         sortable: false,
         filterable: false,
-        renderCell: ({ row }) => row.permissions?.join(", "),
+      },
+      {
+        field: "createdAt",
+        headerName: "Created At",
+        type: "string",
+        minWidth: 200,
+        flex: 1,
+        align: "left",
+        headerAlign: "left",
+        display: "flex",
+        sortable: false,
+        filterable: false,
+        renderCell: ({ row }) => formatDateTime(row.createdAt),
       },
       {
         field: "actions",

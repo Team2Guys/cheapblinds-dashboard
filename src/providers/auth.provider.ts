@@ -4,31 +4,31 @@ import { gqlClient } from "#utils/index";
 
 export const authProvider: AuthProvider = {
   register: async ({ email, password, role }) => {
-    const result = await gqlClient
+    const { error } = await gqlClient
       .mutation(SIGNUP_MUTATION, { input: { email, password, role } })
       .toPromise();
 
-    if (result.error) throw result.error;
+    if (error) throw error;
 
     return { success: true, redirectTo: "/login" };
   },
 
   login: async ({ email, password, role }) => {
-    const result = await gqlClient
+    const { data, error } = await gqlClient
       .mutation(SIGNIN_MUTATION, { input: { email, password, role } })
       .toPromise();
 
-    if (result.error) throw result.error;
+    if (error) throw error;
 
-    const user = result.data?.signin?.data;
+    const { signin: user } = data;
     localStorage.setItem("user", JSON.stringify(user));
 
     return { success: true, redirectTo: "/", data: user };
   },
 
   logout: async () => {
-    const result = await gqlClient.mutation(SIGNOUT_MUTATION, {}).toPromise();
-    if (result.error) throw result.error;
+    const { error } = await gqlClient.mutation(SIGNOUT_MUTATION, {}).toPromise();
+    if (error) throw error;
 
     localStorage.clear();
     return { success: true, redirectTo: "/login" };

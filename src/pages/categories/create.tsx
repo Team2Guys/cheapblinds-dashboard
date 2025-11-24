@@ -19,6 +19,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
+import { CREATE_CATEGORY_MUTATION } from "#graphql";
 
 type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
@@ -65,7 +66,11 @@ export const CategoryCreate = () => {
       status: "DRAFT",
     },
     refineCoreProps: {
-      action: "create",
+      resource: "categories",
+      meta: {
+        gqlMutation: CREATE_CATEGORY_MUTATION,
+        operationName: "createCategory",
+      },
     },
   });
 

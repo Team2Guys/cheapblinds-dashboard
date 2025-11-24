@@ -3,7 +3,13 @@ import { gql } from "@apollo/client";
 export const CREATE_ADMIN_MUTATION = gql`
   mutation CreateAdmin($input: CreateAdminInput!) {
     createAdmin(input: $input) {
-      message
+      id
+      name
+      email
+      permissions
+      role
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -11,14 +17,20 @@ export const CREATE_ADMIN_MUTATION = gql`
 export const UPDATE_ADMIN_BY_ID_MUTATION = gql`
   mutation UpdateAdminById($id: ID!, $input: UpdateAdminByIdInput!) {
     updateAdminById(id: $id, input: $input) {
-      message
+      id
+      name
+      email
+      permissions
+      role
+      createdAt
+      updatedAt
     }
   }
 `;
 
 export const REMOVE_ADMIN_BY_ID_MUTATION = gql`
-  mutation removeAdminById($input: RemoveAdminByIdInput!) {
-    removeAdminById(input: $input) {
+  mutation RemoveAdminById($id: ID!) {
+    removeAdminById(id: $id) {
       message
     }
   }

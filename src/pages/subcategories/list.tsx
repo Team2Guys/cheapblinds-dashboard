@@ -2,6 +2,7 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { DeleteButton, EditButton, List, ShowButton, useDataGrid } from "@refinedev/mui";
 import React from "react";
 import { SUBCATEGORY_LIST_QUERY } from "../../graphql";
+import { formatDateTime } from "#utils/time-format-converter";
 
 export const SubcategoryList = () => {
   const { dataGridProps } = useDataGrid({
@@ -14,18 +15,6 @@ export const SubcategoryList = () => {
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
-      {
-        field: "id",
-        headerName: "ID",
-        type: "string",
-        minWidth: 50,
-        flex: 0,
-        align: "left",
-        headerAlign: "left",
-        display: "flex",
-        sortable: false,
-        filterable: false,
-      },
       {
         field: "name",
         headerName: "Name",
@@ -64,10 +53,23 @@ export const SubcategoryList = () => {
         renderCell: ({ row }) => row.category?.name || "",
       },
       {
+        field: "createdAt",
+        headerName: "Created At",
+        type: "string",
+        minWidth: 200,
+        flex: 1,
+        align: "left",
+        headerAlign: "left",
+        display: "flex",
+        sortable: false,
+        filterable: false,
+        renderCell: ({ row }) => formatDateTime(row.createdAt),
+      },
+      {
         field: "status",
         headerName: "Status",
         type: "string",
-        minWidth: 120,
+        minWidth: 200,
         flex: 0,
         align: "left",
         headerAlign: "left",

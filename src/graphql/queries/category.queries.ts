@@ -23,8 +23,8 @@ export const CATEGORY_LIST_QUERY = gql`
 `;
 
 export const CATEGORY_BY_ID_QUERY = gql`
-  query GetCategoryById($input: GetCategoryByIdInput!) {
-    getCategoryById(input: $input) {
+  query GetCategoryById($id: ID!) {
+    getCategoryById(id: $id) {
       id
       name
       description

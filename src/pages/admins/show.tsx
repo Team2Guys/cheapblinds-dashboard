@@ -2,6 +2,7 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 import { useParsed, useShow } from "@refinedev/core";
 import { Show } from "@refinedev/mui";
 import { ADMIN_BY_ID_QUERY } from "../../graphql";
+import { formatDateTime } from "#utils/time-format-converter";
 
 export const AdminShow = () => {
   const { id } = useParsed();
@@ -12,7 +13,7 @@ export const AdminShow = () => {
       gqlQuery: ADMIN_BY_ID_QUERY,
       operationName: "getAdminById",
       variables: {
-        input: { id },
+        id,
       },
     },
   });
@@ -60,10 +61,12 @@ export const AdminShow = () => {
         <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
           <SectionTitle>Admin Information</SectionTitle>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
-            <InfoField label="ID" value={record?.id?.toString()} />
             <InfoField label="Name" value={record?.name} />
             <InfoField label="Email" value={record?.email} />
+            <InfoField label="Role" value={record?.role} />
             <InfoField label="Permissions" value={record?.permissions?.join(", ")} />
+            <InfoField label="Created At" value={formatDateTime(record?.createdAt)} />
+            <InfoField label="Updated At" value={formatDateTime(record?.updatedAt)} />
           </Box>
         </Paper>
       </Stack>

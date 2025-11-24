@@ -1,16 +1,25 @@
 import { gql } from "@apollo/client";
 
-export const UPDATE_USER_BY_ID = gql`
-  mutation UpdateUserById($input: UpdateUserByIdInput!) {
-    updateUserById(input: $input) {
-      message
+export const UPDATE_USER_BY_ID_MUTATION = gql`
+  mutation UpdateUserById($id: ID!, $input: UpdateUserByIdInput!) {
+    updateUserById(id: $id, input: $input) {
+      id
+      firstName
+      lastName
+      email
+      password
+      isEmailVerified
+      isNewsletterSubscribed
+      role
+      createdAt
+      updatedAt
     }
   }
 `;
 
-export const REMOVE_USER_BY_ID = gql`
-  mutation removeUserById($input: RemoveUserByIdInput!) {
-    removeUserById(input: $input) {
+export const REMOVE_USER_BY_ID_MUTATION = gql`
+  mutation RemoveUserById($id: ID!) {
+    removeUserById(id: $id) {
       message
     }
   }

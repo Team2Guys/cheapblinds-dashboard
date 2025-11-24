@@ -41,8 +41,8 @@ export const PRODUCT_LIST_QUERY = gql`
 `;
 
 export const PRODUCT_BY_ID_QUERY = gql`
-  query GetProductById($input: GetProductByIdInput!) {
-    getProductById(input: $input) {
+  query GetProductById($id: ID!) {
+    getProductById(id: $id) {
       id
       name
       description
