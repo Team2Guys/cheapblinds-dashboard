@@ -1,9 +1,22 @@
+import { CATEGORY_BY_ID_QUERY } from "#graphql";
 import { Box, Chip, Paper, Stack, Typography } from "@mui/material";
-import { useShow } from "@refinedev/core";
+import { useParsed, useShow } from "@refinedev/core";
 import { Show } from "@refinedev/mui";
 
 export const CategoryShow = () => {
-  const { query } = useShow({});
+  const { id } = useParsed();
+
+  const { query } = useShow({
+    resource: "categories",
+    meta: {
+      gqlQuery: CATEGORY_BY_ID_QUERY,
+      operationName: "getCategoryById",
+      variables: {
+        id,
+      },
+    },
+  });
+
   const { data, isLoading } = query;
 
   const record = data?.data;
@@ -102,14 +115,11 @@ export const CategoryShow = () => {
           </Box>
         </Paper>
 
-        {/* Media & Metadata */}
+        {/* Media */}
         <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
-          <SectionTitle>Media & Metadata</SectionTitle>
+          <SectionTitle>Media</SectionTitle>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
             <InfoField label="Thumbnail URL" value={record?.thumbnailUrl} />
-            <InfoField label="Last Edited By" value={record?.lastEditedBy} />
-            <InfoField label="Created At" value={record?.createdAt} />
-            <InfoField label="Updated At" value={record?.updatedAt} />
           </Box>
         </Paper>
       </Stack>

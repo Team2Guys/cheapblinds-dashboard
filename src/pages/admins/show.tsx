@@ -17,6 +17,7 @@ export const AdminShow = () => {
       },
     },
   });
+
   const { data, isLoading } = query;
 
   const record = data?.data;
