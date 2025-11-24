@@ -9,6 +9,7 @@ import {
 } from "@refinedev/mui";
 
 import CssBaseline from "@mui/material/CssBaseline";
+import { AdminPanelSettings, People, Category, Layers, Inventory } from "@mui/icons-material";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import routerProvider, {
   CatchAllNavigate,
@@ -26,6 +27,9 @@ import {
   AdminEdit,
   AdminList,
   AdminShow,
+  UserEdit,
+  UserList,
+  UserShow,
   CategoryCreate,
   CategoryEdit,
   CategoryList,
@@ -62,6 +66,17 @@ function App() {
                   show: "/admins/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <AdminPanelSettings />,
+                  },
+                },
+                {
+                  name: "users",
+                  list: "/users",
+                  edit: "/users/edit/:id",
+                  show: "/users/show/:id",
+                  meta: {
+                    canDelete: true,
+                    icon: <People />,
                   },
                 },
                 {
@@ -72,6 +87,7 @@ function App() {
                   show: "/categories/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <Category />,
                   },
                 },
                 {
@@ -82,6 +98,7 @@ function App() {
                   show: "/subcategories/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <Layers />,
                   },
                 },
                 {
@@ -92,6 +109,7 @@ function App() {
                   show: "/products/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <Inventory />,
                   },
                 },
               ]}
@@ -120,6 +138,11 @@ function App() {
                     <Route path="create" element={<AdminCreate />} />
                     <Route path="edit/:id" element={<AdminEdit />} />
                     <Route path="show/:id" element={<AdminShow />} />
+                  </Route>
+                  <Route path="/users">
+                    <Route index element={<UserList />} />
+                    <Route path="edit/:id" element={<UserEdit />} />
+                    <Route path="show/:id" element={<UserShow />} />
                   </Route>
                   <Route path="/categories">
                     <Route index element={<CategoryList />} />
