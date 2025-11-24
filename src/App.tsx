@@ -23,6 +23,7 @@ import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import {
   Login,
+  Dashboard,
   AdminCreate,
   AdminEdit,
   AdminList,
@@ -132,7 +133,8 @@ function App() {
                     </Authenticated>
                   }
                 >
-                  <Route index element={<NavigateToResource resource="admins" />} />
+                  {/* <Route index element={<NavigateToResource resource="admins" />} /> */}
+                  <Route index path="/" element={<Dashboard />} />
                   <Route path="/admins">
                     <Route index element={<AdminList />} />
                     <Route path="create" element={<AdminCreate />} />
