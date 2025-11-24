@@ -95,8 +95,8 @@ export const ProductCreate = () => {
       breadCrumb: "",
       thumbnailUrl: "",
       productImages: [],
-      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
       seoSchema: "",
+      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
       status: "DRAFT",
     },
     refineCoreProps: {

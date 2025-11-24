@@ -35,7 +35,7 @@ export const AdminShow = () => {
       >
         {label}
       </Typography>
-      <Typography variant="body1" sx={{ mt: 0.5, color: "text.primary" }}>
+      <Typography variant="body1" sx={{ mt: 0.5, color: "text.primary", whiteSpace: "pre-line" }}>
         {value ?? "—"}
       </Typography>
     </Box>
@@ -61,12 +61,13 @@ export const AdminShow = () => {
         <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
           <SectionTitle>Admin Information</SectionTitle>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
+            <InfoField label="Id" value={record?.id?.toString()} />
             <InfoField label="Name" value={record?.name} />
             <InfoField label="Email" value={record?.email} />
             <InfoField label="Role" value={record?.role} />
-            <InfoField label="Permissions" value={record?.permissions?.join(", ")} />
-            <InfoField label="Created At" value={formatDateTime(record?.createdAt)} />
+            <InfoField label="Last Edited By" value={record?.lastEditedBy} />
             <InfoField label="Updated At" value={formatDateTime(record?.updatedAt)} />
+            <InfoField label="Permissions" value={record?.permissions?.join("\n")} />
           </Box>
         </Paper>
       </Stack>

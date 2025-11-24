@@ -134,6 +134,20 @@ export const AdminEdit = () => {
               )}
             />
           </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              {...register("lastEditedBy")}
+              error={!!errors?.password}
+              helperText={!!errors?.password?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ readOnly: true }}
+              type="text"
+              label="Last Edited By"
+              disabled
+            />
+          </Grid>
         </Grid>
       </Box>
     </Edit>

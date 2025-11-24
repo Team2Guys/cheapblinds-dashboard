@@ -53,6 +53,7 @@ export const AdminCreate = () => {
       password: "",
       role: "ADMIN",
       permissions: [],
+      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
     },
     refineCoreProps: {
       resource: "admins",
@@ -126,6 +127,20 @@ export const AdminCreate = () => {
                   </Select>
                 </FormControl>
               )}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              {...register("lastEditedBy")}
+              error={!!errors?.password}
+              helperText={!!errors?.password?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ readOnly: true }}
+              type="text"
+              label="Last Edited By"
+              disabled
             />
           </Grid>
         </Grid>

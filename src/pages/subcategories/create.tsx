@@ -70,9 +70,9 @@ export const SubcategoryCreate = () => {
       canonicalTag: "",
       breadCrumb: "",
       thumbnailUrl: "",
-      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
       seoSchema: "",
       categoryId: "",
+      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
       status: "DRAFT",
     },
     refineCoreProps: {

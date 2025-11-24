@@ -33,8 +33,8 @@ interface ICategoryCreate {
   canonicalTag?: string;
   breadCrumb?: string;
   thumbnailUrl?: string;
-  lastEditedBy?: string;
   seoSchema?: string;
+  lastEditedBy?: string;
   status: ContentStatus;
 }
 
@@ -61,8 +61,8 @@ export const CategoryCreate = () => {
       canonicalTag: "",
       breadCrumb: "",
       thumbnailUrl: "",
-      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
       seoSchema: "",
+      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
       status: "DRAFT",
     },
     refineCoreProps: {
