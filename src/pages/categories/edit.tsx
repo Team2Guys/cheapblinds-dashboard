@@ -1,3 +1,4 @@
+import { CATEGORY_BY_ID_QUERY, UPDATE_CATEGORY_BY_ID_MUTATION } from "#graphql";
 import { getErrorMessage } from "#utils/index";
 import {
   Box,
@@ -12,6 +13,7 @@ import {
   Paper,
   Divider,
 } from "@mui/material";
+import { useParsed } from "@refinedev/core";
 import { Edit } from "@refinedev/mui";
 import { useForm as useRefineForm } from "@refinedev/react-hook-form";
 import axios from "axios";
@@ -38,6 +40,8 @@ interface ICategoryEdit {
 const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
 
 export const CategoryEdit = () => {
+  const { id } = useParsed();
+
   const [uploading, setUploading] = useState(false);
 
   const {
@@ -46,14 +50,26 @@ export const CategoryEdit = () => {
     register,
     control,
     setValue,
+    getValues,
     formState: { errors },
   } = useRefineForm<ICategoryEdit>({
     refineCoreProps: {
       action: "edit",
+      resource: "categories",
+      meta: {
+        gqlQuery: CATEGORY_BY_ID_QUERY,
+        operationName: "getCategoryById",
+        gqlMutation: UPDATE_CATEGORY_BY_ID_MUTATION,
+        variables: {
+          id,
+        },
+      },
     },
   });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const fetchedData = getValues();
+  console.log("fetchedData:", fetchedData);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

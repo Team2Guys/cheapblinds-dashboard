@@ -3,10 +3,9 @@ import { gqlClient } from "#utils/gql-client";
 
 export const dataProvider: DataProvider = {
   getList: async ({ resource, meta }) => {
-    if (!meta?.gqlQuery) {
-      throw new Error(`gqlQuery is required in meta for resource ${resource}`);
+    if (!meta?.gqlQuery || !meta?.operationName) {
+      throw new Error(`gqlQuery and operationName are required in meta for resource ${resource}`);
     }
-
     const { data } = await gqlClient.query(meta.gqlQuery, meta.variables || {}).toPromise();
 
     return {
@@ -17,8 +16,8 @@ export const dataProvider: DataProvider = {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getOne: async ({ resource, id, meta }) => {
-    if (!meta?.gqlQuery) {
-      throw new Error(`gqlQuery is required in meta for resource ${resource}`);
+    if (!meta?.gqlQuery || !meta?.operationName) {
+      throw new Error(`gqlQuery and operationName are required in meta for resource ${resource}`);
     }
 
     const { data } = await gqlClient.query(meta.gqlQuery, meta.variables || {}).toPromise();
@@ -29,8 +28,10 @@ export const dataProvider: DataProvider = {
   },
 
   create: async ({ resource, variables, meta }) => {
-    if (!meta?.gqlMutation) {
-      throw new Error(`gqlMutation is required in meta for resource ${resource}`);
+    if (!meta?.gqlMutation || !meta?.operationName) {
+      throw new Error(
+        `gqlMutation and operationName are required in meta for resource ${resource}`,
+      );
     }
 
     const { data } = await gqlClient.mutation(meta.gqlMutation, { input: variables }).toPromise();
@@ -41,8 +42,10 @@ export const dataProvider: DataProvider = {
   },
 
   update: async ({ resource, id, variables, meta }) => {
-    if (!meta?.gqlMutation) {
-      throw new Error(`gqlMutation is required in meta for resource ${resource}`);
+    if (!meta?.gqlMutation || !meta?.operationName) {
+      throw new Error(
+        `gqlMutation and operationName are required in meta for resource ${resource}`,
+      );
     }
 
     const { data } = await gqlClient
@@ -55,8 +58,10 @@ export const dataProvider: DataProvider = {
   },
 
   deleteOne: async ({ resource, id, meta }) => {
-    if (!meta?.gqlMutation) {
-      throw new Error(`gqlMutation is required in meta for resource ${resource}`);
+    if (!meta?.gqlMutation || !meta?.operationName) {
+      throw new Error(
+        `gqlMutation and operationName are required in meta for resource ${resource}`,
+      );
     }
 
     const { data } = await gqlClient.mutation(meta.gqlMutation, { id }).toPromise();

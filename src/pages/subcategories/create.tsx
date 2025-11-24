@@ -47,10 +47,18 @@ export const SubcategoryCreate = () => {
 
   const { result: categoriesData } = useList({
     resource: "categories",
+    queryOptions: {
+      meta: {
+        gqlQuery: CATEGORY_LIST_QUERY,
+        operationName: "GetCategoryList",
+      },
+    },
   });
 
   const categories =
     categoriesData?.data?.map(({ id, name }) => ({ value: id, label: name })) ?? [];
+
+  console.log("categories:", categories);
 
   const {
     saveButtonProps,
@@ -78,7 +86,6 @@ export const SubcategoryCreate = () => {
     refineCoreProps: {
       resource: "subcategories",
       meta: {
-        gqlQuery: CATEGORY_LIST_QUERY,
         gqlMutation: CREATE_SUBCATEGORY_MUTATION,
         operationName: "createSubcategory",
       },

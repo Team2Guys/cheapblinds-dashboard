@@ -29,13 +29,15 @@ export const CATEGORY_BY_ID_QUERY = gql`
       name
       description
       shortDescription
+      breadCrumb
+      seoSchema
+      status
       customUrl
       metaTitle
       metaDescription
       canonicalTag
       thumbnailUrl
-      thumbnailPublicId
-      thumbnailText
+      lastEditedBy
       createdAt
       updatedAt
     }
