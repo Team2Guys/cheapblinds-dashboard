@@ -60,27 +60,6 @@ function App() {
               notificationProvider={useNotificationProvider}
               resources={[
                 {
-                  name: "admins",
-                  list: "/admins",
-                  create: "/admins/create",
-                  edit: "/admins/edit/:id",
-                  show: "/admins/show/:id",
-                  meta: {
-                    canDelete: true,
-                    icon: <AdminPanelSettings />,
-                  },
-                },
-                {
-                  name: "users",
-                  list: "/users",
-                  edit: "/users/edit/:id",
-                  show: "/users/show/:id",
-                  meta: {
-                    canDelete: true,
-                    icon: <People />,
-                  },
-                },
-                {
                   name: "categories",
                   list: "/categories",
                   create: "/categories/create",
@@ -113,6 +92,27 @@ function App() {
                     icon: <Inventory />,
                   },
                 },
+                {
+                  name: "users",
+                  list: "/users",
+                  edit: "/users/edit/:id",
+                  show: "/users/show/:id",
+                  meta: {
+                    canDelete: true,
+                    icon: <People />,
+                  },
+                },
+                {
+                  name: "admins",
+                  list: "/admins",
+                  create: "/admins/create",
+                  edit: "/admins/edit/:id",
+                  show: "/admins/show/:id",
+                  meta: {
+                    canDelete: true,
+                    icon: <AdminPanelSettings />,
+                  },
+                },
               ]}
               options={{
                 syncWithLocation: true,
@@ -135,17 +135,6 @@ function App() {
                 >
                   {/* <Route index element={<NavigateToResource resource="admins" />} /> */}
                   <Route index path="/" element={<Dashboard />} />
-                  <Route path="/admins">
-                    <Route index element={<AdminList />} />
-                    <Route path="create" element={<AdminCreate />} />
-                    <Route path="edit/:id" element={<AdminEdit />} />
-                    <Route path="show/:id" element={<AdminShow />} />
-                  </Route>
-                  <Route path="/users">
-                    <Route index element={<UserList />} />
-                    <Route path="edit/:id" element={<UserEdit />} />
-                    <Route path="show/:id" element={<UserShow />} />
-                  </Route>
                   <Route path="/categories">
                     <Route index element={<CategoryList />} />
                     <Route path="create" element={<CategoryCreate />} />
@@ -163,6 +152,17 @@ function App() {
                     <Route path="create" element={<ProductCreate />} />
                     <Route path="edit/:id" element={<ProductEdit />} />
                     <Route path="show/:id" element={<ProductShow />} />
+                  </Route>
+                  <Route path="/users">
+                    <Route index element={<UserList />} />
+                    <Route path="edit/:id" element={<UserEdit />} />
+                    <Route path="show/:id" element={<UserShow />} />
+                  </Route>
+                  <Route path="/admins">
+                    <Route index element={<AdminList />} />
+                    <Route path="create" element={<AdminCreate />} />
+                    <Route path="edit/:id" element={<AdminEdit />} />
+                    <Route path="show/:id" element={<AdminShow />} />
                   </Route>
 
                   <Route path="*" element={<ErrorComponent />} />
