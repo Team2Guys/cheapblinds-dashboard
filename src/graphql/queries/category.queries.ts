@@ -15,6 +15,10 @@ export const CATEGORY_LIST_QUERY = gql`
       metaDescription
       canonicalTag
       thumbnailUrl
+      subcategories {
+        id
+        name
+      }
       lastEditedBy
       createdAt
       updatedAt

@@ -13,9 +13,8 @@ import {
   Divider,
   Stack,
 } from "@mui/material";
-import { Create } from "@refinedev/mui";
+import { Create, useDataGrid } from "@refinedev/mui";
 import { useForm as useRefineForm } from "@refinedev/react-hook-form";
-import { useList } from "@refinedev/core";
 import axios from "axios";
 import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
@@ -45,20 +44,15 @@ const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
 export const SubcategoryCreate = () => {
   const [uploading, setUploading] = useState(false);
 
-  const { result: categoriesData } = useList({
+  const { dataGridProps } = useDataGrid({
     resource: "categories",
-    queryOptions: {
-      meta: {
-        gqlQuery: CATEGORY_LIST_QUERY,
-        operationName: "GetCategoryList",
-      },
+    meta: {
+      gqlQuery: CATEGORY_LIST_QUERY,
+      operationName: "getCategoryList",
     },
   });
 
-  const categories =
-    categoriesData?.data?.map(({ id, name }) => ({ value: id, label: name })) ?? [];
-
-  console.log("categories:", categories);
+  const categories = dataGridProps.rows || [];
 
   const {
     saveButtonProps,
@@ -84,6 +78,7 @@ export const SubcategoryCreate = () => {
       status: "DRAFT",
     },
     refineCoreProps: {
+      action: "create",
       resource: "subcategories",
       meta: {
         gqlMutation: CREATE_SUBCATEGORY_MUTATION,
@@ -400,8 +395,8 @@ export const SubcategoryCreate = () => {
                         </MenuItem>
                       ) : (
                         categories.map((cat) => (
-                          <MenuItem key={cat.value} value={cat.value}>
-                            {cat.label}
+                          <MenuItem key={cat.id} value={cat.id}>
+                            {cat.name}
                           </MenuItem>
                         ))
                       )}

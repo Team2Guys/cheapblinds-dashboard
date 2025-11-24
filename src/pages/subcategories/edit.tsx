@@ -12,12 +12,17 @@ import {
   Paper,
   Divider,
 } from "@mui/material";
-import { Edit } from "@refinedev/mui";
+import { Edit, useDataGrid } from "@refinedev/mui";
 import { useForm as useRefineForm } from "@refinedev/react-hook-form";
-import { useList } from "@refinedev/core";
+import { useParsed } from "@refinedev/core";
 import axios from "axios";
 import { useRef, useState, useEffect } from "react";
 import { Controller } from "react-hook-form";
+import {
+  CATEGORY_LIST_QUERY,
+  SUBCATEGORY_BY_ID_QUERY,
+  UPDATE_SUBCATEGORY_BY_ID_MUTATION,
+} from "#graphql";
 
 type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
@@ -40,14 +45,19 @@ interface ISubcategoryEdit {
 const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
 
 export const SubcategoryEdit = () => {
+  const { id } = useParsed();
+
   const [uploading, setUploading] = useState(false);
 
-  const { result: categoriesData } = useList({
+  const { dataGridProps } = useDataGrid({
     resource: "categories",
+    meta: {
+      gqlQuery: CATEGORY_LIST_QUERY,
+      operationName: "getCategoryList",
+    },
   });
 
-  const categories =
-    categoriesData?.data?.map(({ id, name }) => ({ value: id, label: name })) ?? [];
+  const categories = dataGridProps.rows || [];
 
   const {
     saveButtonProps,
@@ -56,7 +66,20 @@ export const SubcategoryEdit = () => {
     control,
     setValue,
     formState: { errors },
-  } = useRefineForm<ISubcategoryEdit>();
+  } = useRefineForm<ISubcategoryEdit>({
+    refineCoreProps: {
+      action: "edit",
+      resource: "subcategories",
+      meta: {
+        gqlQuery: SUBCATEGORY_BY_ID_QUERY,
+        operationName: "getSubcategoryById",
+        gqlMutation: UPDATE_SUBCATEGORY_BY_ID_MUTATION,
+        variables: {
+          id,
+        },
+      },
+    },
+  });
 
   // Update lastEditedBy with current user when form data is loaded
   useEffect(() => {
@@ -282,11 +305,17 @@ export const SubcategoryEdit = () => {
                       onChange={field.onChange}
                       label="Parent Category *"
                     >
-                      {categories.map((cat) => (
-                        <MenuItem key={cat.value} value={cat.value}>
-                          {cat.label}
+                      {categories.length === 0 ? (
+                        <MenuItem disabled value="">
+                          <em>No categories available</em>
                         </MenuItem>
-                      ))}
+                      ) : (
+                        categories.map((cat) => (
+                          <MenuItem key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </MenuItem>
+                        ))
+                      )}
                     </Select>
                     {!!errors?.categoryId && (
                       <Typography variant="caption" color="error" sx={{ mt: 0.5, ml: 1.75 }}>

@@ -1,4 +1,5 @@
 import { CATEGORY_BY_ID_QUERY } from "#graphql";
+import { formatDateTime } from "#utils/time-format-converter";
 import { Box, Chip, Paper, Stack, Typography } from "@mui/material";
 import { useParsed, useShow } from "@refinedev/core";
 import { Show } from "@refinedev/mui";
@@ -74,8 +75,8 @@ export const CategoryShow = () => {
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
             <InfoField label="ID" value={record?.id?.toString()} />
             <InfoField label="Last Edited By" value={record?.lastEditedBy?.toString()} />
-            <InfoField label="Created At" value={record?.createdAt?.toString()} />
-            <InfoField label="Updated At" value={record?.updatedAt?.toString()} />
+            <InfoField label="Created At" value={formatDateTime(record?.createdAt?.toString())} />
+            <InfoField label="Updated At" value={formatDateTime(record?.updatedAt?.toString())} />
 
             <Box>
               <Typography

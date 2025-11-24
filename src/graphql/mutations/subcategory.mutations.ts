@@ -15,11 +15,9 @@ export const CREATE_SUBCATEGORY_MUTATION = gql`
       canonicalTag
       breadCrumb
       thumbnailUrl
-      lastEditedBy
       seoSchema
+      lastEditedBy
       status
-      products
-      subcategories
       createdAt
       updatedAt
     }
@@ -41,11 +39,15 @@ export const UPDATE_SUBCATEGORY_BY_ID_MUTATION = gql`
       canonicalTag
       breadCrumb
       thumbnailUrl
-      lastEditedBy
       seoSchema
+      lastEditedBy
       status
-      products
-      subcategories
+      category {
+        name
+      }
+      products {
+        name
+      }
       createdAt
       updatedAt
     }

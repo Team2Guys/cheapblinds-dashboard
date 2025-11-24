@@ -17,15 +17,13 @@ export const CREATE_PRODUCT_MUTATION = gql`
       breadCrumb
       thumbnailUrl
       productImages
-      lastEditedBy
       seoSchema
       price
       discountPrice
       stock
       additionalInfo
       measuringGuide
-      category
-      subcategory
+      lastEditedBy
       status
       createdAt
       updatedAt
@@ -50,15 +48,13 @@ export const UPDATE_PRODUCT_BY_ID_MUTATION = gql`
       breadCrumb
       thumbnailUrl
       productImages
-      lastEditedBy
       seoSchema
       price
       discountPrice
       stock
       additionalInfo
       measuringGuide
-      category
-      subcategory
+      lastEditedBy
       status
       createdAt
       updatedAt

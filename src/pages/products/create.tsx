@@ -20,13 +20,13 @@ import {
   InputAdornment,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Create } from "@refinedev/mui";
+import { Create, useDataGrid } from "@refinedev/mui";
 import { useForm as useRefineForm } from "@refinedev/react-hook-form";
-import { useList } from "@refinedev/core";
 import axios from "axios";
-import { useRef, useState } from "react";
-import { Controller } from "react-hook-form";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
+import { CATEGORY_LIST_QUERY, CREATE_PRODUCT_MUTATION } from "#graphql";
 
 type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
@@ -34,6 +34,8 @@ interface IProductCreate {
   name: string;
   description?: string;
   shortDescription?: string;
+  additionalInfo?: string; // New Field
+  measuringGuide?: string; // New Field
   customUrl?: string;
   categoryId: string;
   subcategoryId: string;
@@ -53,22 +55,130 @@ interface IProductCreate {
 
 const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
 
+// Shared Editor Configuration for consistency
+const EDITOR_INIT_CONFIG = {
+  height: 400,
+  menubar: false,
+  statusbar: true,
+  branding: false,
+  resize: true,
+  plugins: [
+    "advlist",
+    "autolink",
+    "lists",
+    "link",
+    "image",
+    "charmap",
+    "preview",
+    "anchor",
+    "searchreplace",
+    "visualblocks",
+    "code",
+    "fullscreen",
+    "insertdatetime",
+    "media",
+    "table",
+    "wordcount",
+    "help",
+  ],
+  toolbar:
+    "undo redo | blocks | bold italic underline | " +
+    "alignleft aligncenter alignright | " +
+    "bullist numlist outdent indent | link table | " +
+    "removeformat code fullscreen",
+  content_style:
+    "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; font-size: 14px; line-height: 1.6; padding: 10px; }",
+  block_formats: "Paragraph=p; Heading 2=h2; Heading 3=h3; Preformatted=pre",
+};
+
+// Reusable Editor Component to maintain UI consistency
+const FormRichText = ({
+  name,
+  control,
+  label,
+  helperText,
+  errors,
+}: {
+  name: keyof IProductCreate;
+  control: Control<IProductCreate>;
+  label: string;
+  helperText: string;
+  errors: FieldErrors<IProductCreate>;
+}) => (
+  <Box sx={{ mt: 3 }}>
+    <Typography variant="subtitle1" fontWeight={500} sx={{ mb: 0.5 }}>
+      {label}
+    </Typography>
+    <Typography variant="caption" color="text.secondary" sx={{ mb: 1.5, display: "block" }}>
+      {helperText}
+    </Typography>
+
+    <Controller
+      name={name}
+      control={control}
+      render={({ field: { value, onChange } }) => (
+        <Box
+          sx={{
+            border: 1,
+            borderColor: errors?.[name] ? "error.main" : "divider",
+            borderRadius: 1,
+            overflow: "hidden",
+            transition: "border-color 0.2s",
+            "&:hover": {
+              borderColor: errors?.[name] ? "error.main" : "primary.main",
+            },
+            "&:focus-within": {
+              borderColor: "primary.main",
+              borderWidth: 2,
+              m: "-1px", // Prevent layout shift on focus
+            },
+          }}
+        >
+          <Editor
+            apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
+            value={value as string}
+            onEditorChange={onChange}
+            init={{
+              ...EDITOR_INIT_CONFIG,
+              placeholder: `Enter ${label.toLowerCase()}...`,
+            }}
+          />
+        </Box>
+      )}
+    />
+    {!!errors?.[name] && (
+      <Typography variant="caption" color="error" sx={{ mt: 0.5, display: "block" }}>
+        {errors[name]?.message?.toString()}
+      </Typography>
+    )}
+  </Box>
+);
+
 export const ProductCreate = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
   const [productImages, setProductImages] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [subcategories, setSubcategories] = useState<string[]>([]);
 
-  const { result: categoriesData } = useList({ resource: "categories" });
-  const categories =
-    categoriesData?.data?.map(({ id, name }) => ({ value: id, label: name })) ?? [];
+  const { dataGridProps } = useDataGrid({
+    resource: "categories",
+    meta: {
+      gqlQuery: CATEGORY_LIST_QUERY,
+      operationName: "getCategoryList",
+    },
+  });
 
-  const { result: subcategoriesData } = useList({ resource: "subcategories" });
-  const subcategories =
-    subcategoriesData?.data?.map(({ id, name, categoryId }) => ({
-      value: id,
-      label: name,
-      categoryId,
-    })) ?? [];
+  const categories = useMemo(() => dataGridProps.rows || [], [dataGridProps.rows]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      const subs = categories.find((cat) => cat.id === selectedCategory)?.subcategories;
+      setSubcategories(subs || []);
+    } else {
+      setSubcategories([]);
+    }
+  }, [selectedCategory, categories]);
 
   const {
     saveButtonProps,
@@ -76,13 +186,14 @@ export const ProductCreate = () => {
     register,
     control,
     setValue,
-    watch,
     formState: { errors },
   } = useRefineForm<IProductCreate>({
     defaultValues: {
       name: "",
       description: "",
       shortDescription: "",
+      additionalInfo: "", // Default Value
+      measuringGuide: "", // Default Value
       customUrl: "",
       categoryId: "",
       subcategoryId: "",
@@ -101,19 +212,21 @@ export const ProductCreate = () => {
     },
     refineCoreProps: {
       action: "create",
+      resource: "products",
+      meta: {
+        gqlMutation: CREATE_PRODUCT_MUTATION,
+        operationName: "createProduct",
+      },
     },
   });
 
-  const selectedCategoryId = watch("categoryId");
   const thumbnailInputRef = useRef<HTMLInputElement | null>(null);
   const galleryInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleThumbnailChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
     setUploading(true);
-
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
@@ -126,13 +239,10 @@ export const ProductCreate = () => {
       const response = await axios.post(url, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
       const data = response.data;
-
       if (data.secure_url) {
         setValue("thumbnailUrl", data.secure_url);
       } else {
-        console.error("Upload failed:", data);
         if (thumbnailInputRef.current) thumbnailInputRef.current.value = "";
       }
     } catch (error) {
@@ -146,9 +256,7 @@ export const ProductCreate = () => {
   const handleGalleryChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
-
     setUploadingGallery(true);
-
     const url = `https://api.cloudinary.com/v1_1/${
       import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
     }/image/upload`;
@@ -158,19 +266,15 @@ export const ProductCreate = () => {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
-
         const response = await axios.post(url, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-
         return response.data.secure_url;
       });
-
       const uploadedUrls = await Promise.all(uploadPromises);
       const newImages = [...productImages, ...uploadedUrls.filter(Boolean)];
       setProductImages(newImages);
       setValue("productImages", newImages);
-
       if (galleryInputRef.current) galleryInputRef.current.value = "";
     } catch (error) {
       console.error("Upload failed:", getErrorMessage(error));
@@ -185,10 +289,6 @@ export const ProductCreate = () => {
     setProductImages(newImages);
     setValue("productImages", newImages);
   };
-
-  const filteredSubcategories = subcategories.filter(
-    (sub) => sub.categoryId === selectedCategoryId,
-  );
 
   return (
     <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
@@ -247,93 +347,41 @@ export const ProductCreate = () => {
                 placeholder="e.g., premium-wireless-headphones"
               />
 
-              {/* Rich Text Editor Section */}
-              <Box sx={{ mt: 4 }}>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
-                  <Typography variant="subtitle1" fontWeight={500}>
-                    Description
-                  </Typography>
-                </Stack>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  sx={{ mb: 2, display: "block" }}
-                >
-                  Provide a detailed description of the product with rich formatting
-                </Typography>
+              {/* Main Description using Reusable Component */}
+              <FormRichText
+                name="description"
+                control={control}
+                errors={errors}
+                label="Description"
+                helperText="Provide a detailed description of the product with rich formatting"
+              />
+            </Paper>
 
-                <Controller
-                  name="description"
-                  control={control}
-                  render={({ field: { value, onChange } }) => (
-                    <Box
-                      sx={{
-                        border: 1,
-                        borderColor: errors?.description ? "error.main" : "divider",
-                        borderRadius: 1,
-                        overflow: "hidden",
-                        transition: "border-color 0.2s",
-                        "&:hover": {
-                          borderColor: errors?.description ? "error.main" : "primary.main",
-                        },
-                        "&:focus-within": {
-                          borderColor: "primary.main",
-                          borderWidth: 2,
-                        },
-                      }}
-                    >
-                      <Editor
-                        apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
-                        value={value}
-                        onEditorChange={onChange}
-                        init={{
-                          height: 450,
-                          menubar: false,
-                          statusbar: true,
-                          branding: false,
-                          resize: true,
-                          plugins: [
-                            "advlist",
-                            "autolink",
-                            "lists",
-                            "link",
-                            "image",
-                            "charmap",
-                            "preview",
-                            "anchor",
-                            "searchreplace",
-                            "visualblocks",
-                            "code",
-                            "fullscreen",
-                            "insertdatetime",
-                            "media",
-                            "table",
-                            "wordcount",
-                            "help",
-                          ],
-                          toolbar:
-                            "undo redo | blocks | bold italic underline strikethrough | " +
-                            "alignleft aligncenter alignright alignjustify | " +
-                            "bullist numlist outdent indent | link image media table | " +
-                            "removeformat code fullscreen | help",
-                          toolbar_mode: "sliding",
-                          content_style:
-                            "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; font-size: 14px; line-height: 1.6; padding: 10px; }",
-                          placeholder: "Write a detailed description of this product...",
-                          block_formats:
-                            "Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Preformatted=pre",
-                        }}
-                      />
-                    </Box>
-                  )}
-                />
+            {/* NEW SECTION: Product Details (Additional Info & Measuring Guide) */}
+            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+              <Typography variant="h6" gutterBottom fontWeight={600}>
+                Product Details
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Extended information and guides
+              </Typography>
+              <Divider sx={{ mb: 1 }} />
 
-                {!!errors?.description && (
-                  <Typography variant="caption" color="error" sx={{ mt: 0.5, display: "block" }}>
-                    {!!errors.description.message?.toString()}
-                  </Typography>
-                )}
-              </Box>
+              <FormRichText
+                name="additionalInfo"
+                control={control}
+                errors={errors}
+                label="Additional Information"
+                helperText="Technical specifications, materials, care instructions, etc."
+              />
+
+              <FormRichText
+                name="measuringGuide"
+                control={control}
+                errors={errors}
+                label="Measuring Guide"
+                helperText="Instructions on how to measure for this product (sizes, fit, etc.)"
+              />
             </Paper>
 
             {/* Pricing Section */}
@@ -630,8 +678,12 @@ export const ProductCreate = () => {
                         </MenuItem>
                       ) : (
                         categories.map((cat) => (
-                          <MenuItem key={cat.value} value={cat.value}>
-                            {cat.label}
+                          <MenuItem
+                            key={cat.id}
+                            value={cat.id}
+                            onClick={() => setSelectedCategory(cat.id)}
+                          >
+                            {cat.name}
                           </MenuItem>
                         ))
                       )}
@@ -657,20 +709,16 @@ export const ProductCreate = () => {
                       label="Subcategory *"
                       value={field.value}
                       onChange={field.onChange}
-                      disabled={!selectedCategoryId}
                     >
-                      {!selectedCategoryId ? (
-                        <MenuItem disabled value="">
-                          <em>Select a category first</em>
-                        </MenuItem>
-                      ) : filteredSubcategories.length === 0 ? (
+                      {subcategories.length === 0 ? (
                         <MenuItem disabled value="">
                           <em>No subcategories available</em>
                         </MenuItem>
                       ) : (
-                        filteredSubcategories.map((sub) => (
-                          <MenuItem key={sub.value} value={sub.value}>
-                            {sub.label}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        subcategories.map((subCat: any) => (
+                          <MenuItem key={subCat.id} value={subCat.id}>
+                            {subCat.name}
                           </MenuItem>
                         ))
                       )}

@@ -1,10 +1,24 @@
+import { PRODUCT_BY_ID_QUERY } from "#graphql";
 import { Box, Chip, Grid, Paper, Stack, Typography, ImageList, ImageListItem } from "@mui/material";
-import { useShow } from "@refinedev/core";
+import { useParsed, useShow } from "@refinedev/core";
 import { Show } from "@refinedev/mui";
 
 export const ProductShow = () => {
-  const { query } = useShow({});
+  const { id } = useParsed();
+
+  const { query } = useShow({
+    resource: "products",
+    meta: {
+      gqlQuery: PRODUCT_BY_ID_QUERY,
+      operationName: "getProductById",
+      variables: {
+        id,
+      },
+    },
+  });
+
   const { data, isLoading } = query;
+
   const record = data?.data;
 
   const InfoField = ({ label, value }: { label: string; value?: string }) => (

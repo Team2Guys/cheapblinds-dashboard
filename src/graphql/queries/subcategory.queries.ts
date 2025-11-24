@@ -42,6 +42,9 @@ export const SUBCATEGORY_BY_ID_QUERY = gql`
       lastEditedBy
       seoSchema
       status
+      category {
+        name
+      }
       createdAt
       updatedAt
     }

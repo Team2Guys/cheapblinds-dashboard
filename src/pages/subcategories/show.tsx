@@ -1,9 +1,23 @@
+import { SUBCATEGORY_BY_ID_QUERY } from "#graphql";
+import { formatDateTime } from "#utils/time-format-converter";
 import { Box, Chip, Paper, Stack, Typography } from "@mui/material";
-import { useShow } from "@refinedev/core";
+import { useParsed, useShow } from "@refinedev/core";
 import { Show } from "@refinedev/mui";
 
 export const SubcategoryShow = () => {
-  const { query } = useShow({});
+  const { id } = useParsed();
+
+  const { query } = useShow({
+    resource: "subcategories",
+    meta: {
+      gqlQuery: SUBCATEGORY_BY_ID_QUERY,
+      operationName: "getSubcategoryById",
+      variables: {
+        id,
+      },
+    },
+  });
+
   const { data, isLoading } = query;
 
   const record = data?.data;
@@ -64,7 +78,8 @@ export const SubcategoryShow = () => {
             <InfoField label="Description" value={record?.description} />
             <InfoField label="Short Description" value={record?.shortDescription} />
             <InfoField label="Custom URL" value={record?.customUrl} />
-            <InfoField label="Category" value={record?.category?.name} />
+            <InfoField label="Category" value={record?.category?.name} />{" "}
+            <InfoField label="Last Edited By" value={record?.lastEditedBy?.toString()} />
             <Box>
               <Typography
                 variant="caption"
@@ -87,17 +102,29 @@ export const SubcategoryShow = () => {
                 />
               </Box>
             </Box>
+            <InfoField label="Created At" value={formatDateTime(record?.createdAt?.toString())} />
+            <InfoField label="Updated At" value={formatDateTime(record?.updatedAt?.toString())} />
           </Box>
         </Paper>
 
-        {/* Media & Metadata */}
+        {/* SEO & URLs */}
         <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
-          <SectionTitle>Media & Metadata</SectionTitle>
+          <SectionTitle>SEO & URLs</SectionTitle>
+          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
+            <InfoField label="Custom URL" value={record?.customUrl} />
+            <InfoField label="Meta Title" value={record?.metaTitle} />
+            <InfoField label="Meta Description" value={record?.metaDescription} />
+            <InfoField label="Canonical Tag" value={record?.canonicalTag} />
+            <InfoField label="Breadcrumb" value={record?.breadCrumb} />
+            <InfoField label="SEO Schema" value={record?.seoSchema} />
+          </Box>
+        </Paper>
+
+        {/* Media */}
+        <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
+          <SectionTitle>Media</SectionTitle>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
             <InfoField label="Thumbnail URL" value={record?.thumbnailUrl} />
-            <InfoField label="Created At" value={record?.createdAt?.toString()} />
-            <InfoField label="Updated At" value={record?.updatedAt?.toString()} />
-            <InfoField label="Last Edited By" value={record?.lastEditedBy} />
           </Box>
         </Paper>
       </Stack>
