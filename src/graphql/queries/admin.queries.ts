@@ -8,6 +8,7 @@ export const ADMIN_LIST_QUERY = gql`
       email
       permissions
       role
+      lastEditedBy
       createdAt
       updatedAt
     }
@@ -22,6 +23,7 @@ export const ADMIN_BY_ID_QUERY = gql`
       email
       permissions
       role
+      lastEditedBy
       createdAt
       updatedAt
     }

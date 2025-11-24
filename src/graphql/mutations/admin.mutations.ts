@@ -8,6 +8,7 @@ export const CREATE_ADMIN_MUTATION = gql`
       email
       permissions
       role
+      lastEditedBy
       createdAt
       updatedAt
     }
@@ -22,6 +23,7 @@ export const UPDATE_ADMIN_BY_ID_MUTATION = gql`
       email
       permissions
       role
+      lastEditedBy
       createdAt
       updatedAt
     }
