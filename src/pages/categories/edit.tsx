@@ -12,6 +12,7 @@ import {
   Typography,
   Paper,
   Divider,
+  Stack,
 } from "@mui/material";
 import { useParsed } from "@refinedev/core";
 import { Edit } from "@refinedev/mui";
@@ -19,6 +20,7 @@ import { useForm as useRefineForm } from "@refinedev/react-hook-form";
 import axios from "axios";
 import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
+import { Editor } from "@tinymce/tinymce-react";
 
 type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
@@ -137,33 +139,23 @@ export const CategoryEdit = () => {
               <TextField
                 {...register("shortDescription")}
                 error={!!errors?.shortDescription}
-                helperText={!!errors?.shortDescription?.message}
+                helperText={
+                  !!errors?.shortDescription?.message || "Brief description (50-100 characters)"
+                }
                 margin="normal"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
                 type="text"
                 label="Short Description"
-                placeholder="Brief description (50-100 characters)"
-              />
-
-              <TextField
-                {...register("description")}
-                error={!!errors?.description}
-                helperText={!!errors?.description?.message}
-                margin="normal"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                type="text"
-                label="Description"
-                multiline
-                minRows={4}
-                placeholder="Detailed description of this category"
+                placeholder="A concise summary of this category"
               />
 
               <TextField
                 {...register("customUrl")}
                 error={!!errors?.customUrl}
-                helperText={!!errors?.customUrl?.message}
+                helperText={
+                  !!errors?.customUrl?.message || "URL-friendly slug (e.g., technology-news)"
+                }
                 margin="normal"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
@@ -171,6 +163,94 @@ export const CategoryEdit = () => {
                 label="Custom URL Slug"
                 placeholder="e.g., technology-news"
               />
+
+              {/* Rich Text Editor Section */}
+              <Box sx={{ mt: 4 }}>
+                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
+                  <Typography variant="subtitle1" fontWeight={500}>
+                    Description
+                  </Typography>
+                </Stack>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ mb: 2, display: "block" }}
+                >
+                  Provide a detailed description of the category with rich formatting
+                </Typography>
+
+                <Controller
+                  name="description"
+                  control={control}
+                  render={({ field: { value, onChange } }) => (
+                    <Box
+                      sx={{
+                        border: 1,
+                        borderColor: errors?.description ? "error.main" : "divider",
+                        borderRadius: 1,
+                        overflow: "hidden",
+                        transition: "border-color 0.2s",
+                        "&:hover": {
+                          borderColor: errors?.description ? "error.main" : "primary.main",
+                        },
+                        "&:focus-within": {
+                          borderColor: "primary.main",
+                          borderWidth: 2,
+                        },
+                      }}
+                    >
+                      <Editor
+                        apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
+                        value={value}
+                        onEditorChange={onChange}
+                        init={{
+                          height: 450,
+                          menubar: false,
+                          statusbar: true,
+                          branding: false,
+                          resize: true,
+                          plugins: [
+                            "advlist",
+                            "autolink",
+                            "lists",
+                            "link",
+                            "image",
+                            "charmap",
+                            "preview",
+                            "anchor",
+                            "searchreplace",
+                            "visualblocks",
+                            "code",
+                            "fullscreen",
+                            "insertdatetime",
+                            "media",
+                            "table",
+                            "wordcount",
+                            "help",
+                          ],
+                          toolbar:
+                            "undo redo | blocks | bold italic underline strikethrough | " +
+                            "alignleft aligncenter alignright alignjustify | " +
+                            "bullist numlist outdent indent | link image media table | " +
+                            "removeformat code fullscreen | help",
+                          toolbar_mode: "sliding",
+                          content_style:
+                            "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; font-size: 14px; line-height: 1.6; padding: 10px; }",
+                          placeholder: "Write a detailed description of this category...",
+                          block_formats:
+                            "Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Preformatted=pre",
+                        }}
+                      />
+                    </Box>
+                  )}
+                />
+
+                {!!errors?.description && (
+                  <Typography variant="caption" color="error" sx={{ mt: 0.5, display: "block" }}>
+                    {!!errors.description.message?.toString()}
+                  </Typography>
+                )}
+              </Box>
             </Paper>
 
             {/* SEO Section */}
@@ -194,7 +274,7 @@ export const CategoryEdit = () => {
                     InputLabelProps={{ shrink: true }}
                     type="text"
                     label="Meta Title"
-                    placeholder="SEO-friendly title"
+                    placeholder="SEO-friendly title for search results"
                   />
                 </Grid>
 
@@ -211,7 +291,7 @@ export const CategoryEdit = () => {
                     type="text"
                     label="Meta Description"
                     multiline
-                    minRows={3}
+                    rows={3}
                     placeholder="Description that appears in search results"
                   />
                 </Grid>
@@ -248,15 +328,23 @@ export const CategoryEdit = () => {
                   <TextField
                     {...register("seoSchema")}
                     error={!!errors?.seoSchema}
-                    helperText={!!errors?.seoSchema?.message}
+                    helperText={
+                      !!errors?.seoSchema?.message || "JSON-LD structured data for search engines"
+                    }
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
                     type="text"
                     label="SEO Schema (JSON-LD)"
                     multiline
-                    minRows={5}
+                    rows={5}
                     placeholder='{"@context": "https://schema.org", "@type": "CollectionPage", ...}'
+                    sx={{
+                      "& textarea": {
+                        fontFamily: "monospace",
+                        fontSize: "0.875rem",
+                      },
+                    }}
                   />
                 </Grid>
               </Grid>
@@ -335,12 +423,12 @@ export const CategoryEdit = () => {
                 />
               </Button>
 
-              {control._formValues.thumbnailUrl && (
+              {control._formValues.thumbnailUrl ? (
                 <Box
                   sx={{
                     position: "relative",
                     width: "100%",
-                    paddingTop: "56.25%", // 16:9 aspect ratio
+                    paddingTop: "56.25%",
                     overflow: "hidden",
                     borderRadius: 1,
                     border: 1,
@@ -360,9 +448,7 @@ export const CategoryEdit = () => {
                     }}
                   />
                 </Box>
-              )}
-
-              {!control._formValues.thumbnailUrl && (
+              ) : (
                 <Box
                   sx={{
                     width: "100%",

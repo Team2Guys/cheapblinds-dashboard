@@ -15,6 +15,9 @@ import {
   ImageList,
   ImageListItem,
   ImageListItemBar,
+  Chip,
+  Stack,
+  InputAdornment,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Edit } from "@refinedev/mui";
@@ -22,7 +25,8 @@ import { useForm as useRefineForm } from "@refinedev/react-hook-form";
 import { useList } from "@refinedev/core";
 import axios from "axios";
 import { useRef, useState, useEffect } from "react";
-import { Controller } from "react-hook-form";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+import { Editor } from "@tinymce/tinymce-react";
 
 type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
@@ -30,6 +34,8 @@ interface IProductEdit {
   name: string;
   description?: string;
   shortDescription?: string;
+  additionalInfo?: string; // New Field
+  measuringGuide?: string; // New Field
   customUrl?: string;
   categoryId: string;
   subcategoryId: string;
@@ -48,6 +54,105 @@ interface IProductEdit {
 }
 
 const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
+
+// Shared Editor Configuration for consistency
+const EDITOR_INIT_CONFIG = {
+  height: 400,
+  menubar: false,
+  statusbar: true,
+  branding: false,
+  resize: true,
+  plugins: [
+    "advlist",
+    "autolink",
+    "lists",
+    "link",
+    "image",
+    "charmap",
+    "preview",
+    "anchor",
+    "searchreplace",
+    "visualblocks",
+    "code",
+    "fullscreen",
+    "insertdatetime",
+    "media",
+    "table",
+    "wordcount",
+    "help",
+  ],
+  toolbar:
+    "undo redo | blocks | bold italic underline | " +
+    "alignleft aligncenter alignright | " +
+    "bullist numlist outdent indent | link table | " +
+    "removeformat code fullscreen",
+  content_style:
+    "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; font-size: 14px; line-height: 1.6; padding: 10px; }",
+  block_formats: "Paragraph=p; Heading 2=h2; Heading 3=h3; Preformatted=pre",
+};
+
+// Reusable Editor Component to maintain UI consistency
+const FormRichText = ({
+  name,
+  control,
+  label,
+  helperText,
+  errors,
+}: {
+  name: keyof IProductEdit;
+  control: Control<IProductEdit>;
+  label: string;
+  helperText: string;
+  errors: FieldErrors<IProductEdit>;
+}) => (
+  <Box sx={{ mt: 3 }}>
+    <Typography variant="subtitle1" fontWeight={500} sx={{ mb: 0.5 }}>
+      {label}
+    </Typography>
+    <Typography variant="caption" color="text.secondary" sx={{ mb: 1.5, display: "block" }}>
+      {helperText}
+    </Typography>
+
+    <Controller
+      name={name}
+      control={control}
+      render={({ field: { value, onChange } }) => (
+        <Box
+          sx={{
+            border: 1,
+            borderColor: errors?.[name] ? "error.main" : "divider",
+            borderRadius: 1,
+            overflow: "hidden",
+            transition: "border-color 0.2s",
+            "&:hover": {
+              borderColor: errors?.[name] ? "error.main" : "primary.main",
+            },
+            "&:focus-within": {
+              borderColor: "primary.main",
+              borderWidth: 2,
+              m: "-1px", // Prevent layout shift on focus
+            },
+          }}
+        >
+          <Editor
+            apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
+            value={value as string}
+            onEditorChange={onChange}
+            init={{
+              ...EDITOR_INIT_CONFIG,
+              placeholder: `Enter ${label.toLowerCase()}...`,
+            }}
+          />
+        </Box>
+      )}
+    />
+    {!!errors?.[name] && (
+      <Typography variant="caption" color="error" sx={{ mt: 0.5, display: "block" }}>
+        {errors[name]?.message?.toString()}
+      </Typography>
+    )}
+  </Box>
+);
 
 export const ProductEdit = () => {
   const [uploading, setUploading] = useState(false);
@@ -199,39 +304,66 @@ export const ProductEdit = () => {
               <TextField
                 {...register("shortDescription")}
                 error={!!errors?.shortDescription}
-                helperText={!!errors?.shortDescription?.message}
+                helperText={
+                  !!errors?.shortDescription?.message || "Brief description (50-100 characters)"
+                }
                 margin="normal"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
                 type="text"
                 label="Short Description"
-                placeholder="Brief description (50-100 characters)"
-              />
-
-              <TextField
-                {...register("description")}
-                error={!!errors?.description}
-                helperText={!!errors?.description?.message}
-                margin="normal"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                type="text"
-                label="Description"
-                multiline
-                minRows={4}
-                placeholder="Detailed description of this product"
+                placeholder="A concise summary of this product"
               />
 
               <TextField
                 {...register("customUrl")}
                 error={!!errors?.customUrl}
-                helperText={!!errors?.customUrl?.message}
+                helperText={
+                  !!errors?.customUrl?.message ||
+                  "URL-friendly slug (e.g., premium-wireless-headphones)"
+                }
                 margin="normal"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
                 type="text"
                 label="Custom URL Slug"
                 placeholder="e.g., premium-wireless-headphones"
+              />
+
+              {/* Main Description using Reusable Component */}
+              <FormRichText
+                name="description"
+                control={control}
+                errors={errors}
+                label="Description"
+                helperText="Provide a detailed description of the product with rich formatting"
+              />
+            </Paper>
+
+            {/* NEW SECTION: Product Details (Additional Info & Measuring Guide) */}
+            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+              <Typography variant="h6" gutterBottom fontWeight={600}>
+                Product Details
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Extended information and guides
+              </Typography>
+              <Divider sx={{ mb: 1 }} />
+
+              <FormRichText
+                name="additionalInfo"
+                control={control}
+                errors={errors}
+                label="Additional Information"
+                helperText="Technical specifications, materials, care instructions, etc."
+              />
+
+              <FormRichText
+                name="measuringGuide"
+                control={control}
+                errors={errors}
+                label="Measuring Guide"
+                helperText="Instructions on how to measure for this product (sizes, fit, etc.)"
               />
             </Paper>
 
@@ -251,6 +383,7 @@ export const ProductEdit = () => {
                     {...register("price", {
                       required: "This field is required",
                       valueAsNumber: true,
+                      min: { value: 0, message: "Price must be positive" },
                     })}
                     error={!!errors?.price}
                     helperText={!!errors?.price?.message}
@@ -261,20 +394,29 @@ export const ProductEdit = () => {
                     label="Price"
                     placeholder="0.00"
                     required
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    }}
                   />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
                   <TextField
-                    {...register("discountPrice", { valueAsNumber: true })}
+                    {...register("discountPrice", {
+                      valueAsNumber: true,
+                      min: { value: 0, message: "Price must be positive" },
+                    })}
                     error={!!errors?.discountPrice}
-                    helperText={!!errors?.discountPrice?.message}
+                    helperText={!!errors?.discountPrice?.message || "Optional sale price"}
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
                     type="number"
                     label="Discount Price"
                     placeholder="0.00"
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    }}
                   />
                 </Grid>
 
@@ -283,6 +425,7 @@ export const ProductEdit = () => {
                     {...register("stock", {
                       required: "This field is required",
                       valueAsNumber: true,
+                      min: { value: 0, message: "Stock cannot be negative" },
                     })}
                     error={!!errors?.stock}
                     helperText={!!errors?.stock?.message}
@@ -300,9 +443,19 @@ export const ProductEdit = () => {
 
             {/* Product Images Gallery */}
             <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
-              <Typography variant="h6" gutterBottom fontWeight={600}>
-                Product Images
-              </Typography>
+              <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
+                <Typography variant="h6" fontWeight={600}>
+                  Product Images
+                </Typography>
+                {productImages.length > 0 && (
+                  <Chip
+                    label={`${productImages.length} image${productImages.length > 1 ? "s" : ""}`}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                  />
+                )}
+              </Stack>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 Upload additional product images (multiple files allowed)
               </Typography>
@@ -351,6 +504,7 @@ export const ProductEdit = () => {
                           <IconButton
                             sx={{ color: "white" }}
                             onClick={() => handleRemoveImage(index)}
+                            aria-label={`Delete image ${index + 1}`}
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -402,7 +556,7 @@ export const ProductEdit = () => {
                     InputLabelProps={{ shrink: true }}
                     type="text"
                     label="Meta Title"
-                    placeholder="SEO-friendly title"
+                    placeholder="SEO-friendly title for search results"
                   />
                 </Grid>
 
@@ -419,7 +573,7 @@ export const ProductEdit = () => {
                     type="text"
                     label="Meta Description"
                     multiline
-                    minRows={3}
+                    rows={3}
                     placeholder="Description that appears in search results"
                   />
                 </Grid>
@@ -456,15 +610,23 @@ export const ProductEdit = () => {
                   <TextField
                     {...register("seoSchema")}
                     error={!!errors?.seoSchema}
-                    helperText={!!errors?.seoSchema?.message}
+                    helperText={
+                      !!errors?.seoSchema?.message || "JSON-LD structured data for search engines"
+                    }
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
                     type="text"
                     label="SEO Schema (JSON-LD)"
                     multiline
-                    minRows={5}
+                    rows={5}
                     placeholder='{"@context": "https://schema.org", "@type": "Product", ...}'
+                    sx={{
+                      "& textarea": {
+                        fontFamily: "monospace",
+                        fontSize: "0.875rem",
+                      },
+                    }}
                   />
                 </Grid>
               </Grid>
@@ -602,12 +764,12 @@ export const ProductEdit = () => {
                 />
               </Button>
 
-              {control._formValues.thumbnailUrl && (
+              {control._formValues.thumbnailUrl ? (
                 <Box
                   sx={{
                     position: "relative",
                     width: "100%",
-                    paddingTop: "56.25%", // 16:9 aspect ratio
+                    paddingTop: "56.25%",
                     overflow: "hidden",
                     borderRadius: 1,
                     border: 1,
@@ -627,9 +789,7 @@ export const ProductEdit = () => {
                     }}
                   />
                 </Box>
-              )}
-
-              {!control._formValues.thumbnailUrl && (
+              ) : (
                 <Box
                   sx={{
                     width: "100%",
