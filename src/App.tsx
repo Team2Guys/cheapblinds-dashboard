@@ -178,10 +178,9 @@ function App() {
                   <Route path="/login" element={<Login />} />
                 </Route>
               </Routes>
-
               <RefineKbar />
               <UnsavedChangesNotifier />
-              <DocumentTitleHandler />
+              <DocumentTitleHandler handler={() => "Dashboard | CheapBlinds"} />;
             </Refine>
           </RefineSnackbarProvider>
         </ColorModeContextProvider>
