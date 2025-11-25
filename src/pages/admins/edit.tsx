@@ -32,8 +32,6 @@ const availablePermissions = [
   "VIEW_TOTAL_CATEGORIES",
 ];
 
-const availableRoles = ["ADMIN", "SUPER_ADMIN"];
-
 export const AdminEdit = () => {
   const { id } = useParsed();
 
@@ -88,33 +86,10 @@ export const AdminEdit = () => {
 
           <Grid item xs={12} sm={6}>
             <Controller
-              name="role"
-              control={control}
-              render={({ field }) => (
-                <FormControl fullWidth margin="normal">
-                  <InputLabel id="role-label">Role</InputLabel>
-                  <Select
-                    labelId="role-label"
-                    value={field.value || ""} // single value
-                    onChange={field.onChange}
-                  >
-                    {availableRoles.map((role) => (
-                      <MenuItem key={role} value={role}>
-                        {role}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <Controller
               name="permissions"
               control={control}
               render={({ field }) => (
-                <FormControl margin="normal" fullWidth>
+                <FormControl fullWidth>
                   <InputLabel id="permissions-label">Permissions</InputLabel>
                   <Select
                     labelId="permissions-label"
