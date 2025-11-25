@@ -1,6 +1,7 @@
-import { ThemeProvider } from "@mui/material/styles";
-import { RefineThemes } from "@refinedev/mui";
+// src/contexts/color-mode.tsx
 import React, { PropsWithChildren, createContext, useEffect, useState } from "react";
+import { ThemeProvider } from "@mui/material"; // MUI ThemeProvider
+import { RefineThemes } from "@refinedev/mui";
 
 type ColorModeContextType = {
   mode: string;
@@ -21,11 +22,7 @@ export const ColorModeContextProvider: React.FC<PropsWithChildren> = ({ children
   }, [mode]);
 
   const setColorMode = () => {
-    if (mode === "light") {
-      setMode("dark");
-    } else {
-      setMode("light");
-    }
+    setMode((prev) => (prev === "light" ? "dark" : "light"));
   };
 
   return (
@@ -36,8 +33,8 @@ export const ColorModeContextProvider: React.FC<PropsWithChildren> = ({ children
       }}
     >
       <ThemeProvider
-        // you can change the theme colors here. example: mode === "light" ? RefineThemes.Magenta : RefineThemes.MagentaDark
-        theme={mode === "light" ? RefineThemes.Blue : RefineThemes.BlueDark}
+        // Yellow / YellowDark instead of Blue / BlueDark
+        theme={mode === "light" ? RefineThemes.Yellow : RefineThemes.YellowDark}
       >
         {children}
       </ThemeProvider>
