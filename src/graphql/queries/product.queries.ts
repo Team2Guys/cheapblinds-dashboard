@@ -12,7 +12,7 @@ export const PRODUCT_LIST_QUERY = gql`
       metaDescription
       canonicalTag
       breadCrumb
-      thumbnailUrl
+      posterImageUrl
       productImages
       lastEditedBy
       seoSchema
@@ -52,7 +52,7 @@ export const PRODUCT_BY_ID_QUERY = gql`
       metaDescription
       canonicalTag
       breadCrumb
-      thumbnailUrl
+      posterImageUrl
       productImages
       lastEditedBy
       seoSchema

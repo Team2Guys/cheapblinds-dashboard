@@ -14,7 +14,7 @@ export const CATEGORY_LIST_QUERY = gql`
       metaTitle
       metaDescription
       canonicalTag
-      thumbnailUrl
+      posterImageUrl
       subcategories {
         id
         name
@@ -40,7 +40,7 @@ export const CATEGORY_BY_ID_QUERY = gql`
       metaTitle
       metaDescription
       canonicalTag
-      thumbnailUrl
+      posterImageUrl
       lastEditedBy
       createdAt
       updatedAt

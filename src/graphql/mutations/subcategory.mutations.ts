@@ -14,7 +14,7 @@ export const CREATE_SUBCATEGORY_MUTATION = gql`
       metaDescription
       canonicalTag
       breadCrumb
-      thumbnailUrl
+      posterImageUrl
       seoSchema
       lastEditedBy
       status
@@ -38,7 +38,7 @@ export const UPDATE_SUBCATEGORY_BY_ID_MUTATION = gql`
       metaDescription
       canonicalTag
       breadCrumb
-      thumbnailUrl
+      posterImageUrl
       seoSchema
       lastEditedBy
       status

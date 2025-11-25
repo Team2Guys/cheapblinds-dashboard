@@ -112,7 +112,7 @@ export const ProductShow = () => {
           <SectionTitle>Media & Metadata</SectionTitle>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <InfoField label="Thumbnail" value={record?.thumbnailUrl} />
+              <InfoField label="posterImage" value={record?.posterImageUrl} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <InfoField label="Price" value={record?.price?.toString()} />

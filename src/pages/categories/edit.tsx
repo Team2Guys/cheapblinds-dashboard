@@ -33,7 +33,7 @@ interface ICategoryEdit {
   metaDescription?: string;
   canonicalTag?: string;
   breadCrumb?: string;
-  thumbnailUrl?: string;
+  posterImageUrl?: string;
   lastEditedBy?: string;
   seoSchema?: string;
   status: ContentStatus;
@@ -95,7 +95,7 @@ export const CategoryEdit = () => {
       const data = response.data;
 
       if (data.secure_url) {
-        setValue("thumbnailUrl", data.secure_url);
+        setValue("posterImageUrl", data.secure_url);
       } else {
         console.error("Upload failed:", data);
         if (fileInputRef.current) fileInputRef.current.value = "";
@@ -402,7 +402,7 @@ export const CategoryEdit = () => {
                 Featured Image
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Upload a thumbnail for this category
+                Upload a poster image for this category
               </Typography>
               <Divider sx={{ mb: 3 }} />
 
@@ -423,7 +423,7 @@ export const CategoryEdit = () => {
                 />
               </Button>
 
-              {control._formValues.thumbnailUrl ? (
+              {control._formValues.posterImageUrl ? (
                 <Box
                   sx={{
                     position: "relative",
@@ -436,8 +436,8 @@ export const CategoryEdit = () => {
                   }}
                 >
                   <img
-                    src={control._formValues.thumbnailUrl}
-                    alt="Category Thumbnail"
+                    src={control._formValues.posterImageUrl}
+                    alt="Category Poster Image"
                     style={{
                       position: "absolute",
                       top: 0,

@@ -46,7 +46,7 @@ interface IProductEdit {
   metaDescription?: string;
   canonicalTag?: string;
   breadCrumb?: string;
-  thumbnailUrl?: string;
+  posterImageUrl?: string;
   productImages?: string[];
   lastEditedBy?: string;
   seoSchema?: string;
@@ -186,7 +186,7 @@ export const ProductEdit = () => {
   });
 
   const selectedCategoryId = watch("categoryId");
-  const thumbnailInputRef = useRef<HTMLInputElement | null>(null);
+  const posterImageInputRef = useRef<HTMLInputElement | null>(null);
   const galleryInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -195,7 +195,7 @@ export const ProductEdit = () => {
     }
   }, [queryResult?.data?.data?.productImages]);
 
-  const handleThumbnailChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePosterImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -217,14 +217,14 @@ export const ProductEdit = () => {
       const data = response.data;
 
       if (data.secure_url) {
-        setValue("thumbnailUrl", data.secure_url);
+        setValue("posterImageUrl", data.secure_url);
       } else {
         console.error("Upload failed:", data);
-        if (thumbnailInputRef.current) thumbnailInputRef.current.value = "";
+        if (posterImageInputRef.current) posterImageInputRef.current.value = "";
       }
     } catch (error) {
       console.error("Upload failed:", getErrorMessage(error));
-      if (thumbnailInputRef.current) thumbnailInputRef.current.value = "";
+      if (posterImageInputRef.current) posterImageInputRef.current.value = "";
     } finally {
       setUploading(false);
     }
@@ -743,7 +743,7 @@ export const ProductEdit = () => {
                 Featured Image
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Upload a featured thumbnail for this product
+                Upload a featured poster image for this product
               </Typography>
               <Divider sx={{ mb: 3 }} />
 
@@ -759,12 +759,12 @@ export const ProductEdit = () => {
                   type="file"
                   hidden
                   accept="image/*"
-                  onChange={handleThumbnailChange}
-                  ref={thumbnailInputRef}
+                  onChange={handlePosterImageChange}
+                  ref={posterImageInputRef}
                 />
               </Button>
 
-              {control._formValues.thumbnailUrl ? (
+              {control._formValues.posterImageUrl ? (
                 <Box
                   sx={{
                     position: "relative",
@@ -777,8 +777,8 @@ export const ProductEdit = () => {
                   }}
                 >
                   <img
-                    src={control._formValues.thumbnailUrl}
-                    alt="Product Thumbnail"
+                    src={control._formValues.posterImageUrl}
+                    alt="Product Poster Image"
                     style={{
                       position: "absolute",
                       top: 0,

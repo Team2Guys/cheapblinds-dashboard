@@ -15,7 +15,7 @@ export const CREATE_PRODUCT_MUTATION = gql`
       metaDescription
       canonicalTag
       breadCrumb
-      thumbnailUrl
+      posterImageUrl
       productImages
       seoSchema
       price
@@ -46,7 +46,7 @@ export const UPDATE_PRODUCT_BY_ID_MUTATION = gql`
       metaDescription
       canonicalTag
       breadCrumb
-      thumbnailUrl
+      posterImageUrl
       productImages
       seoSchema
       price

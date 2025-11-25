@@ -14,7 +14,7 @@ export const SUBCATEGORY_LIST_QUERY = gql`
       metaDescription
       canonicalTag
       breadCrumb
-      thumbnailUrl
+      posterImageUrl
       lastEditedBy
       seoSchema
       status
@@ -38,7 +38,7 @@ export const SUBCATEGORY_BY_ID_QUERY = gql`
       metaDescription
       canonicalTag
       breadCrumb
-      thumbnailUrl
+      posterImageUrl
       lastEditedBy
       seoSchema
       status

@@ -124,7 +124,7 @@ export const SubcategoryShow = () => {
         <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
           <SectionTitle>Media</SectionTitle>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
-            <InfoField label="Thumbnail URL" value={record?.thumbnailUrl} />
+            <InfoField label="Poster Image URL" value={record?.posterImageUrl} />
           </Box>
         </Paper>
       </Stack>
