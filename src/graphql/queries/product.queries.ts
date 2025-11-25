@@ -19,6 +19,12 @@ export const PRODUCT_LIST_QUERY = gql`
       price
       discountPrice
       stock
+      height
+      width
+      weight
+      color
+      pattern
+      composition
       status
       categoryId
       subcategoryId
@@ -59,6 +65,12 @@ export const PRODUCT_BY_ID_QUERY = gql`
       price
       discountPrice
       stock
+      height
+      width
+      weight
+      color
+      pattern
+      composition
       status
       categoryId
       subcategoryId

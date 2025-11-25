@@ -29,7 +29,7 @@ export const ProductList = () => {
       },
       {
         field: "slug",
-        headerName: "Custom URL",
+        headerName: "Slug",
         type: "string",
         minWidth: 200,
         flex: 1,

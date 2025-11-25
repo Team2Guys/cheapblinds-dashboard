@@ -178,7 +178,7 @@ export const SubcategoryEdit = () => {
                 fullWidth
                 InputLabelProps={{ shrink: true }}
                 type="text"
-                label="Custom URL Slug"
+                label="Slug"
                 placeholder="e.g., smartphones-tech"
               />
 

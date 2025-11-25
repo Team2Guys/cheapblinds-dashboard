@@ -80,7 +80,25 @@ export const ProductShow = () => {
               <InfoField label="Short Description" value={record?.shortDescription} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <InfoField label="Custom URL" value={record?.slug} />
+              <InfoField label="Slug" value={record?.slug} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <InfoField label="Height" value={record?.height} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <InfoField label="Width" value={record?.width} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <InfoField label="Weight" value={record?.weight} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <InfoField label="Color" value={record?.color} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <InfoField label="Pattern" value={record?.pattern} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <InfoField label="Composition" value={record?.composition} />
             </Grid>
           </Grid>
         </Paper>

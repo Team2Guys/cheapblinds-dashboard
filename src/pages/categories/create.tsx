@@ -161,7 +161,7 @@ export const CategoryCreate = () => {
                 fullWidth
                 InputLabelProps={{ shrink: true }}
                 type="text"
-                label="Custom URL Slug"
+                label="Slug"
                 placeholder="e.g., technology-news"
               />
 

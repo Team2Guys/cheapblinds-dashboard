@@ -21,6 +21,12 @@ export const CREATE_PRODUCT_MUTATION = gql`
       price
       discountPrice
       stock
+      height
+      width
+      weight
+      color
+      pattern
+      composition
       additionalInfo
       measuringGuide
       lastEditedBy
@@ -52,6 +58,13 @@ export const UPDATE_PRODUCT_BY_ID_MUTATION = gql`
       price
       discountPrice
       stock
+      stock
+      height
+      width
+      weight
+      color
+      pattern
+      composition
       additionalInfo
       measuringGuide
       lastEditedBy

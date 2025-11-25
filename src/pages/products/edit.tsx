@@ -42,6 +42,12 @@ interface IProductEdit {
   price: number;
   discountPrice?: number;
   stock: number;
+  height?: number;
+  width?: number;
+  weight?: number;
+  color?: string;
+  pattern?: string;
+  composition?: string;
   metaTitle?: string;
   metaDescription?: string;
   canonicalTag?: string;
@@ -325,7 +331,7 @@ export const ProductEdit = () => {
                 fullWidth
                 InputLabelProps={{ shrink: true }}
                 type="text"
-                label="Custom URL Slug"
+                label="Slug"
                 placeholder="e.g., premium-wireless-headphones"
               />
 
@@ -337,6 +343,113 @@ export const ProductEdit = () => {
                 label="Description"
                 helperText="Provide a detailed description of the product with rich formatting"
               />
+            </Paper>
+
+            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+              <Typography variant="h6" gutterBottom fontWeight={600}>
+                Product Specifications
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Specify the physical attributes of the product
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    {...register("height", {
+                      valueAsNumber: true,
+                      min: { value: 0, message: "Height must be positive" },
+                    })}
+                    error={!!errors?.height}
+                    helperText={!!errors?.height?.message}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="number"
+                    label="Height"
+                    placeholder="e.g., 12.5"
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    {...register("width", {
+                      valueAsNumber: true,
+                      min: { value: 0, message: "Width must be positive" },
+                    })}
+                    error={!!errors?.width}
+                    helperText={!!errors?.width?.message}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="number"
+                    label="Width"
+                    placeholder="e.g., 8.5"
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    {...register("weight", {
+                      valueAsNumber: true,
+                      min: { value: 0, message: "Weight must be positive" },
+                    })}
+                    error={!!errors?.weight}
+                    helperText={!!errors?.weight?.message}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="number"
+                    label="Weight"
+                    placeholder="e.g., 1.25"
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth margin="normal">
+                    <InputLabel shrink>Color</InputLabel>
+                    <Select
+                      {...register("color", { required: "Please select a color" })}
+                      defaultValue=""
+                      error={!!errors?.color}
+                    >
+                      {colorOptions.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {errors?.color && (
+                      <Typography variant="caption" color="error">
+                        {!!errors.color.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth margin="normal">
+                    <InputLabel shrink>Composition</InputLabel>
+                    <Select
+                      {...register("composition", { required: "Please select composition" })}
+                      defaultValue=""
+                      error={!!errors?.composition}
+                    >
+                      {compositionOptions.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {errors?.composition && (
+                      <Typography variant="caption" color="error">
+                        {!!errors.composition.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                </Grid>
+              </Grid>
             </Paper>
 
             {/* NEW SECTION: Product Details (Additional Info & Measuring Guide) */}

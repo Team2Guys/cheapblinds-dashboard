@@ -77,7 +77,7 @@ export const SubcategoryShow = () => {
             <InfoField label="Name" value={record?.name} />
             <InfoField label="Description" value={record?.description} />
             <InfoField label="Short Description" value={record?.shortDescription} />
-            <InfoField label="Custom URL" value={record?.slug} />
+            <InfoField label="Slug" value={record?.slug} />
             <InfoField label="Category" value={record?.category?.name} />{" "}
             <InfoField label="Last Edited By" value={record?.lastEditedBy?.toString()} />
             <Box>
@@ -111,7 +111,7 @@ export const SubcategoryShow = () => {
         <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
           <SectionTitle>SEO & URLs</SectionTitle>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
-            <InfoField label="Custom URL" value={record?.slug} />
+            <InfoField label="Slug" value={record?.slug} />
             <InfoField label="Meta Title" value={record?.metaTitle} />
             <InfoField label="Meta Description" value={record?.metaDescription} />
             <InfoField label="Canonical Tag" value={record?.canonicalTag} />
