@@ -28,7 +28,7 @@ export const ProductList = () => {
         filterable: false,
       },
       {
-        field: "customUrl",
+        field: "slug",
         headerName: "Custom URL",
         type: "string",
         minWidth: 200,

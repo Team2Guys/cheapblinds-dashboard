@@ -7,11 +7,11 @@ export const PRODUCT_LIST_QUERY = gql`
       name
       description
       shortDescription
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
-      breadCrumb
+      breadcrumb
       posterImageUrl
       productImages
       lastEditedBy
@@ -25,12 +25,12 @@ export const PRODUCT_LIST_QUERY = gql`
       category {
         id
         name
-        customUrl
+        slug
       }
       subcategory {
         id
         name
-        customUrl
+        slug
       }
       additionalInfo
       measuringGuide
@@ -47,11 +47,11 @@ export const PRODUCT_BY_ID_QUERY = gql`
       name
       description
       shortDescription
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
-      breadCrumb
+      breadcrumb
       posterImageUrl
       productImages
       lastEditedBy
@@ -65,12 +65,12 @@ export const PRODUCT_BY_ID_QUERY = gql`
       category {
         id
         name
-        customUrl
+        slug
       }
       subcategory {
         id
         name
-        customUrl
+        slug
       }
       additionalInfo
       measuringGuide

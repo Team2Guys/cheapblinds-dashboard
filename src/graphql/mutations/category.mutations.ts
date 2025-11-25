@@ -8,11 +8,11 @@ export const CREATE_CATEGORY_MUTATION = gql`
       name
       description
       shortDescription
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
-      breadCrumb
+      breadcrumb
       posterImageUrl
       lastEditedBy
       seoSchema
@@ -31,11 +31,11 @@ export const UPDATE_CATEGORY_BY_ID_MUTATION = gql`
       name
       description
       shortDescription
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
-      breadCrumb
+      breadcrumb
       posterImageUrl
       lastEditedBy
       seoSchema

@@ -27,11 +27,11 @@ interface ICategoryCreate {
   name: string;
   description?: string;
   shortDescription?: string;
-  customUrl?: string;
+  slug?: string;
   metaTitle?: string;
   metaDescription?: string;
   canonicalTag?: string;
-  breadCrumb?: string;
+  breadcrumb?: string;
   posterImageUrl?: string;
   seoSchema?: string;
   lastEditedBy?: string;
@@ -55,11 +55,11 @@ export const CategoryCreate = () => {
       name: "",
       description: "",
       shortDescription: "",
-      customUrl: "",
+      slug: "",
       metaTitle: "",
       metaDescription: "",
       canonicalTag: "",
-      breadCrumb: "",
+      breadcrumb: "",
       posterImageUrl: "",
       seoSchema: "",
       lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
@@ -154,11 +154,9 @@ export const CategoryCreate = () => {
               />
 
               <TextField
-                {...register("customUrl")}
-                error={!!errors?.customUrl}
-                helperText={
-                  !!errors?.customUrl?.message || "URL-friendly slug (e.g., technology-news)"
-                }
+                {...register("slug")}
+                error={!!errors?.slug}
+                helperText={!!errors?.slug?.message || "URL-friendly slug (e.g., technology-news)"}
                 margin="normal"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
@@ -315,9 +313,9 @@ export const CategoryCreate = () => {
 
                 <Grid item xs={12} md={6}>
                   <TextField
-                    {...register("breadCrumb")}
-                    error={!!errors?.breadCrumb}
-                    helperText={!!errors?.breadCrumb?.message}
+                    {...register("breadcrumb")}
+                    error={!!errors?.breadcrumb}
+                    helperText={!!errors?.breadcrumb?.message}
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}

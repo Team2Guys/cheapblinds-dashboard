@@ -9,11 +9,11 @@ export const CREATE_SUBCATEGORY_MUTATION = gql`
       name
       description
       shortDescription
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
-      breadCrumb
+      breadcrumb
       posterImageUrl
       seoSchema
       lastEditedBy
@@ -33,11 +33,11 @@ export const UPDATE_SUBCATEGORY_BY_ID_MUTATION = gql`
       name
       description
       shortDescription
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
-      breadCrumb
+      breadcrumb
       posterImageUrl
       seoSchema
       lastEditedBy

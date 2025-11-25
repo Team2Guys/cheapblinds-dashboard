@@ -27,11 +27,11 @@ interface ISubcategoryCreate {
   name: string;
   description?: string;
   shortDescription?: string;
-  customUrl?: string;
+  slug?: string;
   metaTitle?: string;
   metaDescription?: string;
   canonicalTag?: string;
-  breadCrumb?: string;
+  breadcrumb?: string;
   posterImageUrl?: string;
   lastEditedBy?: string;
   seoSchema?: string;
@@ -66,11 +66,11 @@ export const SubcategoryCreate = () => {
       name: "",
       description: "",
       shortDescription: "",
-      customUrl: "",
+      slug: "",
       metaTitle: "",
       metaDescription: "",
       canonicalTag: "",
-      breadCrumb: "",
+      breadcrumb: "",
       posterImageUrl: "",
       seoSchema: "",
       categoryId: "",
@@ -167,11 +167,9 @@ export const SubcategoryCreate = () => {
               />
 
               <TextField
-                {...register("customUrl")}
-                error={!!errors?.customUrl}
-                helperText={
-                  !!errors?.customUrl?.message || "URL-friendly slug (e.g., smartphones-tech)"
-                }
+                {...register("slug")}
+                error={!!errors?.slug}
+                helperText={!!errors?.slug?.message || "URL-friendly slug (e.g., smartphones-tech)"}
                 margin="normal"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
@@ -328,9 +326,9 @@ export const SubcategoryCreate = () => {
 
                 <Grid item xs={12} md={6}>
                   <TextField
-                    {...register("breadCrumb")}
-                    error={!!errors?.breadCrumb}
-                    helperText={!!errors?.breadCrumb?.message}
+                    {...register("breadcrumb")}
+                    error={!!errors?.breadcrumb}
+                    helperText={!!errors?.breadcrumb?.message}
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}

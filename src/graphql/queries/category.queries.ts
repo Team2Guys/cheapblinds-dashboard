@@ -7,10 +7,10 @@ export const CATEGORY_LIST_QUERY = gql`
       name
       description
       shortDescription
-      breadCrumb
+      breadcrumb
       seoSchema
       status
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
@@ -33,10 +33,10 @@ export const CATEGORY_BY_ID_QUERY = gql`
       name
       description
       shortDescription
-      breadCrumb
+      breadcrumb
       seoSchema
       status
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag

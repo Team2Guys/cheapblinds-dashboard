@@ -10,11 +10,11 @@ export const CREATE_PRODUCT_MUTATION = gql`
       name
       description
       shortDescription
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
-      breadCrumb
+      breadcrumb
       posterImageUrl
       productImages
       seoSchema
@@ -41,11 +41,11 @@ export const UPDATE_PRODUCT_BY_ID_MUTATION = gql`
       name
       description
       shortDescription
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
-      breadCrumb
+      breadcrumb
       posterImageUrl
       productImages
       seoSchema

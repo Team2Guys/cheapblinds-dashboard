@@ -28,11 +28,11 @@ interface ICategoryEdit {
   name: string;
   description?: string;
   shortDescription?: string;
-  customUrl?: string;
+  slug?: string;
   metaTitle?: string;
   metaDescription?: string;
   canonicalTag?: string;
-  breadCrumb?: string;
+  breadcrumb?: string;
   posterImageUrl?: string;
   lastEditedBy?: string;
   seoSchema?: string;
@@ -151,11 +151,9 @@ export const CategoryEdit = () => {
               />
 
               <TextField
-                {...register("customUrl")}
-                error={!!errors?.customUrl}
-                helperText={
-                  !!errors?.customUrl?.message || "URL-friendly slug (e.g., technology-news)"
-                }
+                {...register("slug")}
+                error={!!errors?.slug}
+                helperText={!!errors?.slug?.message || "URL-friendly slug (e.g., technology-news)"}
                 margin="normal"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
@@ -312,9 +310,9 @@ export const CategoryEdit = () => {
 
                 <Grid item xs={12} md={6}>
                   <TextField
-                    {...register("breadCrumb")}
-                    error={!!errors?.breadCrumb}
-                    helperText={!!errors?.breadCrumb?.message}
+                    {...register("breadcrumb")}
+                    error={!!errors?.breadcrumb}
+                    helperText={!!errors?.breadcrumb?.message}
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}

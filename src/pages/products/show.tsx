@@ -80,7 +80,7 @@ export const ProductShow = () => {
               <InfoField label="Short Description" value={record?.shortDescription} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <InfoField label="Custom URL" value={record?.customUrl} />
+              <InfoField label="Custom URL" value={record?.slug} />
             </Grid>
           </Grid>
         </Paper>
@@ -99,7 +99,7 @@ export const ProductShow = () => {
               <InfoField label="Canonical Tag" value={record?.canonicalTag} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <InfoField label="Breadcrumb" value={record?.breadCrumb} />
+              <InfoField label="Breadcrumb" value={record?.breadcrumb} />
             </Grid>
             <Grid item xs={12}>
               <InfoField label="SEO Schema" value={record?.seoSchema} />

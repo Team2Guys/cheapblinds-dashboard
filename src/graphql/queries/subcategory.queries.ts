@@ -9,11 +9,11 @@ export const SUBCATEGORY_LIST_QUERY = gql`
       name
       description
       shortDescription
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
-      breadCrumb
+      breadcrumb
       posterImageUrl
       lastEditedBy
       seoSchema
@@ -33,11 +33,11 @@ export const SUBCATEGORY_BY_ID_QUERY = gql`
       name
       description
       shortDescription
-      customUrl
+      slug
       metaTitle
       metaDescription
       canonicalTag
-      breadCrumb
+      breadcrumb
       posterImageUrl
       lastEditedBy
       seoSchema

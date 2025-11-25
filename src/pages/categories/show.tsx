@@ -107,11 +107,11 @@ export const CategoryShow = () => {
         <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
           <SectionTitle>SEO & URLs</SectionTitle>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
-            <InfoField label="Custom URL" value={record?.customUrl} />
+            <InfoField label="Custom URL" value={record?.slug} />
             <InfoField label="Meta Title" value={record?.metaTitle} />
             <InfoField label="Meta Description" value={record?.metaDescription} />
             <InfoField label="Canonical Tag" value={record?.canonicalTag} />
-            <InfoField label="Breadcrumb" value={record?.breadCrumb} />
+            <InfoField label="Breadcrumb" value={record?.breadcrumb} />
             <InfoField label="SEO Schema" value={record?.seoSchema} />
           </Box>
         </Paper>

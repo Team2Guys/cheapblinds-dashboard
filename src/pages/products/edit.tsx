@@ -36,7 +36,7 @@ interface IProductEdit {
   shortDescription?: string;
   additionalInfo?: string; // New Field
   measuringGuide?: string; // New Field
-  customUrl?: string;
+  slug?: string;
   categoryId: string;
   subcategoryId: string;
   price: number;
@@ -45,7 +45,7 @@ interface IProductEdit {
   metaTitle?: string;
   metaDescription?: string;
   canonicalTag?: string;
-  breadCrumb?: string;
+  breadcrumb?: string;
   posterImageUrl?: string;
   productImages?: string[];
   lastEditedBy?: string;
@@ -316,11 +316,10 @@ export const ProductEdit = () => {
               />
 
               <TextField
-                {...register("customUrl")}
-                error={!!errors?.customUrl}
+                {...register("slug")}
+                error={!!errors?.slug}
                 helperText={
-                  !!errors?.customUrl?.message ||
-                  "URL-friendly slug (e.g., premium-wireless-headphones)"
+                  !!errors?.slug?.message || "URL-friendly slug (e.g., premium-wireless-headphones)"
                 }
                 margin="normal"
                 fullWidth
@@ -594,9 +593,9 @@ export const ProductEdit = () => {
 
                 <Grid item xs={12} md={6}>
                   <TextField
-                    {...register("breadCrumb")}
-                    error={!!errors?.breadCrumb}
-                    helperText={!!errors?.breadCrumb?.message}
+                    {...register("breadcrumb")}
+                    error={!!errors?.breadcrumb}
+                    helperText={!!errors?.breadcrumb?.message}
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
