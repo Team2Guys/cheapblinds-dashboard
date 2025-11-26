@@ -16,16 +16,13 @@ export const UserList = () => {
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "name",
+        field: "fullName",
         headerName: "Name",
-        type: "string",
         minWidth: 200,
         flex: 1,
-        align: "left",
-        headerAlign: "left",
-        display: "flex",
         sortable: false,
         filterable: false,
+        renderCell: ({ row }) => <span>{`${row.firstName} ${row.lastName}`}</span>,
       },
       {
         field: "email",
