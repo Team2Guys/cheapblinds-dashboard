@@ -40,8 +40,14 @@ export const UPDATE_CATEGORY_BY_ID_MUTATION = gql`
       lastEditedBy
       seoSchema
       status
-      products
-      subcategories
+      products{
+      id
+      name
+      }
+      subcategories{
+      id
+      name
+      }
       createdAt
       updatedAt
     }
