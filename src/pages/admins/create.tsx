@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { CREATE_ADMIN_MUTATION } from "#graphql";
 import {
   Box,
@@ -46,6 +47,8 @@ export const AdminCreate = () => {
     register,
     control,
     formState: { errors },
+    watch,
+    setValue,
   } = useRefineForm<IAdminCreate>({
     defaultValues: {
       name: "",
@@ -63,6 +66,19 @@ export const AdminCreate = () => {
       },
     },
   });
+
+  const nameValue = watch("name");
+
+  useEffect(() => {
+    if (!nameValue) return;
+
+    const firstWord = nameValue.trim().split(" ")[0].toLowerCase();
+    const random = Math.random().toString(36).slice(2, 5);
+
+    const generatedEmail = `${firstWord}_${random}@cheapblinds.ae`;
+
+    setValue("email", generatedEmail, { shouldValidate: true });
+  }, [nameValue, setValue]);
 
   return (
     <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
