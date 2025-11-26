@@ -1,4 +1,5 @@
 import { getErrorMessage } from "#utils/index";
+import { useDropzone } from "react-dropzone";
 import {
   Box,
   TextField,
@@ -50,6 +51,7 @@ export const CategoryCreate = () => {
     control,
     setValue,
     formState: { errors },
+    watch,
   } = useRefineForm<ICategoryCreate>({
     defaultValues: {
       name: "",
@@ -72,6 +74,41 @@ export const CategoryCreate = () => {
         operationName: "createCategory",
       },
     },
+  });
+
+  const onDrop = async (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    if (!file) return;
+
+    const url = `https://api.cloudinary.com/v1_1/${
+      import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+    }/image/upload`;
+
+    try {
+      setUploading(true);
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+      // your upload API logic
+      const { data } = await axios.post(url, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      // update posterImageUrl inside the form
+      setValue("posterImageUrl", data.secure_url);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { "image/*": [] },
+    multiple: false,
   });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -424,7 +461,48 @@ export const CategoryCreate = () => {
                 />
               </Button>
 
-              {control._formValues.posterImageUrl ? (
+              <Box
+                {...getRootProps()}
+                sx={{
+                  border: "2px dashed #90caf9",
+                  borderRadius: 2,
+                  padding: 3,
+                  textAlign: "center",
+                  cursor: "pointer",
+                  background: isDragActive ? "#e3f2fd" : "#fafafa",
+                  transition: "0.2s",
+                }}
+              >
+                <input {...getInputProps()} />
+
+                {uploading ? (
+                  <Typography variant="body2">Uploading...</Typography>
+                ) : watch("posterImageUrl") ? (
+                  <Box>
+                    <img
+                      src={watch("posterImageUrl")}
+                      alt="Uploaded"
+                      style={{
+                        width: "100%",
+                        maxHeight: 260,
+                        objectFit: "cover",
+                        borderRadius: 8,
+                      }}
+                    />
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      Click or drag another image to replace
+                    </Typography>
+                  </Box>
+                ) : (
+                  <Typography variant="body2">
+                    {isDragActive
+                      ? "Drop the image here..."
+                      : "Drag & drop an image, or click to choose"}
+                  </Typography>
+                )}
+              </Box>
+
+              {/* {control._formValues.posterImageUrl ? (
                 <Box
                   sx={{
                     position: "relative",
@@ -475,7 +553,7 @@ export const CategoryCreate = () => {
                     </Typography>
                   </Box>
                 </Box>
-              )}
+              )} */}
             </Paper>
           </Grid>
         </Grid>

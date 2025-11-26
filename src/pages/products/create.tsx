@@ -1,4 +1,5 @@
 import { getErrorMessage } from "#utils/index";
+import { useDropzone } from "react-dropzone";
 import {
   Box,
   TextField,
@@ -62,6 +63,7 @@ interface IProductCreate {
 const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
 const colorOptions = ["Red", "Blue", "Green", "Black", "White"];
 const compositionOptions = ["Cotton", "Polyester", "Leather", "Metal", "Plastic"];
+const patternOptions = ["Solid", "Striped", "Checked", "Printed", "Patterned"];
 
 // Shared Editor Configuration for consistency
 const EDITOR_INIT_CONFIG = {
@@ -195,6 +197,7 @@ export const ProductCreate = () => {
     control,
     setValue,
     formState: { errors },
+    watch,
   } = useRefineForm<IProductCreate>({
     defaultValues: {
       name: "",
@@ -232,6 +235,71 @@ export const ProductCreate = () => {
       },
     },
   });
+
+  // Featured Image Drop
+  const onDropFeatured = async (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    if (!file) return;
+
+    const url = `https://api.cloudinary.com/v1_1/${
+      import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+    }/image/upload`;
+
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+      const { data } = await axios.post(url, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      setValue("posterImageUrl", data.secure_url);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Gallery Drop
+  const onDropGallery = async (acceptedFiles: File[]) => {
+    if (!acceptedFiles.length) return;
+    setUploadingGallery(true);
+
+    const url = `https://api.cloudinary.com/v1_1/${
+      import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+    }/image/upload`;
+
+    try {
+      const uploadedUrls = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+          const res = await axios.post(url, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+          return res.data.secure_url;
+        }),
+      );
+      const newImages = [...productImages, ...uploadedUrls.filter(Boolean)];
+      setProductImages(newImages);
+      setValue("productImages", newImages);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setUploadingGallery(false);
+    }
+  };
+
+  // Separate dropzones
+  const {
+    getRootProps: getFeaturedRootProps,
+    getInputProps: getFeaturedInputProps,
+    isDragActive: isFeaturedDragActive,
+  } = useDropzone({ onDrop: onDropFeatured, accept: { "image/*": [] }, multiple: false });
 
   const posterImageInputRef = useRef<HTMLInputElement | null>(null);
   const galleryInputRef = useRef<HTMLInputElement | null>(null);
@@ -470,6 +538,28 @@ export const ProductCreate = () => {
                     {errors?.composition && (
                       <Typography variant="caption" color="error">
                         {!!errors.composition.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth margin="normal">
+                    <InputLabel shrink>Pattern</InputLabel>
+                    <Select
+                      {...register("pattern", { required: "Please select pattern" })}
+                      defaultValue=""
+                      error={!!errors?.pattern}
+                    >
+                      {patternOptions.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {errors?.pattern && (
+                      <Typography variant="caption" color="error">
+                        {!!errors.pattern.message}
                       </Typography>
                     )}
                   </FormControl>
@@ -915,7 +1005,43 @@ export const ProductCreate = () => {
                 />
               </Button>
 
-              {control._formValues.posterImageUrl ? (
+              <Box
+                {...getFeaturedRootProps()}
+                sx={
+                  {
+                    /* styling */
+                  }
+                }
+              >
+                <input {...getFeaturedInputProps()} />
+                {uploading ? (
+                  <Typography variant="body2">Uploading...</Typography>
+                ) : watch("posterImageUrl") ? (
+                  <Box>
+                    <img
+                      src={watch("posterImageUrl")}
+                      alt="Uploaded"
+                      style={{
+                        width: "100%",
+                        maxHeight: 260,
+                        objectFit: "cover",
+                        borderRadius: 8,
+                      }}
+                    />
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      Click or drag another image to replace
+                    </Typography>
+                  </Box>
+                ) : (
+                  <Typography variant="body2">
+                    {isFeaturedDragActive
+                      ? "Drop the image here..."
+                      : "Drag & drop an image, or click to choose"}
+                  </Typography>
+                )}
+              </Box>
+
+              {/* {control._formValues.posterImageUrl ? (
                 <Box
                   sx={{
                     position: "relative",
@@ -966,7 +1092,7 @@ export const ProductCreate = () => {
                     </Typography>
                   </Box>
                 </Box>
-              )}
+              )} */}
             </Paper>
           </Grid>
         </Grid>
