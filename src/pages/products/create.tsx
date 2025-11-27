@@ -548,17 +548,24 @@ export const ProductCreate = () => {
                 <Grid item xs={12} md={6}>
                   <FormControl fullWidth margin="normal">
                     <InputLabel shrink>Motorized</InputLabel>
-                    <Select
-                      {...register("isMotorized", { required: "Please select a value" })}
-                      defaultValue=""
-                      error={!!errors?.isMotorized}
-                    >
-                      {["Yes", "No"].map((option) => (
-                        <MenuItem key={option} value={option === "No" ? "false" : "true"}>
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Select>
+
+                    <Controller
+                      name="isMotorized"
+                      control={control}
+                      rules={{ required: "Please select a value" }}
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          value={field.value ? "true" : "false"}
+                          onChange={(e) => field.onChange(e.target.value === "true")}
+                          error={!!errors?.isMotorized}
+                        >
+                          <MenuItem value="true">Yes</MenuItem>
+                          <MenuItem value="false">No</MenuItem>
+                        </Select>
+                      )}
+                    />
+
                     {errors?.isMotorized && (
                       <Typography variant="caption" color="error">
                         {!!errors.isMotorized.message}
