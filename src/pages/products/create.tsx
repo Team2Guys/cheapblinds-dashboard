@@ -49,6 +49,7 @@ interface IProductCreate {
   color?: string;
   pattern?: string;
   composition?: string;
+  isMotorized?: boolean;
   metaTitle?: string;
   metaDescription?: string;
   canonicalTag?: string;
@@ -216,6 +217,7 @@ export const ProductCreate = () => {
       weight: 0,
       color: "",
       composition: "",
+      isMotorized: false,
       metaTitle: "",
       metaDescription: "",
       canonicalTag: "",
@@ -538,6 +540,28 @@ export const ProductCreate = () => {
                     {errors?.composition && (
                       <Typography variant="caption" color="error">
                         {!!errors.composition.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth margin="normal">
+                    <InputLabel shrink>Motorized</InputLabel>
+                    <Select
+                      {...register("isMotorized", { required: "Please select a value" })}
+                      defaultValue=""
+                      error={!!errors?.isMotorized}
+                    >
+                      {["Yes", "No"].map((option) => (
+                        <MenuItem key={option} value={option === "No" ? "false" : "true"}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {errors?.isMotorized && (
+                      <Typography variant="caption" color="error">
+                        {!!errors.isMotorized.message}
                       </Typography>
                     )}
                   </FormControl>

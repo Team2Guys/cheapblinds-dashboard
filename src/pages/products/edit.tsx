@@ -48,6 +48,7 @@ interface IProductEdit {
   color?: string;
   pattern?: string;
   composition?: string;
+  isMotorized?: boolean;
   metaTitle?: string;
   metaDescription?: string;
   canonicalTag?: string;
@@ -60,6 +61,9 @@ interface IProductEdit {
 }
 
 const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
+const colorOptions = ["Red", "Blue", "Green", "Black", "White"];
+const compositionOptions = ["Cotton", "Polyester", "Leather", "Metal", "Plastic"];
+const patternOptions = ["Solid", "Striped", "Checked", "Printed", "Patterned"];
 
 // Shared Editor Configuration for consistency
 const EDITOR_INIT_CONFIG = {
@@ -445,6 +449,50 @@ export const ProductEdit = () => {
                     {errors?.composition && (
                       <Typography variant="caption" color="error">
                         {!!errors.composition.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth margin="normal">
+                    <InputLabel shrink>Motorized</InputLabel>
+                    <Select
+                      {...register("isMotorized", { required: "Please select a value" })}
+                      defaultValue=""
+                      error={!!errors?.isMotorized}
+                    >
+                      {["Yes", "No"].map((option) => (
+                        <MenuItem key={option} value={option === "No" ? "false" : "true"}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {errors?.isMotorized && (
+                      <Typography variant="caption" color="error">
+                        {!!errors.isMotorized.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth margin="normal">
+                    <InputLabel shrink>Pattern</InputLabel>
+                    <Select
+                      {...register("pattern", { required: "Please select pattern" })}
+                      defaultValue=""
+                      error={!!errors?.pattern}
+                    >
+                      {patternOptions.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {errors?.pattern && (
+                      <Typography variant="caption" color="error">
+                        {!!errors.pattern.message}
                       </Typography>
                     )}
                   </FormControl>

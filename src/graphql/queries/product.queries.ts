@@ -25,6 +25,7 @@ export const PRODUCT_LIST_QUERY = gql`
       color
       pattern
       composition
+      isMotorized
       status
       categoryId
       subcategoryId
@@ -71,6 +72,7 @@ export const PRODUCT_BY_ID_QUERY = gql`
       color
       pattern
       composition
+      isMotorized
       status
       categoryId
       subcategoryId

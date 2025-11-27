@@ -100,6 +100,9 @@ export const ProductShow = () => {
             <Grid item xs={12} sm={6}>
               <InfoField label="Composition" value={record?.composition} />
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <InfoField label="Motorized" value={record?.isMotorized ? "Yes" : "No"} />
+            </Grid>
           </Grid>
         </Paper>
 

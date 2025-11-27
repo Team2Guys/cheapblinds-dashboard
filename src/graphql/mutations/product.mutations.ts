@@ -27,6 +27,7 @@ export const CREATE_PRODUCT_MUTATION = gql`
       color
       pattern
       composition
+      isMotorized
       additionalInfo
       measuringGuide
       lastEditedBy
@@ -65,6 +66,7 @@ export const UPDATE_PRODUCT_BY_ID_MUTATION = gql`
       color
       pattern
       composition
+      isMotorized
       additionalInfo
       measuringGuide
       lastEditedBy
