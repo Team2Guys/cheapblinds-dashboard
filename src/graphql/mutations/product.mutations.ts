@@ -28,6 +28,7 @@ export const CREATE_PRODUCT_MUTATION = gql`
       pattern
       composition
       isMotorized
+      motorPrice
       additionalInfo
       measuringGuide
       lastEditedBy
@@ -67,6 +68,7 @@ export const UPDATE_PRODUCT_BY_ID_MUTATION = gql`
       pattern
       composition
       isMotorized
+      motorPrice
       additionalInfo
       measuringGuide
       lastEditedBy

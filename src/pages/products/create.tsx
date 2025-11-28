@@ -50,6 +50,7 @@ interface IProductCreate {
   pattern?: string;
   composition?: string;
   isMotorized?: boolean;
+  motorPrice?: number;
   metaTitle?: string;
   metaDescription?: string;
   canonicalTag?: string;
@@ -218,6 +219,7 @@ export const ProductCreate = () => {
       color: "",
       composition: "",
       isMotorized: false,
+      motorPrice: 0,
       metaTitle: "",
       metaDescription: "",
       canonicalTag: "",
@@ -572,6 +574,29 @@ export const ProductCreate = () => {
                       </Typography>
                     )}
                   </FormControl>
+                </Grid>
+
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    {...register("motorPrice", {
+                      valueAsNumber: true,
+                      min: { value: 0, message: "Motor price must be positive" },
+                    })}
+                    error={!!errors?.motorPrice}
+                    helperText={!!errors?.motorPrice?.message}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="number"
+                    label="Motor Price"
+                    placeholder="e.g., 1.25"
+                  />
+
+                  {errors?.motorPrice && (
+                    <Typography variant="caption" color="error">
+                      {!!errors.motorPrice.message}
+                    </Typography>
+                  )}
                 </Grid>
 
                 <Grid item xs={12} md={6}>

@@ -26,6 +26,7 @@ export const PRODUCT_LIST_QUERY = gql`
       pattern
       composition
       isMotorized
+      motorPrice
       status
       categoryId
       subcategoryId
@@ -73,6 +74,7 @@ export const PRODUCT_BY_ID_QUERY = gql`
       pattern
       composition
       isMotorized
+      motorPrice
       status
       categoryId
       subcategoryId
