@@ -4,6 +4,8 @@ export const PRODUCT_LIST_QUERY = gql`
   query GetProductList {
     getProductList {
       id
+      categoryId
+      subcategoryId
       name
       description
       shortDescription
@@ -14,22 +16,20 @@ export const PRODUCT_LIST_QUERY = gql`
       breadcrumb
       posterImageUrl
       productImages
-      lastEditedBy
       seoSchema
       price
       discountPrice
-      stock
-      height
+      motorPrice
       width
-      weight
+      height
+      stock
       color
       pattern
       composition
       isMotorized
-      motorPrice
-      status
-      categoryId
-      subcategoryId
+      additionalInfo
+      measuringGuide
+      lastEditedBy
       category {
         id
         name
@@ -40,10 +40,9 @@ export const PRODUCT_LIST_QUERY = gql`
         name
         slug
       }
-      additionalInfo
-      measuringGuide
-      updatedAt
+      status
       createdAt
+      updatedAt
     }
   }
 `;
@@ -52,6 +51,8 @@ export const PRODUCT_BY_ID_QUERY = gql`
   query GetProductById($id: ID!) {
     getProductById(id: $id) {
       id
+      categoryId
+      subcategoryId
       name
       description
       shortDescription
@@ -62,22 +63,20 @@ export const PRODUCT_BY_ID_QUERY = gql`
       breadcrumb
       posterImageUrl
       productImages
-      lastEditedBy
       seoSchema
       price
       discountPrice
-      stock
-      height
+      motorPrice
       width
-      weight
+      height
+      stock
       color
       pattern
       composition
       isMotorized
-      motorPrice
-      status
-      categoryId
-      subcategoryId
+      additionalInfo
+      measuringGuide
+      lastEditedBy
       category {
         id
         name
@@ -88,10 +87,9 @@ export const PRODUCT_BY_ID_QUERY = gql`
         name
         slug
       }
-      additionalInfo
-      measuringGuide
-      updatedAt
+      status
       createdAt
+      updatedAt
     }
   }
 `;

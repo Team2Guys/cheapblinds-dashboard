@@ -20,15 +20,14 @@ export const CREATE_PRODUCT_MUTATION = gql`
       seoSchema
       price
       discountPrice
-      stock
-      height
+      motorPrice
       width
-      weight
+      height
+      stock
       color
       pattern
       composition
       isMotorized
-      motorPrice
       additionalInfo
       measuringGuide
       lastEditedBy
@@ -59,16 +58,14 @@ export const UPDATE_PRODUCT_BY_ID_MUTATION = gql`
       seoSchema
       price
       discountPrice
-      stock
-      stock
-      height
+      motorPrice
       width
-      weight
+      height
+      stock
       color
       pattern
       composition
       isMotorized
-      motorPrice
       additionalInfo
       measuringGuide
       lastEditedBy
