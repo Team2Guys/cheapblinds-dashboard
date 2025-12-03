@@ -89,9 +89,6 @@ export const ProductShow = () => {
               <InfoField label="Width" value={record?.width} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <InfoField label="Weight" value={record?.weight} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
               <InfoField label="Color" value={record?.color} />
             </Grid>
             <Grid item xs={12} sm={6}>

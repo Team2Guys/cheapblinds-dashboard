@@ -45,7 +45,6 @@ interface IProductCreate {
   stock: number;
   height?: number;
   width?: number;
-  weight?: number;
   color?: string;
   pattern?: string;
   composition?: string;
@@ -215,7 +214,6 @@ export const ProductCreate = () => {
       stock: 0,
       height: 0,
       width: 0,
-      weight: 0,
       color: "",
       composition: "",
       isMotorized: false,
@@ -483,23 +481,6 @@ export const ProductCreate = () => {
                     type="number"
                     label="Width"
                     placeholder="e.g., 8.5"
-                  />
-                </Grid>
-
-                <Grid item xs={12} md={4}>
-                  <TextField
-                    {...register("weight", {
-                      valueAsNumber: true,
-                      min: { value: 0, message: "Weight must be positive" },
-                    })}
-                    error={!!errors?.weight}
-                    helperText={!!errors?.weight?.message}
-                    margin="normal"
-                    fullWidth
-                    InputLabelProps={{ shrink: true }}
-                    type="number"
-                    label="Weight"
-                    placeholder="e.g., 1.25"
                   />
                 </Grid>
 

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "refine dev",
     "build": "tsc && refine build",
-    "deploy": "vercel --prod --yes",
+    "deploy": "vercel --prod",
     "format": "prettier --write \"./**/*.{ts,tsx,html,yaml,md,json,txt}\"",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "start": "refine start",
