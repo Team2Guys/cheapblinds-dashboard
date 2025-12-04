@@ -9,7 +9,7 @@ export const ProductList = () => {
     resource: "products",
     meta: {
       gqlQuery: PRODUCT_LIST_QUERY,
-      operationName: "getProductList",
+      operationName: "productList",
     },
   });
 

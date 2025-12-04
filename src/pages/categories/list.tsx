@@ -9,7 +9,7 @@ export const CategoryList = () => {
     resource: "categories",
     meta: {
       gqlQuery: CATEGORY_LIST_QUERY,
-      operationName: "getCategoryList",
+      operationName: "categoryList",
     },
   });
 

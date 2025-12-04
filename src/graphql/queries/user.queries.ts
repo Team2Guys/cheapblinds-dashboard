@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const USER_LIST_QUERY = gql`
   query GetUserList {
-    getUserList {
+    userList {
       id
       firstName
       lastName
@@ -18,7 +18,7 @@ export const USER_LIST_QUERY = gql`
 
 export const USER_BY_ID_QUERY = gql`
   query GetUserById($id: ID!) {
-    getUserById(id: $id) {
+    userById(id: $id) {
       id
       firstName
       lastName

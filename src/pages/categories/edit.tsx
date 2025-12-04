@@ -60,7 +60,7 @@ export const CategoryEdit = () => {
       resource: "categories",
       meta: {
         gqlQuery: CATEGORY_BY_ID_QUERY,
-        operationName: "getCategoryById",
+        operationName: "categoryById",
         gqlMutation: UPDATE_CATEGORY_BY_ID_MUTATION,
         variables: {
           id,

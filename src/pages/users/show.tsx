@@ -11,7 +11,7 @@ export const UserShow = () => {
     resource: "users",
     meta: {
       gqlQuery: USER_BY_ID_QUERY,
-      operationName: "getUserById",
+      operationName: "userById",
       variables: {
         id,
       },

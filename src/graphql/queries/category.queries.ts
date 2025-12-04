@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const CATEGORY_LIST_QUERY = gql`
   query GetCategoryList {
-    getCategoryList {
+    categoryList {
       id
       name
       description
@@ -28,7 +28,7 @@ export const CATEGORY_LIST_QUERY = gql`
 
 export const CATEGORY_BY_ID_QUERY = gql`
   query GetCategoryById($id: ID!) {
-    getCategoryById(id: $id) {
+    categoryById(id: $id) {
       id
       name
       description

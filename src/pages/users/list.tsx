@@ -9,7 +9,7 @@ export const UserList = () => {
     resource: "users",
     meta: {
       gqlQuery: USER_LIST_QUERY,
-      operationName: "getUserList",
+      operationName: "userList",
     },
   });
 

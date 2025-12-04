@@ -10,7 +10,7 @@ export const ProductShow = () => {
     resource: "products",
     meta: {
       gqlQuery: PRODUCT_BY_ID_QUERY,
-      operationName: "getProductById",
+      operationName: "productById",
       variables: {
         id,
       },

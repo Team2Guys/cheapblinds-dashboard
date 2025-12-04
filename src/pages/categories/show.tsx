@@ -11,7 +11,7 @@ export const CategoryShow = () => {
     resource: "categories",
     meta: {
       gqlQuery: CATEGORY_BY_ID_QUERY,
-      operationName: "getCategoryById",
+      operationName: "categoryById",
       variables: {
         id,
       },

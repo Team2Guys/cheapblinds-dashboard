@@ -20,7 +20,7 @@ export const AdminList = () => {
     resource: "admins",
     meta: {
       gqlQuery: ADMIN_LIST_QUERY,
-      operationName: "getAdminList",
+      operationName: "adminList",
     },
   });
 

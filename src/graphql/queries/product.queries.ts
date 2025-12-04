@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const PRODUCT_LIST_QUERY = gql`
   query GetProductList {
-    getProductList {
+    productList {
       id
       categoryId
       subcategoryId
@@ -49,7 +49,7 @@ export const PRODUCT_LIST_QUERY = gql`
 
 export const PRODUCT_BY_ID_QUERY = gql`
   query GetProductById($id: ID!) {
-    getProductById(id: $id) {
+    productById(id: $id) {
       id
       categoryId
       subcategoryId

@@ -11,7 +11,7 @@ export const AdminShow = () => {
     resource: "admins",
     meta: {
       gqlQuery: ADMIN_BY_ID_QUERY,
-      operationName: "getAdminById",
+      operationName: "adminById",
       variables: {
         id,
       },

@@ -9,7 +9,7 @@ export const SubcategoryList = () => {
     resource: "subcategories",
     meta: {
       gqlQuery: SUBCATEGORY_LIST_QUERY,
-      operationName: "getSubcategoryList",
+      operationName: "subcategoryList",
     },
   });
 

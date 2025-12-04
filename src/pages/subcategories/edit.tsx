@@ -55,7 +55,7 @@ export const SubcategoryEdit = () => {
     resource: "categories",
     meta: {
       gqlQuery: CATEGORY_LIST_QUERY,
-      operationName: "getCategoryList",
+      operationName: "categoryList",
     },
   });
 
@@ -74,7 +74,7 @@ export const SubcategoryEdit = () => {
       resource: "subcategories",
       meta: {
         gqlQuery: SUBCATEGORY_BY_ID_QUERY,
-        operationName: "getSubcategoryById",
+        operationName: "subcategoryById",
         gqlMutation: UPDATE_SUBCATEGORY_BY_ID_MUTATION,
         variables: {
           id,

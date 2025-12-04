@@ -16,7 +16,7 @@ export const UserEdit = () => {
       resource: "users",
       meta: {
         gqlQuery: USER_BY_ID_QUERY,
-        operationName: "getUserById",
+        operationName: "userById",
         gqlMutation: UPDATE_USER_BY_ID_MUTATION,
         variables: {
           id,

@@ -45,7 +45,7 @@ export const AdminEdit = () => {
       resource: "admins",
       meta: {
         gqlQuery: ADMIN_BY_ID_QUERY,
-        operationName: "getAdminById",
+        operationName: "adminById",
         gqlMutation: UPDATE_ADMIN_BY_ID_MUTATION,
         variables: {
           id,
