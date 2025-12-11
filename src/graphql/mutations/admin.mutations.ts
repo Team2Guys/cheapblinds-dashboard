@@ -33,7 +33,14 @@ export const UPDATE_ADMIN_BY_ID_MUTATION = gql`
 export const REMOVE_ADMIN_BY_ID_MUTATION = gql`
   mutation RemoveAdminById($id: ID!) {
     removeAdminById(id: $id) {
-      message
+      id
+      name
+      email
+      permissions
+      role
+      lastEditedBy
+      createdAt
+      updatedAt
     }
   }
 `;

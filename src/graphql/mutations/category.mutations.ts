@@ -14,8 +14,8 @@ export const CREATE_CATEGORY_MUTATION = gql`
       canonicalTag
       breadcrumb
       posterImageUrl
-      lastEditedBy
       seoSchema
+      lastEditedBy
       status
       createdAt
       updatedAt
@@ -40,13 +40,13 @@ export const UPDATE_CATEGORY_BY_ID_MUTATION = gql`
       lastEditedBy
       seoSchema
       status
-      products{
-      id
-      name
+      products {
+        id
+        name
       }
-      subcategories{
-      id
-      name
+      subcategories {
+        id
+        name
       }
       createdAt
       updatedAt

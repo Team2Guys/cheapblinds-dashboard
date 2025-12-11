@@ -13,6 +13,7 @@ export const SIGNIN_MUTATION = gql`
     signin(input: $input) {
       id
       name
+      email
       role
     }
   }
