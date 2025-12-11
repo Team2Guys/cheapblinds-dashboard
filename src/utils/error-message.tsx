@@ -1,14 +1,22 @@
 export const getErrorMessage = (error: unknown) => {
   if (error instanceof Error) return error.message;
 
-  if (typeof error === "object" && error !== null) {
-    if ("response" in error) {
+  if (typeof error === 'object' && error !== null) {
+    if ('response' in error) {
       const maybeResponse = error.response;
-      if (typeof maybeResponse === "object" && maybeResponse !== null && "data" in maybeResponse) {
+      if (
+        typeof maybeResponse === 'object' &&
+        maybeResponse !== null &&
+        'data' in maybeResponse
+      ) {
         const maybeData = maybeResponse.data;
-        if (typeof maybeData === "object" && maybeData !== null && "message" in maybeData) {
+        if (
+          typeof maybeData === 'object' &&
+          maybeData !== null &&
+          'message' in maybeData
+        ) {
           const maybeMessage = maybeData.message;
-          if (typeof maybeMessage === "string") {
+          if (typeof maybeMessage === 'string') {
             return maybeMessage;
           }
         }
@@ -16,5 +24,5 @@ export const getErrorMessage = (error: unknown) => {
     }
   }
 
-  return "Unknown error";
+  return 'Unknown error';
 };

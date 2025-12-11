@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // Create category
 export const CREATE_CATEGORY_MUTATION = gql`

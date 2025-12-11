@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useLogin } from "@refinedev/core";
+import { useState } from 'react';
+import { useLogin } from '@refinedev/core';
 import {
   Box,
   Button,
@@ -8,19 +8,19 @@ import {
   TextField,
   Typography,
   MenuItem,
-  CircularProgress,
-} from "@mui/material";
-import { IconButton, InputAdornment } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+  CircularProgress
+} from '@mui/material';
+import { IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export const Login = () => {
   const { mutate: login, isPending } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
 
   const [form, setForm] = useState({
-    email: "",
-    password: "",
-    role: "",
+    email: '',
+    password: '',
+    role: ''
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -31,21 +31,21 @@ export const Login = () => {
   return (
     <Box
       sx={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(135deg, #dbeafe 0, #eff6ff 100)",
-        padding: 2,
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'linear-gradient(135deg, #dbeafe 0, #eff6ff 100)',
+        padding: 2
       }}
     >
       <Card
         sx={{
-          width: "100%",
+          width: '100%',
           maxWidth: 420,
           borderRadius: 3,
-          boxShadow: "0 6px 20px rgba(0, 0, 0, 0.08)",
-          backdropFilter: "blur(8px)",
+          boxShadow: '0 6px 20px rgba(0, 0, 0, 0.08)',
+          backdropFilter: 'blur(8px)'
         }}
       >
         <CardContent sx={{ p: 4 }}>
@@ -53,7 +53,12 @@ export const Login = () => {
             Welcome Back
           </Typography>
 
-          <Typography variant="body2" textAlign="center" color="text.secondary" mb={4}>
+          <Typography
+            variant="body2"
+            textAlign="center"
+            color="text.secondary"
+            mb={4}
+          >
             Sign in to continue
           </Typography>
 
@@ -71,7 +76,7 @@ export const Login = () => {
               <TextField
                 fullWidth
                 label="Password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 margin="normal"
@@ -86,7 +91,7 @@ export const Login = () => {
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
-                  ),
+                  )
                 }}
               />
 
@@ -109,13 +114,13 @@ export const Login = () => {
                 disabled={isPending}
                 sx={{
                   borderRadius: 2,
-                  textTransform: "none",
-                  fontSize: "1rem",
+                  textTransform: 'none',
+                  fontSize: '1rem',
                   fontWeight: 600,
-                  py: 1.2,
+                  py: 1.2
                 }}
               >
-                {isPending ? <CircularProgress size={22} /> : "Sign In"}
+                {isPending ? <CircularProgress size={22} /> : 'Sign In'}
               </Button>
             </Box>
           </form>

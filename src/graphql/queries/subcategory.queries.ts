@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // Get all subcategories
 export const SUBCATEGORY_LIST_QUERY = gql`

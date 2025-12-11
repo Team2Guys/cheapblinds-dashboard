@@ -1,7 +1,9 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const CREATE_NEWSLETTER_SUBSCRIBER_MUTATION = gql`
-  mutation CreateNewsletterSubscriber($input: CreateNewsletterSubscriberInput!) {
+  mutation CreateNewsletterSubscriber(
+    $input: CreateNewsletterSubscriberInput!
+  ) {
     createNewsletterSubscriber(input: $input) {
       id
       name
@@ -17,7 +19,10 @@ export const CREATE_NEWSLETTER_SUBSCRIBER_MUTATION = gql`
 `;
 
 export const UPDATE_NEWSLETTER_SUBSCRIBER_BY_ID_MUTATION = gql`
-  mutation UpdateNewsletterSubscriberById($id: ID!, $input: UpdateNewsletterSubscriberByIdInput!) {
+  mutation UpdateNewsletterSubscriberById(
+    $id: ID!
+    $input: UpdateNewsletterSubscriberByIdInput!
+  ) {
     updateNewsletterSubscriberById(id: $id, input: $input) {
       id
       name

@@ -1,4 +1,4 @@
-import { getErrorMessage } from "#utils/index";
+import { getErrorMessage } from '#utils/index';
 import {
   Box,
   TextField,
@@ -11,22 +11,22 @@ import {
   Typography,
   Paper,
   Divider,
-  Stack,
-} from "@mui/material";
-import { Edit, useDataGrid } from "@refinedev/mui";
-import { useForm as useRefineForm } from "@refinedev/react-hook-form";
-import { useParsed } from "@refinedev/core";
-import axios from "axios";
-import { useRef, useState, useEffect } from "react";
-import { Controller } from "react-hook-form";
-import { Editor } from "@tinymce/tinymce-react";
+  Stack
+} from '@mui/material';
+import { Edit, useDataGrid } from '@refinedev/mui';
+import { useForm as useRefineForm } from '@refinedev/react-hook-form';
+import { useParsed } from '@refinedev/core';
+import axios from 'axios';
+import { useRef, useState, useEffect } from 'react';
+import { Controller } from 'react-hook-form';
+import { Editor } from '@tinymce/tinymce-react';
 import {
   CATEGORY_LIST_QUERY,
   SUBCATEGORY_BY_ID_QUERY,
-  UPDATE_SUBCATEGORY_BY_ID_MUTATION,
-} from "#graphql";
+  UPDATE_SUBCATEGORY_BY_ID_MUTATION
+} from '#graphql';
 
-type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
+type ContentStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
 
 interface ISubcategoryEdit {
   name: string;
@@ -44,7 +44,7 @@ interface ISubcategoryEdit {
   status: ContentStatus;
 }
 
-const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
+const statusOptions: ContentStatus[] = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
 
 export const SubcategoryEdit = () => {
   const { id } = useParsed();
@@ -52,11 +52,11 @@ export const SubcategoryEdit = () => {
   const [uploading, setUploading] = useState(false);
 
   const { dataGridProps } = useDataGrid({
-    resource: "categories",
+    resource: 'categories',
     meta: {
       gqlQuery: CATEGORY_LIST_QUERY,
-      operationName: "categoryList",
-    },
+      operationName: 'categoryList'
+    }
   });
 
   const categories = dataGridProps.rows || [];
@@ -67,41 +67,47 @@ export const SubcategoryEdit = () => {
     register,
     control,
     setValue,
-    formState: { errors },
+    formState: { errors }
   } = useRefineForm<ISubcategoryEdit>({
     refineCoreProps: {
-      action: "edit",
-      resource: "subcategories",
+      action: 'edit',
+      resource: 'subcategories',
       meta: {
         gqlQuery: SUBCATEGORY_BY_ID_QUERY,
-        operationName: "subcategoryById",
+        operationName: 'subcategoryById',
         gqlMutation: UPDATE_SUBCATEGORY_BY_ID_MUTATION,
         variables: {
-          id,
-        },
-      },
-    },
+          id
+        }
+      }
+    }
   });
 
   // Update lastEditedBy with current user when form data is loaded
   useEffect(() => {
     if (queryResult?.data?.data) {
-      const currentUser = JSON.parse(localStorage.getItem("user") || "{}").name || "";
-      setValue("lastEditedBy", currentUser);
+      const currentUser =
+        JSON.parse(localStorage.getItem('user') || '{}').name || '';
+      setValue('lastEditedBy', currentUser);
     }
   }, [queryResult?.data?.data, setValue]);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     setUploading(true);
 
     const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    formData.append('file', file);
+    formData.append(
+      'upload_preset',
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+    );
 
     const url = `https://api.cloudinary.com/v1_1/${
       import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
@@ -109,20 +115,20 @@ export const SubcategoryEdit = () => {
 
     try {
       const response = await axios.post(url, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
       const data = response.data;
 
       if (data.secure_url) {
-        setValue("posterImageUrl", data.secure_url);
+        setValue('posterImageUrl', data.secure_url);
       } else {
-        console.error("Upload failed:", data);
-        if (fileInputRef.current) fileInputRef.current.value = "";
+        console.error('Upload failed:', data);
+        if (fileInputRef.current) fileInputRef.current.value = '';
       }
     } catch (error) {
-      console.error("Upload failed:", getErrorMessage(error));
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      console.error('Upload failed:', getErrorMessage(error));
+      if (fileInputRef.current) fileInputRef.current.value = '';
     } finally {
       setUploading(false);
     }
@@ -134,7 +140,10 @@ export const SubcategoryEdit = () => {
         <Grid container spacing={3}>
           {/* Primary Content Section */}
           <Grid item xs={12} lg={8}>
-            <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Basic Information
               </Typography>
@@ -144,7 +153,7 @@ export const SubcategoryEdit = () => {
               <Divider sx={{ mb: 3 }} />
 
               <TextField
-                {...register("name", { required: "This field is required" })}
+                {...register('name', { required: 'This field is required' })}
                 error={!!errors?.name}
                 helperText={!!errors?.name?.message}
                 margin="normal"
@@ -157,10 +166,11 @@ export const SubcategoryEdit = () => {
               />
 
               <TextField
-                {...register("shortDescription")}
+                {...register('shortDescription')}
                 error={!!errors?.shortDescription}
                 helperText={
-                  !!errors?.shortDescription?.message || "Brief description (50-100 characters)"
+                  !!errors?.shortDescription?.message ||
+                  'Brief description (50-100 characters)'
                 }
                 margin="normal"
                 fullWidth
@@ -171,9 +181,12 @@ export const SubcategoryEdit = () => {
               />
 
               <TextField
-                {...register("slug")}
+                {...register('slug')}
                 error={!!errors?.slug}
-                helperText={!!errors?.slug?.message || "URL-friendly slug (e.g., smartphones-tech)"}
+                helperText={
+                  !!errors?.slug?.message ||
+                  'URL-friendly slug (e.g., smartphones-tech)'
+                }
                 margin="normal"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
@@ -184,7 +197,12 @@ export const SubcategoryEdit = () => {
 
               {/* Rich Text Editor Section */}
               <Box sx={{ mt: 4 }}>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={1}
+                  sx={{ mb: 1 }}
+                >
                   <Typography variant="subtitle1" fontWeight={500}>
                     Description
                   </Typography>
@@ -192,9 +210,10 @@ export const SubcategoryEdit = () => {
                 <Typography
                   variant="caption"
                   color="text.secondary"
-                  sx={{ mb: 2, display: "block" }}
+                  sx={{ mb: 2, display: 'block' }}
                 >
-                  Provide a detailed description of the subcategory with rich formatting
+                  Provide a detailed description of the subcategory with rich
+                  formatting
                 </Typography>
 
                 <Controller
@@ -204,17 +223,21 @@ export const SubcategoryEdit = () => {
                     <Box
                       sx={{
                         border: 1,
-                        borderColor: errors?.description ? "error.main" : "divider",
+                        borderColor: errors?.description
+                          ? 'error.main'
+                          : 'divider',
                         borderRadius: 1,
-                        overflow: "hidden",
-                        transition: "border-color 0.2s",
-                        "&:hover": {
-                          borderColor: errors?.description ? "error.main" : "primary.main",
+                        overflow: 'hidden',
+                        transition: 'border-color 0.2s',
+                        '&:hover': {
+                          borderColor: errors?.description
+                            ? 'error.main'
+                            : 'primary.main'
                         },
-                        "&:focus-within": {
-                          borderColor: "primary.main",
-                          borderWidth: 2,
-                        },
+                        '&:focus-within': {
+                          borderColor: 'primary.main',
+                          borderWidth: 2
+                        }
                       }}
                     >
                       <Editor
@@ -228,35 +251,36 @@ export const SubcategoryEdit = () => {
                           branding: false,
                           resize: true,
                           plugins: [
-                            "advlist",
-                            "autolink",
-                            "lists",
-                            "link",
-                            "image",
-                            "charmap",
-                            "preview",
-                            "anchor",
-                            "searchreplace",
-                            "visualblocks",
-                            "code",
-                            "fullscreen",
-                            "insertdatetime",
-                            "media",
-                            "table",
-                            "wordcount",
-                            "help",
+                            'advlist',
+                            'autolink',
+                            'lists',
+                            'link',
+                            'image',
+                            'charmap',
+                            'preview',
+                            'anchor',
+                            'searchreplace',
+                            'visualblocks',
+                            'code',
+                            'fullscreen',
+                            'insertdatetime',
+                            'media',
+                            'table',
+                            'wordcount',
+                            'help'
                           ],
                           toolbar:
-                            "undo redo | blocks | bold italic underline strikethrough | " +
-                            "alignleft aligncenter alignright alignjustify | " +
-                            "bullist numlist outdent indent | link image media table | " +
-                            "removeformat code fullscreen | help",
-                          toolbar_mode: "sliding",
+                            'undo redo | blocks | bold italic underline strikethrough | ' +
+                            'alignleft aligncenter alignright alignjustify | ' +
+                            'bullist numlist outdent indent | link image media table | ' +
+                            'removeformat code fullscreen | help',
+                          toolbar_mode: 'sliding',
                           content_style:
                             "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; font-size: 14px; line-height: 1.6; padding: 10px; }",
-                          placeholder: "Write a detailed description of this subcategory...",
+                          placeholder:
+                            'Write a detailed description of this subcategory...',
                           block_formats:
-                            "Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Preformatted=pre",
+                            'Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Preformatted=pre'
                         }}
                       />
                     </Box>
@@ -264,7 +288,11 @@ export const SubcategoryEdit = () => {
                 />
 
                 {!!errors?.description && (
-                  <Typography variant="caption" color="error" sx={{ mt: 0.5, display: "block" }}>
+                  <Typography
+                    variant="caption"
+                    color="error"
+                    sx={{ mt: 0.5, display: 'block' }}
+                  >
                     {!!errors.description.message?.toString()}
                   </Typography>
                 )}
@@ -272,7 +300,10 @@ export const SubcategoryEdit = () => {
             </Paper>
 
             {/* SEO Section */}
-            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, mt: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 SEO Settings
               </Typography>
@@ -284,9 +315,12 @@ export const SubcategoryEdit = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
-                    {...register("metaTitle")}
+                    {...register('metaTitle')}
                     error={!!errors?.metaTitle}
-                    helperText={!!errors?.metaTitle?.message || "Recommended: 50-60 characters"}
+                    helperText={
+                      !!errors?.metaTitle?.message ||
+                      'Recommended: 50-60 characters'
+                    }
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
@@ -298,10 +332,11 @@ export const SubcategoryEdit = () => {
 
                 <Grid item xs={12}>
                   <TextField
-                    {...register("metaDescription")}
+                    {...register('metaDescription')}
                     error={!!errors?.metaDescription}
                     helperText={
-                      !!errors?.metaDescription?.message || "Recommended: 150-160 characters"
+                      !!errors?.metaDescription?.message ||
+                      'Recommended: 150-160 characters'
                     }
                     margin="normal"
                     fullWidth
@@ -316,7 +351,7 @@ export const SubcategoryEdit = () => {
 
                 <Grid item xs={12} md={6}>
                   <TextField
-                    {...register("canonicalTag")}
+                    {...register('canonicalTag')}
                     error={!!errors?.canonicalTag}
                     helperText={!!errors?.canonicalTag?.message}
                     margin="normal"
@@ -330,7 +365,7 @@ export const SubcategoryEdit = () => {
 
                 <Grid item xs={12} md={6}>
                   <TextField
-                    {...register("breadcrumb")}
+                    {...register('breadcrumb')}
                     error={!!errors?.breadcrumb}
                     helperText={!!errors?.breadcrumb?.message}
                     margin="normal"
@@ -344,10 +379,11 @@ export const SubcategoryEdit = () => {
 
                 <Grid item xs={12}>
                   <TextField
-                    {...register("seoSchema")}
+                    {...register('seoSchema')}
                     error={!!errors?.seoSchema}
                     helperText={
-                      !!errors?.seoSchema?.message || "JSON-LD structured data for search engines"
+                      !!errors?.seoSchema?.message ||
+                      'JSON-LD structured data for search engines'
                     }
                     margin="normal"
                     fullWidth
@@ -358,10 +394,10 @@ export const SubcategoryEdit = () => {
                     rows={5}
                     placeholder='{"@context": "https://schema.org", "@type": "CollectionPage", ...}'
                     sx={{
-                      "& textarea": {
-                        fontFamily: "monospace",
-                        fontSize: "0.875rem",
-                      },
+                      '& textarea': {
+                        fontFamily: 'monospace',
+                        fontSize: '0.875rem'
+                      }
                     }}
                   />
                 </Grid>
@@ -372,7 +408,10 @@ export const SubcategoryEdit = () => {
           {/* Sidebar Section */}
           <Grid item xs={12} lg={4}>
             {/* Parent Category & Publishing */}
-            <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Category & Publishing
               </Typography>
@@ -381,10 +420,16 @@ export const SubcategoryEdit = () => {
               <Controller
                 name="categoryId"
                 control={control}
-                rules={{ required: "Parent category is required" }}
+                rules={{ required: 'Parent category is required' }}
                 render={({ field }) => (
-                  <FormControl fullWidth margin="normal" error={!!errors?.categoryId}>
-                    <InputLabel id="category-label">Parent Category *</InputLabel>
+                  <FormControl
+                    fullWidth
+                    margin="normal"
+                    error={!!errors?.categoryId}
+                  >
+                    <InputLabel id="category-label">
+                      Parent Category *
+                    </InputLabel>
                     <Select
                       labelId="category-label"
                       value={field.value}
@@ -404,7 +449,11 @@ export const SubcategoryEdit = () => {
                       )}
                     </Select>
                     {!!errors?.categoryId && (
-                      <Typography variant="caption" color="error" sx={{ mt: 0.5, ml: 1.75 }}>
+                      <Typography
+                        variant="caption"
+                        color="error"
+                        sx={{ mt: 0.5, ml: 1.75 }}
+                      >
                         {!!errors.categoryId.message}
                       </Typography>
                     )}
@@ -435,7 +484,7 @@ export const SubcategoryEdit = () => {
               />
 
               <TextField
-                {...register("lastEditedBy")}
+                {...register('lastEditedBy')}
                 error={!!errors?.lastEditedBy}
                 helperText={!!errors?.lastEditedBy?.message}
                 margin="normal"
@@ -449,7 +498,10 @@ export const SubcategoryEdit = () => {
             </Paper>
 
             {/* Media Section */}
-            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, mt: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Featured Image
               </Typography>
@@ -465,7 +517,7 @@ export const SubcategoryEdit = () => {
                 disabled={uploading}
                 sx={{ mb: 2 }}
               >
-                {uploading ? "Uploading..." : "Choose Image"}
+                {uploading ? 'Uploading...' : 'Choose Image'}
                 <input
                   type="file"
                   hidden
@@ -478,47 +530,47 @@ export const SubcategoryEdit = () => {
               {control._formValues.posterImageUrl ? (
                 <Box
                   sx={{
-                    position: "relative",
-                    width: "100%",
-                    paddingTop: "56.25%",
-                    overflow: "hidden",
+                    position: 'relative',
+                    width: '100%',
+                    paddingTop: '56.25%',
+                    overflow: 'hidden',
                     borderRadius: 1,
                     border: 1,
-                    borderColor: "divider",
+                    borderColor: 'divider'
                   }}
                 >
                   <img
                     src={control._formValues.posterImageUrl}
                     alt="Subcategory Poster Image"
                     style={{
-                      position: "absolute",
+                      position: 'absolute',
                       top: 0,
                       left: 0,
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
                     }}
                   />
                 </Box>
               ) : (
                 <Box
                   sx={{
-                    width: "100%",
-                    paddingTop: "56.25%",
-                    bgcolor: "action.hover",
+                    width: '100%',
+                    paddingTop: '56.25%',
+                    bgcolor: 'action.hover',
                     borderRadius: 1,
                     border: 1,
-                    borderColor: "divider",
-                    position: "relative",
+                    borderColor: 'divider',
+                    position: 'relative'
                   }}
                 >
                   <Box
                     sx={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      textAlign: "center",
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      textAlign: 'center'
                     }}
                   >
                     <Typography variant="body2" color="text.secondary">

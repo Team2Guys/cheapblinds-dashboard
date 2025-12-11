@@ -1,5 +1,5 @@
-import { getErrorMessage } from "#utils/index";
-import { useDropzone } from "react-dropzone";
+import { getErrorMessage } from '#utils/index';
+import { useDropzone } from 'react-dropzone';
 import {
   Box,
   TextField,
@@ -12,17 +12,17 @@ import {
   Typography,
   Paper,
   Divider,
-  Stack,
-} from "@mui/material";
-import { Create } from "@refinedev/mui";
-import { useForm as useRefineForm } from "@refinedev/react-hook-form";
-import axios from "axios";
-import { useRef, useState } from "react";
-import { Controller } from "react-hook-form";
-import { Editor } from "@tinymce/tinymce-react";
-import { CREATE_CATEGORY_MUTATION } from "#graphql";
+  Stack
+} from '@mui/material';
+import { Create } from '@refinedev/mui';
+import { useForm as useRefineForm } from '@refinedev/react-hook-form';
+import axios from 'axios';
+import { useRef, useState } from 'react';
+import { Controller } from 'react-hook-form';
+import { Editor } from '@tinymce/tinymce-react';
+import { CREATE_CATEGORY_MUTATION } from '#graphql';
 
-type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
+type ContentStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
 
 interface ICategoryCreate {
   name: string;
@@ -39,7 +39,7 @@ interface ICategoryCreate {
   status: ContentStatus;
 }
 
-const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
+const statusOptions: ContentStatus[] = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
 
 export const CategoryCreate = () => {
   const [uploading, setUploading] = useState(false);
@@ -51,29 +51,29 @@ export const CategoryCreate = () => {
     control,
     setValue,
     formState: { errors },
-    watch,
+    watch
   } = useRefineForm<ICategoryCreate>({
     defaultValues: {
-      name: "",
-      description: "",
-      shortDescription: "",
-      slug: "",
-      metaTitle: "",
-      metaDescription: "",
-      canonicalTag: "",
-      breadcrumb: "",
-      posterImageUrl: "",
-      seoSchema: "",
-      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
-      status: "DRAFT",
+      name: '',
+      description: '',
+      shortDescription: '',
+      slug: '',
+      metaTitle: '',
+      metaDescription: '',
+      canonicalTag: '',
+      breadcrumb: '',
+      posterImageUrl: '',
+      seoSchema: '',
+      lastEditedBy: JSON.parse(localStorage.getItem('user') || '{}').name || '',
+      status: 'DRAFT'
     },
     refineCoreProps: {
-      resource: "categories",
+      resource: 'categories',
       meta: {
         gqlMutation: CREATE_CATEGORY_MUTATION,
-        operationName: "createCategory",
-      },
-    },
+        operationName: 'createCategory'
+      }
+    }
   });
 
   const onDrop = async (acceptedFiles: File[]) => {
@@ -88,16 +88,19 @@ export const CategoryCreate = () => {
       setUploading(true);
 
       const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+      formData.append('file', file);
+      formData.append(
+        'upload_preset',
+        import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+      );
 
       // your upload API logic
       const { data } = await axios.post(url, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
       // update posterImageUrl inside the form
-      setValue("posterImageUrl", data.secure_url);
+      setValue('posterImageUrl', data.secure_url);
     } catch (err) {
       console.error(err);
     } finally {
@@ -107,21 +110,26 @@ export const CategoryCreate = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [] },
-    multiple: false,
+    accept: { 'image/*': [] },
+    multiple: false
   });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     setUploading(true);
 
     const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    formData.append('file', file);
+    formData.append(
+      'upload_preset',
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+    );
 
     const url = `https://api.cloudinary.com/v1_1/${
       import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
@@ -129,20 +137,20 @@ export const CategoryCreate = () => {
 
     try {
       const response = await axios.post(url, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
       const data = response.data;
 
       if (data.secure_url) {
-        setValue("posterImageUrl", data.secure_url);
+        setValue('posterImageUrl', data.secure_url);
       } else {
-        console.error("Upload failed:", data);
-        if (fileInputRef.current) fileInputRef.current.value = "";
+        console.error('Upload failed:', data);
+        if (fileInputRef.current) fileInputRef.current.value = '';
       }
     } catch (error) {
-      console.error("Upload failed:", getErrorMessage(error));
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      console.error('Upload failed:', getErrorMessage(error));
+      if (fileInputRef.current) fileInputRef.current.value = '';
     } finally {
       setUploading(false);
     }
@@ -154,7 +162,10 @@ export const CategoryCreate = () => {
         <Grid container spacing={3}>
           {/* Primary Content Section */}
           <Grid item xs={12} lg={8}>
-            <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Basic Information
               </Typography>
@@ -164,7 +175,7 @@ export const CategoryCreate = () => {
               <Divider sx={{ mb: 3 }} />
 
               <TextField
-                {...register("name", { required: "This field is required" })}
+                {...register('name', { required: 'This field is required' })}
                 error={!!errors?.name}
                 helperText={!!errors?.name?.message}
                 margin="normal"
@@ -177,10 +188,11 @@ export const CategoryCreate = () => {
               />
 
               <TextField
-                {...register("shortDescription")}
+                {...register('shortDescription')}
                 error={!!errors?.shortDescription}
                 helperText={
-                  !!errors?.shortDescription?.message || "Brief description (50-100 characters)"
+                  !!errors?.shortDescription?.message ||
+                  'Brief description (50-100 characters)'
                 }
                 margin="normal"
                 fullWidth
@@ -191,9 +203,12 @@ export const CategoryCreate = () => {
               />
 
               <TextField
-                {...register("slug")}
+                {...register('slug')}
                 error={!!errors?.slug}
-                helperText={!!errors?.slug?.message || "URL-friendly slug (e.g., technology-news)"}
+                helperText={
+                  !!errors?.slug?.message ||
+                  'URL-friendly slug (e.g., technology-news)'
+                }
                 margin="normal"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
@@ -204,7 +219,12 @@ export const CategoryCreate = () => {
 
               {/* Rich Text Editor Section */}
               <Box sx={{ mt: 4 }}>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={1}
+                  sx={{ mb: 1 }}
+                >
                   <Typography variant="subtitle1" fontWeight={500}>
                     Description
                   </Typography>
@@ -212,9 +232,10 @@ export const CategoryCreate = () => {
                 <Typography
                   variant="caption"
                   color="text.secondary"
-                  sx={{ mb: 2, display: "block" }}
+                  sx={{ mb: 2, display: 'block' }}
                 >
-                  Provide a detailed description of the category with rich formatting
+                  Provide a detailed description of the category with rich
+                  formatting
                 </Typography>
 
                 <Controller
@@ -224,17 +245,21 @@ export const CategoryCreate = () => {
                     <Box
                       sx={{
                         border: 1,
-                        borderColor: errors?.description ? "error.main" : "divider",
+                        borderColor: errors?.description
+                          ? 'error.main'
+                          : 'divider',
                         borderRadius: 1,
-                        overflow: "hidden",
-                        transition: "border-color 0.2s",
-                        "&:hover": {
-                          borderColor: errors?.description ? "error.main" : "primary.main",
+                        overflow: 'hidden',
+                        transition: 'border-color 0.2s',
+                        '&:hover': {
+                          borderColor: errors?.description
+                            ? 'error.main'
+                            : 'primary.main'
                         },
-                        "&:focus-within": {
-                          borderColor: "primary.main",
-                          borderWidth: 2,
-                        },
+                        '&:focus-within': {
+                          borderColor: 'primary.main',
+                          borderWidth: 2
+                        }
                       }}
                     >
                       <Editor
@@ -248,35 +273,36 @@ export const CategoryCreate = () => {
                           branding: false,
                           resize: true,
                           plugins: [
-                            "advlist",
-                            "autolink",
-                            "lists",
-                            "link",
-                            "image",
-                            "charmap",
-                            "preview",
-                            "anchor",
-                            "searchreplace",
-                            "visualblocks",
-                            "code",
-                            "fullscreen",
-                            "insertdatetime",
-                            "media",
-                            "table",
-                            "wordcount",
-                            "help",
+                            'advlist',
+                            'autolink',
+                            'lists',
+                            'link',
+                            'image',
+                            'charmap',
+                            'preview',
+                            'anchor',
+                            'searchreplace',
+                            'visualblocks',
+                            'code',
+                            'fullscreen',
+                            'insertdatetime',
+                            'media',
+                            'table',
+                            'wordcount',
+                            'help'
                           ],
                           toolbar:
-                            "undo redo | blocks | bold italic underline strikethrough | " +
-                            "alignleft aligncenter alignright alignjustify | " +
-                            "bullist numlist outdent indent | link image media table | " +
-                            "removeformat code fullscreen | help",
-                          toolbar_mode: "sliding",
+                            'undo redo | blocks | bold italic underline strikethrough | ' +
+                            'alignleft aligncenter alignright alignjustify | ' +
+                            'bullist numlist outdent indent | link image media table | ' +
+                            'removeformat code fullscreen | help',
+                          toolbar_mode: 'sliding',
                           content_style:
                             "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; font-size: 14px; line-height: 1.6; padding: 10px; }",
-                          placeholder: "Write a detailed description of this category...",
+                          placeholder:
+                            'Write a detailed description of this category...',
                           block_formats:
-                            "Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Preformatted=pre",
+                            'Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Preformatted=pre'
                         }}
                       />
                     </Box>
@@ -284,7 +310,11 @@ export const CategoryCreate = () => {
                 />
 
                 {!!errors?.description && (
-                  <Typography variant="caption" color="error" sx={{ mt: 0.5, display: "block" }}>
+                  <Typography
+                    variant="caption"
+                    color="error"
+                    sx={{ mt: 0.5, display: 'block' }}
+                  >
                     {!!errors.description.message?.toString()}
                   </Typography>
                 )}
@@ -292,7 +322,10 @@ export const CategoryCreate = () => {
             </Paper>
 
             {/* SEO Section */}
-            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, mt: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 SEO Settings
               </Typography>
@@ -304,9 +337,12 @@ export const CategoryCreate = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
-                    {...register("metaTitle")}
+                    {...register('metaTitle')}
                     error={!!errors?.metaTitle}
-                    helperText={!!errors?.metaTitle?.message || "Recommended: 50-60 characters"}
+                    helperText={
+                      !!errors?.metaTitle?.message ||
+                      'Recommended: 50-60 characters'
+                    }
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
@@ -318,10 +354,11 @@ export const CategoryCreate = () => {
 
                 <Grid item xs={12}>
                   <TextField
-                    {...register("metaDescription")}
+                    {...register('metaDescription')}
                     error={!!errors?.metaDescription}
                     helperText={
-                      !!errors?.metaDescription?.message || "Recommended: 150-160 characters"
+                      !!errors?.metaDescription?.message ||
+                      'Recommended: 150-160 characters'
                     }
                     margin="normal"
                     fullWidth
@@ -336,7 +373,7 @@ export const CategoryCreate = () => {
 
                 <Grid item xs={12} md={6}>
                   <TextField
-                    {...register("canonicalTag")}
+                    {...register('canonicalTag')}
                     error={!!errors?.canonicalTag}
                     helperText={!!errors?.canonicalTag?.message}
                     margin="normal"
@@ -350,7 +387,7 @@ export const CategoryCreate = () => {
 
                 <Grid item xs={12} md={6}>
                   <TextField
-                    {...register("breadcrumb")}
+                    {...register('breadcrumb')}
                     error={!!errors?.breadcrumb}
                     helperText={!!errors?.breadcrumb?.message}
                     margin="normal"
@@ -364,10 +401,11 @@ export const CategoryCreate = () => {
 
                 <Grid item xs={12}>
                   <TextField
-                    {...register("seoSchema")}
+                    {...register('seoSchema')}
                     error={!!errors?.seoSchema}
                     helperText={
-                      !!errors?.seoSchema?.message || "JSON-LD structured data for search engines"
+                      !!errors?.seoSchema?.message ||
+                      'JSON-LD structured data for search engines'
                     }
                     margin="normal"
                     fullWidth
@@ -378,10 +416,10 @@ export const CategoryCreate = () => {
                     rows={5}
                     placeholder='{"@context": "https://schema.org", "@type": "CollectionPage", ...}'
                     sx={{
-                      "& textarea": {
-                        fontFamily: "monospace",
-                        fontSize: "0.875rem",
-                      },
+                      '& textarea': {
+                        fontFamily: 'monospace',
+                        fontSize: '0.875rem'
+                      }
                     }}
                   />
                 </Grid>
@@ -392,7 +430,10 @@ export const CategoryCreate = () => {
           {/* Sidebar Section */}
           <Grid item xs={12} lg={4}>
             {/* Status & Publishing */}
-            <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Publishing
               </Typography>
@@ -421,7 +462,7 @@ export const CategoryCreate = () => {
               />
 
               <TextField
-                {...register("lastEditedBy")}
+                {...register('lastEditedBy')}
                 error={!!errors?.lastEditedBy}
                 helperText={!!errors?.lastEditedBy?.message}
                 margin="normal"
@@ -435,7 +476,10 @@ export const CategoryCreate = () => {
             </Paper>
 
             {/* Media Section */}
-            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, mt: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Featured Image
               </Typography>
@@ -451,7 +495,7 @@ export const CategoryCreate = () => {
                 disabled={uploading}
                 sx={{ mb: 2 }}
               >
-                {uploading ? "Uploading..." : "Choose Image"}
+                {uploading ? 'Uploading...' : 'Choose Image'}
                 <input
                   type="file"
                   hidden
@@ -464,29 +508,29 @@ export const CategoryCreate = () => {
               <Box
                 {...getRootProps()}
                 sx={{
-                  border: "2px dashed #90caf9",
+                  border: '2px dashed #90caf9',
                   borderRadius: 2,
                   padding: 3,
-                  textAlign: "center",
-                  cursor: "pointer",
-                  background: isDragActive ? "#e3f2fd" : "#fafafa",
-                  transition: "0.2s",
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  background: isDragActive ? '#e3f2fd' : '#fafafa',
+                  transition: '0.2s'
                 }}
               >
                 <input {...getInputProps()} />
 
                 {uploading ? (
                   <Typography variant="body2">Uploading...</Typography>
-                ) : watch("posterImageUrl") ? (
+                ) : watch('posterImageUrl') ? (
                   <Box>
                     <img
-                      src={watch("posterImageUrl")}
+                      src={watch('posterImageUrl')}
                       alt="Uploaded"
                       style={{
-                        width: "100%",
+                        width: '100%',
                         maxHeight: 260,
-                        objectFit: "cover",
-                        borderRadius: 8,
+                        objectFit: 'cover',
+                        borderRadius: 8
                       }}
                     />
                     <Typography variant="body2" sx={{ mt: 1 }}>
@@ -496,8 +540,8 @@ export const CategoryCreate = () => {
                 ) : (
                   <Typography variant="body2">
                     {isDragActive
-                      ? "Drop the image here..."
-                      : "Drag & drop an image, or click to choose"}
+                      ? 'Drop the image here...'
+                      : 'Drag & drop an image, or click to choose'}
                   </Typography>
                 )}
               </Box>

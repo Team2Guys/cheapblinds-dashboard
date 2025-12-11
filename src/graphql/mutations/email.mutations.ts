@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const SEND_VERIFICATION_TOKEN_MUTATION = gql`
   mutation SendVerificationToken($input: SendVerificationTokenInput!) {

@@ -1,20 +1,29 @@
-import { PRODUCT_BY_ID_QUERY } from "#graphql";
-import { Box, Chip, Grid, Paper, Stack, Typography, ImageList, ImageListItem } from "@mui/material";
-import { useParsed, useShow } from "@refinedev/core";
-import { Show } from "@refinedev/mui";
+import { PRODUCT_BY_ID_QUERY } from '#graphql';
+import {
+  Box,
+  Chip,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+  ImageList,
+  ImageListItem
+} from '@mui/material';
+import { useParsed, useShow } from '@refinedev/core';
+import { Show } from '@refinedev/mui';
 
 export const ProductShow = () => {
   const { id } = useParsed();
 
   const { query } = useShow({
-    resource: "products",
+    resource: 'products',
     meta: {
       gqlQuery: PRODUCT_BY_ID_QUERY,
-      operationName: "productById",
+      operationName: 'productById',
       variables: {
-        id,
-      },
-    },
+        id
+      }
+    }
   });
 
   const { data, isLoading } = query;
@@ -26,25 +35,29 @@ export const ProductShow = () => {
       <Typography
         variant="caption"
         sx={{
-          color: "text.secondary",
+          color: 'text.secondary',
           fontWeight: 600,
-          textTransform: "uppercase",
-          letterSpacing: "0.5px",
-          fontSize: "0.7rem",
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+          fontSize: '0.7rem'
         }}
       >
         {label}
       </Typography>
       <Box sx={{ mt: 0.5 }}>
-        {typeof value === "string" && value.startsWith("http") ? (
+        {typeof value === 'string' && value.startsWith('http') ? (
           <img
             src={value}
             alt={label}
-            style={{ maxWidth: "150px", maxHeight: "150px", objectFit: "cover" }}
+            style={{
+              maxWidth: '150px',
+              maxHeight: '150px',
+              objectFit: 'cover'
+            }}
           />
         ) : (
-          <Typography variant="body1" sx={{ color: "text.primary" }}>
-            {value || "-"}
+          <Typography variant="body1" sx={{ color: 'text.primary' }}>
+            {value || '-'}
           </Typography>
         )}
       </Box>
@@ -54,7 +67,7 @@ export const ProductShow = () => {
   const SectionTitle = ({ children }: { children: React.ReactNode }) => (
     <Typography
       variant="h6"
-      sx={{ fontWeight: 600, mb: 2, color: "primary.main", fontSize: "1rem" }}
+      sx={{ fontWeight: 600, mb: 2, color: 'primary.main', fontSize: '1rem' }}
     >
       {children}
     </Typography>
@@ -64,7 +77,10 @@ export const ProductShow = () => {
     <Show isLoading={isLoading}>
       <Stack spacing={3}>
         {/* Basic Info */}
-        <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
+        <Paper
+          elevation={0}
+          sx={{ p: 3, border: '1px solid', borderColor: 'divider' }}
+        >
           <SectionTitle>Basic Information</SectionTitle>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
@@ -77,7 +93,10 @@ export const ProductShow = () => {
               <InfoField label="Description" value={record?.description} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <InfoField label="Short Description" value={record?.shortDescription} />
+              <InfoField
+                label="Short Description"
+                value={record?.shortDescription}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <InfoField label="Slug" value={record?.slug} />
@@ -98,20 +117,29 @@ export const ProductShow = () => {
               <InfoField label="Composition" value={record?.composition} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <InfoField label="Motorized" value={record?.isMotorized ? "Yes" : "No"} />
+              <InfoField
+                label="Motorized"
+                value={record?.isMotorized ? 'Yes' : 'No'}
+              />
             </Grid>
           </Grid>
         </Paper>
 
         {/* SEO & URLs */}
-        <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
+        <Paper
+          elevation={0}
+          sx={{ p: 3, border: '1px solid', borderColor: 'divider' }}
+        >
           <SectionTitle>SEO & URLs</SectionTitle>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <InfoField label="Meta Title" value={record?.metaTitle} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <InfoField label="Meta Description" value={record?.metaDescription} />
+              <InfoField
+                label="Meta Description"
+                value={record?.metaDescription}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <InfoField label="Canonical Tag" value={record?.canonicalTag} />
@@ -126,7 +154,10 @@ export const ProductShow = () => {
         </Paper>
 
         {/* Media & Metadata */}
-        <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
+        <Paper
+          elevation={0}
+          sx={{ p: 3, border: '1px solid', borderColor: 'divider' }}
+        >
           <SectionTitle>Media & Metadata</SectionTitle>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
@@ -136,7 +167,10 @@ export const ProductShow = () => {
               <InfoField label="Price" value={record?.price?.toString()} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <InfoField label="Discount Price" value={record?.discountPrice?.toString()} />
+              <InfoField
+                label="Discount Price"
+                value={record?.discountPrice?.toString()}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <InfoField label="Stock" value={record?.stock?.toString()} />
@@ -145,10 +179,17 @@ export const ProductShow = () => {
               <InfoField label="Category" value={record?.category?.name} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <InfoField label="Subcategory" value={record?.subcategory?.name} />
+              <InfoField
+                label="Subcategory"
+                value={record?.subcategory?.name}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Chip label={record?.status || "Unknown"} size="small" color="primary" />
+              <Chip
+                label={record?.status || 'Unknown'}
+                size="small"
+                color="primary"
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <InfoField label="Last Edited By" value={record?.lastEditedBy} />
@@ -157,17 +198,26 @@ export const ProductShow = () => {
         </Paper>
 
         {/* Product Gallery */}
-        <Paper elevation={0} sx={{ p: 3, border: "1px solid", borderColor: "divider" }}>
+        <Paper
+          elevation={0}
+          sx={{ p: 3, border: '1px solid', borderColor: 'divider' }}
+        >
           <SectionTitle>Product Images</SectionTitle>
 
-          {Array.isArray(record?.productImages) && record.productImages.length > 0 ? (
+          {Array.isArray(record?.productImages) &&
+          record.productImages.length > 0 ? (
             <ImageList cols={3} gap={12} sx={{ mt: 1 }}>
               {record.productImages.map((img, idx) => (
                 <ImageListItem key={idx}>
                   <img
                     src={img}
                     alt={`Product ${idx + 1}`}
-                    style={{ width: "100%", height: 200, objectFit: "cover", borderRadius: 6 }}
+                    style={{
+                      width: '100%',
+                      height: 200,
+                      objectFit: 'cover',
+                      borderRadius: 6
+                    }}
                   />
                 </ImageListItem>
               ))}

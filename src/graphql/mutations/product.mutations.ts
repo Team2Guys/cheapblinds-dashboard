@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // Create a product
 export const CREATE_PRODUCT_MUTATION = gql`

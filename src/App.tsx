@@ -1,26 +1,32 @@
-import { Authenticated, Refine } from "@refinedev/core";
-import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
+import { Authenticated, Refine } from '@refinedev/core';
+import { RefineKbar, RefineKbarProvider } from '@refinedev/kbar';
 
 import {
   ErrorComponent,
   RefineSnackbarProvider,
   ThemedLayout,
-  useNotificationProvider,
-} from "@refinedev/mui";
+  useNotificationProvider
+} from '@refinedev/mui';
 
-import CssBaseline from "@mui/material/CssBaseline";
-import { AdminPanelSettings, People, Category, Layers, Inventory } from "@mui/icons-material";
-import GlobalStyles from "@mui/material/GlobalStyles";
+import CssBaseline from '@mui/material/CssBaseline';
+import {
+  AdminPanelSettings,
+  People,
+  Category,
+  Layers,
+  Inventory
+} from '@mui/icons-material';
+import GlobalStyles from '@mui/material/GlobalStyles';
 import routerProvider, {
   CatchAllNavigate,
   DocumentTitleHandler,
   NavigateToResource,
-  UnsavedChangesNotifier,
-} from "@refinedev/react-router";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router";
-import { authProvider, dataProvider } from "#providers";
-import { Header } from "./components/header";
-import { ColorModeContextProvider } from "./contexts/color-mode";
+  UnsavedChangesNotifier
+} from '@refinedev/react-router';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router';
+import { authProvider, dataProvider } from '#providers';
+import { Header } from './components/header';
+import { ColorModeContextProvider } from './contexts/color-mode';
 import {
   Login,
   Dashboard,
@@ -42,8 +48,8 @@ import {
   ProductCreate,
   ProductEdit,
   ProductList,
-  ProductShow,
-} from "./pages";
+  ProductShow
+} from './pages';
 
 function App() {
   return (
@@ -51,7 +57,7 @@ function App() {
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <CssBaseline />
-          <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
+          <GlobalStyles styles={{ html: { WebkitFontSmoothing: 'auto' } }} />
           <RefineSnackbarProvider>
             <Refine
               routerProvider={routerProvider}
@@ -60,64 +66,64 @@ function App() {
               notificationProvider={useNotificationProvider}
               resources={[
                 {
-                  name: "categories",
-                  list: "/categories",
-                  create: "/categories/create",
-                  edit: "/categories/edit/:id",
-                  show: "/categories/show/:id",
+                  name: 'categories',
+                  list: '/categories',
+                  create: '/categories/create',
+                  edit: '/categories/edit/:id',
+                  show: '/categories/show/:id',
                   meta: {
                     canDelete: true,
-                    icon: <Category />,
-                  },
+                    icon: <Category />
+                  }
                 },
                 {
-                  name: "subcategories",
-                  list: "/subcategories",
-                  create: "/subcategories/create",
-                  edit: "/subcategories/edit/:id",
-                  show: "/subcategories/show/:id",
+                  name: 'subcategories',
+                  list: '/subcategories',
+                  create: '/subcategories/create',
+                  edit: '/subcategories/edit/:id',
+                  show: '/subcategories/show/:id',
                   meta: {
                     canDelete: true,
-                    icon: <Layers />,
-                  },
+                    icon: <Layers />
+                  }
                 },
                 {
-                  name: "products",
-                  list: "/products",
-                  create: "/products/create",
-                  edit: "/products/edit/:id",
-                  show: "/products/show/:id",
+                  name: 'products',
+                  list: '/products',
+                  create: '/products/create',
+                  edit: '/products/edit/:id',
+                  show: '/products/show/:id',
                   meta: {
                     canDelete: true,
-                    icon: <Inventory />,
-                  },
+                    icon: <Inventory />
+                  }
                 },
                 {
-                  name: "users",
-                  list: "/users",
-                  edit: "/users/edit/:id",
-                  show: "/users/show/:id",
+                  name: 'users',
+                  list: '/users',
+                  edit: '/users/edit/:id',
+                  show: '/users/show/:id',
                   meta: {
                     canDelete: true,
-                    icon: <People />,
-                  },
+                    icon: <People />
+                  }
                 },
                 {
-                  name: "admins",
-                  list: "/admins",
-                  create: "/admins/create",
-                  edit: "/admins/edit/:id",
-                  show: "/admins/show/:id",
+                  name: 'admins',
+                  list: '/admins',
+                  create: '/admins/create',
+                  edit: '/admins/edit/:id',
+                  show: '/admins/show/:id',
                   meta: {
                     canDelete: true,
-                    icon: <AdminPanelSettings />,
-                  },
-                },
+                    icon: <AdminPanelSettings />
+                  }
+                }
               ]}
               options={{
                 syncWithLocation: true,
                 warnWhenUnsavedChanges: true,
-                projectId: "m4vnM5-C8do39-XShqJI",
+                projectId: 'm4vnM5-C8do39-XShqJI'
               }}
             >
               <Routes>
@@ -170,7 +176,10 @@ function App() {
 
                 <Route
                   element={
-                    <Authenticated key="authenticated-outer" fallback={<Outlet />}>
+                    <Authenticated
+                      key="authenticated-outer"
+                      fallback={<Outlet />}
+                    >
                       <NavigateToResource />
                     </Authenticated>
                   }
@@ -180,7 +189,8 @@ function App() {
               </Routes>
               <RefineKbar />
               <UnsavedChangesNotifier />
-              <DocumentTitleHandler handler={() => "Dashboard | CheapBlinds"} />;
+              <DocumentTitleHandler handler={() => 'Dashboard | CheapBlinds'} />
+              ;
             </Refine>
           </RefineSnackbarProvider>
         </ColorModeContextProvider>

@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { CREATE_ADMIN_MUTATION } from "#graphql";
+import { useEffect } from 'react';
+import { CREATE_ADMIN_MUTATION } from '#graphql';
 import {
   Box,
   TextField,
@@ -9,35 +9,35 @@ import {
   MenuItem,
   Checkbox,
   ListItemText,
-  Grid,
-} from "@mui/material";
-import { Create } from "@refinedev/mui";
-import { useForm as useRefineForm } from "@refinedev/react-hook-form";
-import { Controller } from "react-hook-form";
+  Grid
+} from '@mui/material';
+import { Create } from '@refinedev/mui';
+import { useForm as useRefineForm } from '@refinedev/react-hook-form';
+import { Controller } from 'react-hook-form';
 
 interface IAdminCreate {
   name: string;
   email: string;
   password: string;
-  role: "ADMIN";
+  role: 'ADMIN';
   permissions: string[];
 }
 
 const availablePermissions = [
-  "ADD_PRODUCTS",
-  "EDIT_PRODUCTS",
-  "DELETE_PRODUCTS",
-  "ADD_CATEGORY",
-  "DELETE_CATEGORY",
-  "EDIT_CATEGORY",
-  "CHECK_PROFIT",
-  "CHECK_REVENUE",
-  "CHECK_VISITORS",
-  "VIEW_USERS",
-  "VIEW_SALES",
-  "VIEW ADMINS",
-  "VIEW_TOTAL_PRODUCTS",
-  "VIEW_TOTAL_CATEGORIES",
+  'ADD_PRODUCTS',
+  'EDIT_PRODUCTS',
+  'DELETE_PRODUCTS',
+  'ADD_CATEGORY',
+  'DELETE_CATEGORY',
+  'EDIT_CATEGORY',
+  'CHECK_PROFIT',
+  'CHECK_REVENUE',
+  'CHECK_VISITORS',
+  'VIEW_USERS',
+  'VIEW_SALES',
+  'VIEW ADMINS',
+  'VIEW_TOTAL_PRODUCTS',
+  'VIEW_TOTAL_CATEGORIES'
 ];
 
 export const AdminCreate = () => {
@@ -48,36 +48,36 @@ export const AdminCreate = () => {
     control,
     formState: { errors },
     watch,
-    setValue,
+    setValue
   } = useRefineForm<IAdminCreate>({
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      role: "ADMIN",
+      name: '',
+      email: '',
+      password: '',
+      role: 'ADMIN',
       permissions: [],
-      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
+      lastEditedBy: JSON.parse(localStorage.getItem('user') || '{}').name || ''
     },
     refineCoreProps: {
-      resource: "admins",
+      resource: 'admins',
       meta: {
         gqlMutation: CREATE_ADMIN_MUTATION,
-        operationName: "createAdmin",
-      },
-    },
+        operationName: 'createAdmin'
+      }
+    }
   });
 
-  const nameValue = watch("name");
+  const nameValue = watch('name');
 
   useEffect(() => {
     if (!nameValue) return;
 
-    const firstWord = nameValue.trim().split(" ")[0].toLowerCase();
+    const firstWord = nameValue.trim().split(' ')[0].toLowerCase();
     const random = Math.random().toString(36).slice(2, 5);
 
     const generatedEmail = `${firstWord}_${random}@cheapblinds.ae`;
 
-    setValue("email", generatedEmail, { shouldValidate: true });
+    setValue('email', generatedEmail, { shouldValidate: true });
   }, [nameValue, setValue]);
 
   return (
@@ -86,7 +86,7 @@ export const AdminCreate = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("name", { required: "This field is required" })}
+              {...register('name', { required: 'This field is required' })}
               error={!!errors?.name}
               helperText={!!errors?.name?.message}
               fullWidth
@@ -98,7 +98,7 @@ export const AdminCreate = () => {
 
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("email", { required: "This field is required" })}
+              {...register('email', { required: 'This field is required' })}
               error={!!errors?.email}
               helperText={!!errors?.email?.message}
               fullWidth
@@ -110,7 +110,7 @@ export const AdminCreate = () => {
 
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("password", { required: "This field is required" })}
+              {...register('password', { required: 'This field is required' })}
               error={!!errors?.password}
               helperText={!!errors?.password?.message}
               fullWidth
@@ -132,7 +132,7 @@ export const AdminCreate = () => {
                     multiple
                     value={field.value}
                     onChange={field.onChange}
-                    renderValue={(selected) => selected.join(", ")}
+                    renderValue={(selected) => selected.join(', ')}
                   >
                     {availablePermissions.map((perm) => (
                       <MenuItem key={perm} value={perm}>
@@ -148,7 +148,7 @@ export const AdminCreate = () => {
 
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("lastEditedBy")}
+              {...register('lastEditedBy')}
               error={!!errors?.password}
               helperText={!!errors?.password?.message}
               fullWidth

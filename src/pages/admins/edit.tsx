@@ -7,29 +7,29 @@ import {
   MenuItem,
   Checkbox,
   ListItemText,
-  Grid,
-} from "@mui/material";
-import { useParsed } from "@refinedev/core";
-import { Edit } from "@refinedev/mui";
-import { useForm as useRefineForm } from "@refinedev/react-hook-form";
-import { Controller } from "react-hook-form";
-import { ADMIN_BY_ID_QUERY, UPDATE_ADMIN_BY_ID_MUTATION } from "../../graphql";
+  Grid
+} from '@mui/material';
+import { useParsed } from '@refinedev/core';
+import { Edit } from '@refinedev/mui';
+import { useForm as useRefineForm } from '@refinedev/react-hook-form';
+import { Controller } from 'react-hook-form';
+import { ADMIN_BY_ID_QUERY, UPDATE_ADMIN_BY_ID_MUTATION } from '../../graphql';
 
 const availablePermissions = [
-  "ADD_PRODUCTS",
-  "EDIT_PRODUCTS",
-  "DELETE_PRODUCTS",
-  "ADD_CATEGORY",
-  "DELETE_CATEGORY",
-  "EDIT_CATEGORY",
-  "CHECK_PROFIT",
-  "CHECK_REVENUE",
-  "CHECK_VISITORS",
-  "VIEW_USERS",
-  "VIEW_SALES",
-  "VIEW ADMINS",
-  "VIEW_TOTAL_PRODUCTS",
-  "VIEW_TOTAL_CATEGORIES",
+  'ADD_PRODUCTS',
+  'EDIT_PRODUCTS',
+  'DELETE_PRODUCTS',
+  'ADD_CATEGORY',
+  'DELETE_CATEGORY',
+  'EDIT_CATEGORY',
+  'CHECK_PROFIT',
+  'CHECK_REVENUE',
+  'CHECK_VISITORS',
+  'VIEW_USERS',
+  'VIEW_SALES',
+  'VIEW ADMINS',
+  'VIEW_TOTAL_PRODUCTS',
+  'VIEW_TOTAL_CATEGORIES'
 ];
 
 export const AdminEdit = () => {
@@ -39,19 +39,19 @@ export const AdminEdit = () => {
     saveButtonProps,
     register,
     control,
-    formState: { errors },
+    formState: { errors }
   } = useRefineForm({
     refineCoreProps: {
-      resource: "admins",
+      resource: 'admins',
       meta: {
         gqlQuery: ADMIN_BY_ID_QUERY,
-        operationName: "adminById",
+        operationName: 'adminById',
         gqlMutation: UPDATE_ADMIN_BY_ID_MUTATION,
         variables: {
-          id,
-        },
-      },
-    },
+          id
+        }
+      }
+    }
   });
 
   return (
@@ -60,7 +60,7 @@ export const AdminEdit = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("name")}
+              {...register('name')}
               error={!!errors?.name}
               helperText={!!errors?.name?.message}
               margin="normal"
@@ -73,7 +73,7 @@ export const AdminEdit = () => {
 
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("email")}
+              {...register('email')}
               error={!!errors?.email}
               helperText={!!errors?.email?.message}
               margin="normal"
@@ -96,7 +96,7 @@ export const AdminEdit = () => {
                     multiple
                     value={field.value || []}
                     onChange={field.onChange}
-                    renderValue={(selected) => selected.join(", ")}
+                    renderValue={(selected) => selected.join(', ')}
                   >
                     {availablePermissions.map((perm) => (
                       <MenuItem key={perm} value={perm}>
@@ -112,7 +112,7 @@ export const AdminEdit = () => {
 
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("lastEditedBy")}
+              {...register('lastEditedBy')}
               error={!!errors?.password}
               helperText={!!errors?.password?.message}
               fullWidth

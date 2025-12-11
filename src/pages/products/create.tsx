@@ -1,5 +1,5 @@
-import { getErrorMessage } from "#utils/index";
-import { useDropzone } from "react-dropzone";
+import { getErrorMessage } from '#utils/index';
+import { useDropzone } from 'react-dropzone';
 import {
   Box,
   TextField,
@@ -18,18 +18,18 @@ import {
   ImageListItemBar,
   Chip,
   Stack,
-  InputAdornment,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Create, useDataGrid } from "@refinedev/mui";
-import { useForm as useRefineForm } from "@refinedev/react-hook-form";
-import axios from "axios";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Editor } from "@tinymce/tinymce-react";
-import { CATEGORY_LIST_QUERY, CREATE_PRODUCT_MUTATION } from "#graphql";
+  InputAdornment
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Create, useDataGrid } from '@refinedev/mui';
+import { useForm as useRefineForm } from '@refinedev/react-hook-form';
+import axios from 'axios';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { Editor } from '@tinymce/tinymce-react';
+import { CATEGORY_LIST_QUERY, CREATE_PRODUCT_MUTATION } from '#graphql';
 
-type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
+type ContentStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
 
 interface IProductCreate {
   name: string;
@@ -61,10 +61,16 @@ interface IProductCreate {
   status: ContentStatus;
 }
 
-const statusOptions: ContentStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
-const colorOptions = ["Red", "Blue", "Green", "Black", "White"];
-const compositionOptions = ["Cotton", "Polyester", "Leather", "Metal", "Plastic"];
-const patternOptions = ["Solid", "Striped", "Checked", "Printed", "Patterned"];
+const statusOptions: ContentStatus[] = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
+const colorOptions = ['Red', 'Blue', 'Green', 'Black', 'White'];
+const compositionOptions = [
+  'Cotton',
+  'Polyester',
+  'Leather',
+  'Metal',
+  'Plastic'
+];
+const patternOptions = ['Solid', 'Striped', 'Checked', 'Printed', 'Patterned'];
 
 // Shared Editor Configuration for consistency
 const EDITOR_INIT_CONFIG = {
@@ -74,32 +80,32 @@ const EDITOR_INIT_CONFIG = {
   branding: false,
   resize: true,
   plugins: [
-    "advlist",
-    "autolink",
-    "lists",
-    "link",
-    "image",
-    "charmap",
-    "preview",
-    "anchor",
-    "searchreplace",
-    "visualblocks",
-    "code",
-    "fullscreen",
-    "insertdatetime",
-    "media",
-    "table",
-    "wordcount",
-    "help",
+    'advlist',
+    'autolink',
+    'lists',
+    'link',
+    'image',
+    'charmap',
+    'preview',
+    'anchor',
+    'searchreplace',
+    'visualblocks',
+    'code',
+    'fullscreen',
+    'insertdatetime',
+    'media',
+    'table',
+    'wordcount',
+    'help'
   ],
   toolbar:
-    "undo redo | blocks | bold italic underline | " +
-    "alignleft aligncenter alignright | " +
-    "bullist numlist outdent indent | link table | " +
-    "removeformat code fullscreen",
+    'undo redo | blocks | bold italic underline | ' +
+    'alignleft aligncenter alignright | ' +
+    'bullist numlist outdent indent | link table | ' +
+    'removeformat code fullscreen',
   content_style:
     "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; font-size: 14px; line-height: 1.6; padding: 10px; }",
-  block_formats: "Paragraph=p; Heading 2=h2; Heading 3=h3; Preformatted=pre",
+  block_formats: 'Paragraph=p; Heading 2=h2; Heading 3=h3; Preformatted=pre'
 };
 
 // Reusable Editor Component to maintain UI consistency
@@ -108,7 +114,7 @@ const FormRichText = ({
   control,
   label,
   helperText,
-  errors,
+  errors
 }: {
   name: keyof IProductCreate;
   control: Control<IProductCreate>;
@@ -120,7 +126,11 @@ const FormRichText = ({
     <Typography variant="subtitle1" fontWeight={500} sx={{ mb: 0.5 }}>
       {label}
     </Typography>
-    <Typography variant="caption" color="text.secondary" sx={{ mb: 1.5, display: "block" }}>
+    <Typography
+      variant="caption"
+      color="text.secondary"
+      sx={{ mb: 1.5, display: 'block' }}
+    >
       {helperText}
     </Typography>
 
@@ -131,18 +141,18 @@ const FormRichText = ({
         <Box
           sx={{
             border: 1,
-            borderColor: errors?.[name] ? "error.main" : "divider",
+            borderColor: errors?.[name] ? 'error.main' : 'divider',
             borderRadius: 1,
-            overflow: "hidden",
-            transition: "border-color 0.2s",
-            "&:hover": {
-              borderColor: errors?.[name] ? "error.main" : "primary.main",
+            overflow: 'hidden',
+            transition: 'border-color 0.2s',
+            '&:hover': {
+              borderColor: errors?.[name] ? 'error.main' : 'primary.main'
             },
-            "&:focus-within": {
-              borderColor: "primary.main",
+            '&:focus-within': {
+              borderColor: 'primary.main',
               borderWidth: 2,
-              m: "-1px", // Prevent layout shift on focus
-            },
+              m: '-1px' // Prevent layout shift on focus
+            }
           }}
         >
           <Editor
@@ -151,14 +161,18 @@ const FormRichText = ({
             onEditorChange={onChange}
             init={{
               ...EDITOR_INIT_CONFIG,
-              placeholder: `Enter ${label.toLowerCase()}...`,
+              placeholder: `Enter ${label.toLowerCase()}...`
             }}
           />
         </Box>
       )}
     />
     {!!errors?.[name] && (
-      <Typography variant="caption" color="error" sx={{ mt: 0.5, display: "block" }}>
+      <Typography
+        variant="caption"
+        color="error"
+        sx={{ mt: 0.5, display: 'block' }}
+      >
         {errors[name]?.message?.toString()}
       </Typography>
     )}
@@ -169,22 +183,27 @@ export const ProductCreate = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
   const [productImages, setProductImages] = useState<string[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [subcategories, setSubcategories] = useState<string[]>([]);
 
   const { dataGridProps } = useDataGrid({
-    resource: "categories",
+    resource: 'categories',
     meta: {
       gqlQuery: CATEGORY_LIST_QUERY,
-      operationName: "categoryList",
-    },
+      operationName: 'categoryList'
+    }
   });
 
-  const categories = useMemo(() => dataGridProps.rows || [], [dataGridProps.rows]);
+  const categories = useMemo(
+    () => dataGridProps.rows || [],
+    [dataGridProps.rows]
+  );
 
   useEffect(() => {
     if (selectedCategory) {
-      const subs = categories.find((cat) => cat.id === selectedCategory)?.subcategories;
+      const subs = categories.find(
+        (cat) => cat.id === selectedCategory
+      )?.subcategories;
       setSubcategories(subs || []);
     } else {
       setSubcategories([]);
@@ -198,44 +217,44 @@ export const ProductCreate = () => {
     control,
     setValue,
     formState: { errors },
-    watch,
+    watch
   } = useRefineForm<IProductCreate>({
     defaultValues: {
-      name: "",
-      description: "",
-      shortDescription: "",
-      additionalInfo: "", // Default Value
-      measuringGuide: "", // Default Value
-      slug: "",
-      categoryId: "",
-      subcategoryId: "",
+      name: '',
+      description: '',
+      shortDescription: '',
+      additionalInfo: '', // Default Value
+      measuringGuide: '', // Default Value
+      slug: '',
+      categoryId: '',
+      subcategoryId: '',
       price: 0,
       discountPrice: 0,
       stock: 0,
       height: 0,
       width: 0,
-      color: "",
-      composition: "",
+      color: '',
+      composition: '',
       isMotorized: false,
       motorPrice: 0,
-      metaTitle: "",
-      metaDescription: "",
-      canonicalTag: "",
-      breadcrumb: "",
-      posterImageUrl: "",
+      metaTitle: '',
+      metaDescription: '',
+      canonicalTag: '',
+      breadcrumb: '',
+      posterImageUrl: '',
       productImages: [],
-      seoSchema: "",
-      lastEditedBy: JSON.parse(localStorage.getItem("user") || "{}").name || "",
-      status: "DRAFT",
+      seoSchema: '',
+      lastEditedBy: JSON.parse(localStorage.getItem('user') || '{}').name || '',
+      status: 'DRAFT'
     },
     refineCoreProps: {
-      action: "create",
-      resource: "products",
+      action: 'create',
+      resource: 'products',
       meta: {
         gqlMutation: CREATE_PRODUCT_MUTATION,
-        operationName: "createProduct",
-      },
-    },
+        operationName: 'createProduct'
+      }
+    }
   });
 
   // Featured Image Drop
@@ -250,14 +269,17 @@ export const ProductCreate = () => {
     try {
       setUploading(true);
       const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+      formData.append('file', file);
+      formData.append(
+        'upload_preset',
+        import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+      );
 
       const { data } = await axios.post(url, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      setValue("posterImageUrl", data.secure_url);
+      setValue('posterImageUrl', data.secure_url);
     } catch (err) {
       console.error(err);
     } finally {
@@ -278,17 +300,20 @@ export const ProductCreate = () => {
       const uploadedUrls = await Promise.all(
         acceptedFiles.map(async (file) => {
           const formData = new FormData();
-          formData.append("file", file);
-          formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+          formData.append('file', file);
+          formData.append(
+            'upload_preset',
+            import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+          );
           const res = await axios.post(url, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: { 'Content-Type': 'multipart/form-data' }
           });
           return res.data.secure_url;
-        }),
+        })
       );
       const newImages = [...productImages, ...uploadedUrls.filter(Boolean)];
       setProductImages(newImages);
-      setValue("productImages", newImages);
+      setValue('productImages', newImages);
     } catch (err) {
       console.error(err);
     } finally {
@@ -300,19 +325,28 @@ export const ProductCreate = () => {
   const {
     getRootProps: getFeaturedRootProps,
     getInputProps: getFeaturedInputProps,
-    isDragActive: isFeaturedDragActive,
-  } = useDropzone({ onDrop: onDropFeatured, accept: { "image/*": [] }, multiple: false });
+    isDragActive: isFeaturedDragActive
+  } = useDropzone({
+    onDrop: onDropFeatured,
+    accept: { 'image/*': [] },
+    multiple: false
+  });
 
   const posterImageInputRef = useRef<HTMLInputElement | null>(null);
   const galleryInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handlePosterImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePosterImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
     setUploading(true);
     const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    formData.append('file', file);
+    formData.append(
+      'upload_preset',
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+    );
 
     const url = `https://api.cloudinary.com/v1_1/${
       import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
@@ -320,23 +354,25 @@ export const ProductCreate = () => {
 
     try {
       const response = await axios.post(url, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
       const data = response.data;
       if (data.secure_url) {
-        setValue("posterImageUrl", data.secure_url);
+        setValue('posterImageUrl', data.secure_url);
       } else {
-        if (posterImageInputRef.current) posterImageInputRef.current.value = "";
+        if (posterImageInputRef.current) posterImageInputRef.current.value = '';
       }
     } catch (error) {
-      console.error("Upload failed:", getErrorMessage(error));
-      if (posterImageInputRef.current) posterImageInputRef.current.value = "";
+      console.error('Upload failed:', getErrorMessage(error));
+      if (posterImageInputRef.current) posterImageInputRef.current.value = '';
     } finally {
       setUploading(false);
     }
   };
 
-  const handleGalleryChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGalleryChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
     setUploadingGallery(true);
@@ -347,30 +383,35 @@ export const ProductCreate = () => {
     try {
       const uploadPromises = Array.from(files).map(async (file) => {
         const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+        formData.append('file', file);
+        formData.append(
+          'upload_preset',
+          import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+        );
         const response = await axios.post(url, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { 'Content-Type': 'multipart/form-data' }
         });
         return response.data.secure_url;
       });
       const uploadedUrls = await Promise.all(uploadPromises);
       const newImages = [...productImages, ...uploadedUrls.filter(Boolean)];
       setProductImages(newImages);
-      setValue("productImages", newImages);
-      if (galleryInputRef.current) galleryInputRef.current.value = "";
+      setValue('productImages', newImages);
+      if (galleryInputRef.current) galleryInputRef.current.value = '';
     } catch (error) {
-      console.error("Upload failed:", getErrorMessage(error));
-      if (galleryInputRef.current) galleryInputRef.current.value = "";
+      console.error('Upload failed:', getErrorMessage(error));
+      if (galleryInputRef.current) galleryInputRef.current.value = '';
     } finally {
       setUploadingGallery(false);
     }
   };
 
   const handleRemoveImage = (indexToRemove: number) => {
-    const newImages = productImages.filter((_, index) => index !== indexToRemove);
+    const newImages = productImages.filter(
+      (_, index) => index !== indexToRemove
+    );
     setProductImages(newImages);
-    setValue("productImages", newImages);
+    setValue('productImages', newImages);
   };
 
   return (
@@ -379,7 +420,10 @@ export const ProductCreate = () => {
         <Grid container spacing={3}>
           {/* Primary Content Section */}
           <Grid item xs={12} lg={8}>
-            <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Basic Information
               </Typography>
@@ -389,7 +433,7 @@ export const ProductCreate = () => {
               <Divider sx={{ mb: 3 }} />
 
               <TextField
-                {...register("name", { required: "This field is required" })}
+                {...register('name', { required: 'This field is required' })}
                 error={!!errors?.name}
                 helperText={!!errors?.name?.message}
                 margin="normal"
@@ -402,10 +446,11 @@ export const ProductCreate = () => {
               />
 
               <TextField
-                {...register("shortDescription")}
+                {...register('shortDescription')}
                 error={!!errors?.shortDescription}
                 helperText={
-                  !!errors?.shortDescription?.message || "Brief description (50-100 characters)"
+                  !!errors?.shortDescription?.message ||
+                  'Brief description (50-100 characters)'
                 }
                 margin="normal"
                 fullWidth
@@ -416,10 +461,11 @@ export const ProductCreate = () => {
               />
 
               <TextField
-                {...register("slug")}
+                {...register('slug')}
                 error={!!errors?.slug}
                 helperText={
-                  !!errors?.slug?.message || "URL-friendly slug (e.g., premium-wireless-headphones)"
+                  !!errors?.slug?.message ||
+                  'URL-friendly slug (e.g., premium-wireless-headphones)'
                 }
                 margin="normal"
                 fullWidth
@@ -440,7 +486,10 @@ export const ProductCreate = () => {
             </Paper>
 
             {/* Product Specifications Section */}
-            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, mt: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Product Specifications
               </Typography>
@@ -452,9 +501,9 @@ export const ProductCreate = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
                   <TextField
-                    {...register("height", {
+                    {...register('height', {
                       valueAsNumber: true,
-                      min: { value: 0, message: "Height must be positive" },
+                      min: { value: 0, message: 'Height must be positive' }
                     })}
                     error={!!errors?.height}
                     helperText={!!errors?.height?.message}
@@ -469,9 +518,9 @@ export const ProductCreate = () => {
 
                 <Grid item xs={12} md={4}>
                   <TextField
-                    {...register("width", {
+                    {...register('width', {
                       valueAsNumber: true,
-                      min: { value: 0, message: "Width must be positive" },
+                      min: { value: 0, message: 'Width must be positive' }
                     })}
                     error={!!errors?.width}
                     helperText={!!errors?.width?.message}
@@ -488,7 +537,9 @@ export const ProductCreate = () => {
                   <FormControl fullWidth margin="normal">
                     <InputLabel shrink>Color</InputLabel>
                     <Select
-                      {...register("color", { required: "Please select a color" })}
+                      {...register('color', {
+                        required: 'Please select a color'
+                      })}
                       defaultValue=""
                       error={!!errors?.color}
                     >
@@ -510,7 +561,9 @@ export const ProductCreate = () => {
                   <FormControl fullWidth margin="normal">
                     <InputLabel shrink>Composition</InputLabel>
                     <Select
-                      {...register("composition", { required: "Please select composition" })}
+                      {...register('composition', {
+                        required: 'Please select composition'
+                      })}
                       defaultValue=""
                       error={!!errors?.composition}
                     >
@@ -535,12 +588,14 @@ export const ProductCreate = () => {
                     <Controller
                       name="isMotorized"
                       control={control}
-                      rules={{ required: "Please select a value" }}
+                      rules={{ required: 'Please select a value' }}
                       render={({ field }) => (
                         <Select
                           {...field}
-                          value={field.value ? "true" : "false"}
-                          onChange={(e) => field.onChange(e.target.value === "true")}
+                          value={field.value ? 'true' : 'false'}
+                          onChange={(e) =>
+                            field.onChange(e.target.value === 'true')
+                          }
                           error={!!errors?.isMotorized}
                         >
                           <MenuItem value="true">Yes</MenuItem>
@@ -559,9 +614,9 @@ export const ProductCreate = () => {
 
                 <Grid item xs={12} md={4}>
                   <TextField
-                    {...register("motorPrice", {
+                    {...register('motorPrice', {
                       valueAsNumber: true,
-                      min: { value: 0, message: "Motor price must be positive" },
+                      min: { value: 0, message: 'Motor price must be positive' }
                     })}
                     error={!!errors?.motorPrice}
                     helperText={!!errors?.motorPrice?.message}
@@ -584,7 +639,9 @@ export const ProductCreate = () => {
                   <FormControl fullWidth margin="normal">
                     <InputLabel shrink>Pattern</InputLabel>
                     <Select
-                      {...register("pattern", { required: "Please select pattern" })}
+                      {...register('pattern', {
+                        required: 'Please select pattern'
+                      })}
                       defaultValue=""
                       error={!!errors?.pattern}
                     >
@@ -605,7 +662,10 @@ export const ProductCreate = () => {
             </Paper>
 
             {/* NEW SECTION: Product Details (Additional Info & Measuring Guide) */}
-            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, mt: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Product Details
               </Typography>
@@ -632,7 +692,10 @@ export const ProductCreate = () => {
             </Paper>
 
             {/* Pricing Section */}
-            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, mt: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Pricing & Inventory
               </Typography>
@@ -644,10 +707,10 @@ export const ProductCreate = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
                   <TextField
-                    {...register("price", {
-                      required: "This field is required",
+                    {...register('price', {
+                      required: 'This field is required',
                       valueAsNumber: true,
-                      min: { value: 0, message: "Price must be positive" },
+                      min: { value: 0, message: 'Price must be positive' }
                     })}
                     error={!!errors?.price}
                     helperText={!!errors?.price?.message}
@@ -659,19 +722,23 @@ export const ProductCreate = () => {
                     placeholder="0.00"
                     required
                     InputProps={{
-                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                      startAdornment: (
+                        <InputAdornment position="start">$</InputAdornment>
+                      )
                     }}
                   />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
                   <TextField
-                    {...register("discountPrice", {
+                    {...register('discountPrice', {
                       valueAsNumber: true,
-                      min: { value: 0, message: "Price must be positive" },
+                      min: { value: 0, message: 'Price must be positive' }
                     })}
                     error={!!errors?.discountPrice}
-                    helperText={!!errors?.discountPrice?.message || "Optional sale price"}
+                    helperText={
+                      !!errors?.discountPrice?.message || 'Optional sale price'
+                    }
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
@@ -679,17 +746,19 @@ export const ProductCreate = () => {
                     label="Discount Price"
                     placeholder="0.00"
                     InputProps={{
-                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                      startAdornment: (
+                        <InputAdornment position="start">$</InputAdornment>
+                      )
                     }}
                   />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
                   <TextField
-                    {...register("stock", {
-                      required: "This field is required",
+                    {...register('stock', {
+                      required: 'This field is required',
                       valueAsNumber: true,
-                      min: { value: 0, message: "Stock cannot be negative" },
+                      min: { value: 0, message: 'Stock cannot be negative' }
                     })}
                     error={!!errors?.stock}
                     helperText={!!errors?.stock?.message}
@@ -706,14 +775,24 @@ export const ProductCreate = () => {
             </Paper>
 
             {/* Product Images Gallery */}
-            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
-              <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, mt: 3, border: 1, borderColor: 'divider' }}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                sx={{ mb: 1 }}
+              >
                 <Typography variant="h6" fontWeight={600}>
                   Product Images
                 </Typography>
                 {productImages.length > 0 && (
                   <Chip
-                    label={`${productImages.length} image${productImages.length > 1 ? "s" : ""}`}
+                    label={`${productImages.length} image${
+                      productImages.length > 1 ? 's' : ''
+                    }`}
                     size="small"
                     color="primary"
                     variant="outlined"
@@ -732,7 +811,7 @@ export const ProductCreate = () => {
                 disabled={uploadingGallery}
                 sx={{ mb: 3 }}
               >
-                {uploadingGallery ? "Uploading..." : "Add Images"}
+                {uploadingGallery ? 'Uploading...' : 'Add Images'}
                 <input
                   type="file"
                   hidden
@@ -753,20 +832,20 @@ export const ProductCreate = () => {
                         loading="lazy"
                         style={{
                           height: 200,
-                          objectFit: "cover",
-                          borderRadius: 8,
+                          objectFit: 'cover',
+                          borderRadius: 8
                         }}
                       />
                       <ImageListItemBar
                         sx={{
                           background:
-                            "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
-                          borderRadius: "8px 8px 0 0",
+                            'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+                          borderRadius: '8px 8px 0 0'
                         }}
                         position="top"
                         actionIcon={
                           <IconButton
-                            sx={{ color: "white" }}
+                            sx={{ color: 'white' }}
                             onClick={() => handleRemoveImage(index)}
                             aria-label={`Delete image ${index + 1}`}
                           >
@@ -781,15 +860,15 @@ export const ProductCreate = () => {
               ) : (
                 <Box
                   sx={{
-                    width: "100%",
+                    width: '100%',
                     height: 200,
-                    bgcolor: "action.hover",
+                    bgcolor: 'action.hover',
                     borderRadius: 1,
                     border: 1,
-                    borderColor: "divider",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    borderColor: 'divider',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                 >
                   <Typography variant="body2" color="text.secondary">
@@ -800,7 +879,10 @@ export const ProductCreate = () => {
             </Paper>
 
             {/* SEO Section */}
-            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, mt: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 SEO Settings
               </Typography>
@@ -812,9 +894,12 @@ export const ProductCreate = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
-                    {...register("metaTitle")}
+                    {...register('metaTitle')}
                     error={!!errors?.metaTitle}
-                    helperText={!!errors?.metaTitle?.message || "Recommended: 50-60 characters"}
+                    helperText={
+                      !!errors?.metaTitle?.message ||
+                      'Recommended: 50-60 characters'
+                    }
                     margin="normal"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
@@ -826,10 +911,11 @@ export const ProductCreate = () => {
 
                 <Grid item xs={12}>
                   <TextField
-                    {...register("metaDescription")}
+                    {...register('metaDescription')}
                     error={!!errors?.metaDescription}
                     helperText={
-                      !!errors?.metaDescription?.message || "Recommended: 150-160 characters"
+                      !!errors?.metaDescription?.message ||
+                      'Recommended: 150-160 characters'
                     }
                     margin="normal"
                     fullWidth
@@ -844,7 +930,7 @@ export const ProductCreate = () => {
 
                 <Grid item xs={12} md={6}>
                   <TextField
-                    {...register("canonicalTag")}
+                    {...register('canonicalTag')}
                     error={!!errors?.canonicalTag}
                     helperText={!!errors?.canonicalTag?.message}
                     margin="normal"
@@ -858,7 +944,7 @@ export const ProductCreate = () => {
 
                 <Grid item xs={12} md={6}>
                   <TextField
-                    {...register("breadcrumb")}
+                    {...register('breadcrumb')}
                     error={!!errors?.breadcrumb}
                     helperText={!!errors?.breadcrumb?.message}
                     margin="normal"
@@ -872,10 +958,11 @@ export const ProductCreate = () => {
 
                 <Grid item xs={12}>
                   <TextField
-                    {...register("seoSchema")}
+                    {...register('seoSchema')}
                     error={!!errors?.seoSchema}
                     helperText={
-                      !!errors?.seoSchema?.message || "JSON-LD structured data for search engines"
+                      !!errors?.seoSchema?.message ||
+                      'JSON-LD structured data for search engines'
                     }
                     margin="normal"
                     fullWidth
@@ -886,10 +973,10 @@ export const ProductCreate = () => {
                     rows={5}
                     placeholder='{"@context": "https://schema.org", "@type": "Product", ...}'
                     sx={{
-                      "& textarea": {
-                        fontFamily: "monospace",
-                        fontSize: "0.875rem",
-                      },
+                      '& textarea': {
+                        fontFamily: 'monospace',
+                        fontSize: '0.875rem'
+                      }
                     }}
                   />
                 </Grid>
@@ -900,7 +987,10 @@ export const ProductCreate = () => {
           {/* Sidebar Section */}
           <Grid item xs={12} lg={4}>
             {/* Category & Publishing */}
-            <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Category & Publishing
               </Typography>
@@ -909,9 +999,13 @@ export const ProductCreate = () => {
               <Controller
                 name="categoryId"
                 control={control}
-                rules={{ required: "Category is required" }}
+                rules={{ required: 'Category is required' }}
                 render={({ field }) => (
-                  <FormControl fullWidth margin="normal" error={!!errors?.categoryId}>
+                  <FormControl
+                    fullWidth
+                    margin="normal"
+                    error={!!errors?.categoryId}
+                  >
                     <InputLabel id="category-label">Category *</InputLabel>
                     <Select
                       labelId="category-label"
@@ -936,7 +1030,11 @@ export const ProductCreate = () => {
                       )}
                     </Select>
                     {!!errors?.categoryId && (
-                      <Typography variant="caption" color="error" sx={{ mt: 0.5, ml: 1.75 }}>
+                      <Typography
+                        variant="caption"
+                        color="error"
+                        sx={{ mt: 0.5, ml: 1.75 }}
+                      >
                         {!!errors.categoryId.message}
                       </Typography>
                     )}
@@ -947,10 +1045,16 @@ export const ProductCreate = () => {
               <Controller
                 name="subcategoryId"
                 control={control}
-                rules={{ required: "Subcategory is required" }}
+                rules={{ required: 'Subcategory is required' }}
                 render={({ field }) => (
-                  <FormControl fullWidth margin="normal" error={!!errors?.subcategoryId}>
-                    <InputLabel id="subcategory-label">Subcategory *</InputLabel>
+                  <FormControl
+                    fullWidth
+                    margin="normal"
+                    error={!!errors?.subcategoryId}
+                  >
+                    <InputLabel id="subcategory-label">
+                      Subcategory *
+                    </InputLabel>
                     <Select
                       labelId="subcategory-label"
                       label="Subcategory *"
@@ -971,7 +1075,11 @@ export const ProductCreate = () => {
                       )}
                     </Select>
                     {!!errors?.subcategoryId && (
-                      <Typography variant="caption" color="error" sx={{ mt: 0.5, ml: 1.75 }}>
+                      <Typography
+                        variant="caption"
+                        color="error"
+                        sx={{ mt: 0.5, ml: 1.75 }}
+                      >
                         {!!errors.subcategoryId.message}
                       </Typography>
                     )}
@@ -1002,7 +1110,7 @@ export const ProductCreate = () => {
               />
 
               <TextField
-                {...register("lastEditedBy")}
+                {...register('lastEditedBy')}
                 error={!!errors?.lastEditedBy}
                 helperText={!!errors?.lastEditedBy?.message}
                 margin="normal"
@@ -1016,7 +1124,10 @@ export const ProductCreate = () => {
             </Paper>
 
             {/* Featured Image Section */}
-            <Paper elevation={0} sx={{ p: 3, mt: 3, border: 1, borderColor: "divider" }}>
+            <Paper
+              elevation={0}
+              sx={{ p: 3, mt: 3, border: 1, borderColor: 'divider' }}
+            >
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Featured Image
               </Typography>
@@ -1032,7 +1143,7 @@ export const ProductCreate = () => {
                 disabled={uploading}
                 sx={{ mb: 2 }}
               >
-                {uploading ? "Uploading..." : "Choose Image"}
+                {uploading ? 'Uploading...' : 'Choose Image'}
                 <input
                   type="file"
                   hidden
@@ -1053,16 +1164,16 @@ export const ProductCreate = () => {
                 <input {...getFeaturedInputProps()} />
                 {uploading ? (
                   <Typography variant="body2">Uploading...</Typography>
-                ) : watch("posterImageUrl") ? (
+                ) : watch('posterImageUrl') ? (
                   <Box>
                     <img
-                      src={watch("posterImageUrl")}
+                      src={watch('posterImageUrl')}
                       alt="Uploaded"
                       style={{
-                        width: "100%",
+                        width: '100%',
                         maxHeight: 260,
-                        objectFit: "cover",
-                        borderRadius: 8,
+                        objectFit: 'cover',
+                        borderRadius: 8
                       }}
                     />
                     <Typography variant="body2" sx={{ mt: 1 }}>
@@ -1072,8 +1183,8 @@ export const ProductCreate = () => {
                 ) : (
                   <Typography variant="body2">
                     {isFeaturedDragActive
-                      ? "Drop the image here..."
-                      : "Drag & drop an image, or click to choose"}
+                      ? 'Drop the image here...'
+                      : 'Drag & drop an image, or click to choose'}
                   </Typography>
                 )}
               </Box>

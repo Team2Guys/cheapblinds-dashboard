@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // Create a subcategory
 export const CREATE_SUBCATEGORY_MUTATION = gql`
@@ -26,7 +26,10 @@ export const CREATE_SUBCATEGORY_MUTATION = gql`
 
 // Update a subcategory by ID
 export const UPDATE_SUBCATEGORY_BY_ID_MUTATION = gql`
-  mutation UpdateSubcategoryById($id: ID!, $input: UpdateSubcategoryByIdInput!) {
+  mutation UpdateSubcategoryById(
+    $id: ID!
+    $input: UpdateSubcategoryByIdInput!
+  ) {
     updateSubcategoryById(id: $id, input: $input) {
       id
       categoryId

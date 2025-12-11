@@ -1,78 +1,84 @@
-import { DataGrid, type GridColDef } from "@mui/x-data-grid";
-import { DeleteButton, EditButton, List, ShowButton, useDataGrid } from "@refinedev/mui";
-import React from "react";
-import { CATEGORY_LIST_QUERY } from "../../graphql";
-import { formatDateTime } from "#utils/time-format-converter";
+import { DataGrid, type GridColDef } from '@mui/x-data-grid';
+import {
+  DeleteButton,
+  EditButton,
+  List,
+  ShowButton,
+  useDataGrid
+} from '@refinedev/mui';
+import React from 'react';
+import { CATEGORY_LIST_QUERY } from '../../graphql';
+import { formatDateTime } from '#utils/time-format-converter';
 
 export const CategoryList = () => {
   const { dataGridProps } = useDataGrid({
-    resource: "categories",
+    resource: 'categories',
     meta: {
       gqlQuery: CATEGORY_LIST_QUERY,
-      operationName: "categoryList",
-    },
+      operationName: 'categoryList'
+    }
   });
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
-        field: "name",
-        headerName: "Name",
-        type: "string",
+        field: 'name',
+        headerName: 'Name',
+        type: 'string',
         minWidth: 200,
         flex: 1,
-        align: "left",
-        headerAlign: "left",
-        display: "flex",
+        align: 'left',
+        headerAlign: 'left',
+        display: 'flex',
         sortable: false,
-        filterable: false,
+        filterable: false
       },
       {
-        field: "slug",
-        headerName: "Slug",
-        type: "string",
+        field: 'slug',
+        headerName: 'Slug',
+        type: 'string',
         minWidth: 200,
         flex: 1,
-        align: "left",
-        headerAlign: "left",
-        display: "flex",
+        align: 'left',
+        headerAlign: 'left',
+        display: 'flex',
         sortable: false,
-        filterable: false,
+        filterable: false
       },
       {
-        field: "createdAt",
-        headerName: "Created At",
-        type: "string",
+        field: 'createdAt',
+        headerName: 'Created At',
+        type: 'string',
         minWidth: 200,
         flex: 1,
-        align: "left",
-        headerAlign: "left",
-        display: "flex",
+        align: 'left',
+        headerAlign: 'left',
+        display: 'flex',
         sortable: false,
         filterable: false,
-        renderCell: ({ row }) => formatDateTime(row.createdAt),
+        renderCell: ({ row }) => formatDateTime(row.createdAt)
       },
       {
-        field: "status",
-        headerName: "Status",
-        type: "string",
+        field: 'status',
+        headerName: 'Status',
+        type: 'string',
         minWidth: 200,
         flex: 0,
-        align: "left",
-        headerAlign: "left",
-        display: "flex",
+        align: 'left',
+        headerAlign: 'left',
+        display: 'flex',
         sortable: false,
-        filterable: false,
+        filterable: false
       },
       {
-        field: "actions",
-        headerName: "Actions",
-        type: "actions",
+        field: 'actions',
+        headerName: 'Actions',
+        type: 'actions',
         minWidth: 120,
         flex: 0,
-        align: "right",
-        headerAlign: "right",
-        display: "flex",
+        align: 'right',
+        headerAlign: 'right',
+        display: 'flex',
         sortable: false,
         filterable: false,
         renderCell: ({ row }) => (
@@ -81,10 +87,10 @@ export const CategoryList = () => {
             <ShowButton hideText recordItemId={row.id} />
             <DeleteButton hideText recordItemId={row.id} />
           </>
-        ),
-      },
+        )
+      }
     ],
-    [],
+    []
   );
 
   return (

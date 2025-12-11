@@ -1,8 +1,8 @@
-import { Box, TextField, Grid } from "@mui/material";
-import { useParsed } from "@refinedev/core";
-import { Edit } from "@refinedev/mui";
-import { useForm as useRefineForm } from "@refinedev/react-hook-form";
-import { USER_BY_ID_QUERY, UPDATE_USER_BY_ID_MUTATION } from "../../graphql";
+import { Box, TextField, Grid } from '@mui/material';
+import { useParsed } from '@refinedev/core';
+import { Edit } from '@refinedev/mui';
+import { useForm as useRefineForm } from '@refinedev/react-hook-form';
+import { USER_BY_ID_QUERY, UPDATE_USER_BY_ID_MUTATION } from '../../graphql';
 
 export const UserEdit = () => {
   const { id } = useParsed();
@@ -10,19 +10,19 @@ export const UserEdit = () => {
   const {
     saveButtonProps,
     register,
-    formState: { errors },
+    formState: { errors }
   } = useRefineForm({
     refineCoreProps: {
-      resource: "users",
+      resource: 'users',
       meta: {
         gqlQuery: USER_BY_ID_QUERY,
-        operationName: "userById",
+        operationName: 'userById',
         gqlMutation: UPDATE_USER_BY_ID_MUTATION,
         variables: {
-          id,
-        },
-      },
-    },
+          id
+        }
+      }
+    }
   });
 
   return (
@@ -31,7 +31,7 @@ export const UserEdit = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("name")}
+              {...register('name')}
               error={!!errors?.name}
               helperText={!!errors?.name?.message}
               margin="normal"
@@ -44,7 +44,7 @@ export const UserEdit = () => {
 
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("email")}
+              {...register('email')}
               error={!!errors?.email}
               helperText={!!errors?.email?.message}
               margin="normal"
