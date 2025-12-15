@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -16,25 +15,24 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
     "paths": {
-      "#components": ["src/components/index.ts"],
-      "#components/*": ["src/components/*"],
+      "#components": ["./src/components/index.ts"],
+      "#components/*": ["./src/components/*"],
 
-      "#contexts": ["src/contexts/index.ts"],
-      "#contexts/*": ["src/contexts/*"],
+      "#contexts": ["./src/contexts/index.ts"],
+      "#contexts/*": ["./src/contexts/*"],
 
-      "#graphql": ["src/graphql/index.ts"],
-      "#graphql/*": ["src/graphql/*"],
+      "#graphql": ["./src/graphql/index.ts"],
+      "#graphql/*": ["./src/graphql/*"],
 
-      "#pages": ["src/pages/index.ts"],
-      "#pages/*": ["src/pages/*"],
+      "#pages": ["./src/pages/index.ts"],
+      "#pages/*": ["./src/pages/*"],
 
-      "#providers": ["src/providers/index.ts"],
-      "#providers/*": ["src/providers/*"],
+      "#providers": ["./src/providers/index.ts"],
+      "#providers/*": ["./src/providers/*"],
 
-      "#utils": ["src/utils/index.ts*"],
-      "#utils/*": ["src/utils/*"]
+      "#utils": ["./src/utils/index.ts"],
+      "#utils/*": ["./src/utils/*"]
     }
   },
   "include": ["src", "vite-env.d.ts"],
