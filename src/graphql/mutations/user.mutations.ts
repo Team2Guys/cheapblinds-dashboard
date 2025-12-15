@@ -9,7 +9,6 @@ export const UPDATE_USER_BY_ID_MUTATION = gql`
       email
       password
       isEmailVerified
-      isNewsletterSubscribed
       role
       createdAt
       updatedAt

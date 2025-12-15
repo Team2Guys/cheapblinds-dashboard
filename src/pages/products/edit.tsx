@@ -25,7 +25,13 @@ import { useForm as useRefineForm } from '@refinedev/react-hook-form';
 import { useList } from '@refinedev/core';
 import axios from 'axios';
 import { useRef, useState, useEffect } from 'react';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  FieldValues,
+  Path
+} from 'react-hook-form';
 import { Editor } from '@tinymce/tinymce-react';
 
 type ContentStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
@@ -107,24 +113,26 @@ const EDITOR_INIT_CONFIG = {
   block_formats: 'Paragraph=p; Heading 2=h2; Heading 3=h3; Preformatted=pre'
 };
 
-// Reusable Editor Component to maintain UI consistency
-const FormRichText = ({
+type FormRichTextProps<T extends FieldValues> = {
+  name: Path<T>;
+  control: Control<T>;
+  label: string;
+  helperText: string;
+  errors: FieldErrors<T>;
+};
+
+const FormRichText = <T extends FieldValues>({
   name,
   control,
   label,
   helperText,
   errors
-}: {
-  name: keyof IProductEdit;
-  control: Control<IProductEdit>;
-  label: string;
-  helperText: string;
-  errors: FieldErrors<IProductEdit>;
-}) => (
+}: FormRichTextProps<T>) => (
   <Box sx={{ mt: 3 }}>
     <Typography variant="subtitle1" fontWeight={500} sx={{ mb: 0.5 }}>
       {label}
     </Typography>
+
     <Typography
       variant="caption"
       color="text.secondary"
@@ -150,7 +158,7 @@ const FormRichText = ({
             '&:focus-within': {
               borderColor: 'primary.main',
               borderWidth: 2,
-              m: '-1px' // Prevent layout shift on focus
+              m: '-1px'
             }
           }}
         >
@@ -166,6 +174,7 @@ const FormRichText = ({
         </Box>
       )}
     />
+
     {!!errors?.[name] && (
       <Typography
         variant="caption"

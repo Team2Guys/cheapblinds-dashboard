@@ -8,7 +8,6 @@ export const USER_LIST_QUERY = gql`
       lastName
       email
       isEmailVerified
-      isNewsletterSubscribed
       role
       createdAt
       updatedAt
@@ -24,7 +23,6 @@ export const USER_BY_ID_QUERY = gql`
       lastName
       email
       isEmailVerified
-      isNewsletterSubscribed
       role
       createdAt
       updatedAt

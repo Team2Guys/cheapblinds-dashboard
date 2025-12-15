@@ -25,7 +25,13 @@ import { Create, useDataGrid } from '@refinedev/mui';
 import { useForm as useRefineForm } from '@refinedev/react-hook-form';
 import axios from 'axios';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  FieldValues,
+  Path
+} from 'react-hook-form';
 import { Editor } from '@tinymce/tinymce-react';
 import { CATEGORY_LIST_QUERY, CREATE_PRODUCT_MUTATION } from '#graphql';
 
@@ -108,24 +114,27 @@ const EDITOR_INIT_CONFIG = {
   block_formats: 'Paragraph=p; Heading 2=h2; Heading 3=h3; Preformatted=pre'
 };
 
+type FormRichTextProps<T extends FieldValues> = {
+  name: Path<T>;
+  control: Control<T>;
+  label: string;
+  helperText: string;
+  errors: FieldErrors<T>;
+};
+
 // Reusable Editor Component to maintain UI consistency
-const FormRichText = ({
+const FormRichText = <T extends FieldValues>({
   name,
   control,
   label,
   helperText,
   errors
-}: {
-  name: keyof IProductCreate;
-  control: Control<IProductCreate>;
-  label: string;
-  helperText: string;
-  errors: FieldErrors<IProductCreate>;
-}) => (
+}: FormRichTextProps<T>) => (
   <Box sx={{ mt: 3 }}>
     <Typography variant="subtitle1" fontWeight={500} sx={{ mb: 0.5 }}>
       {label}
     </Typography>
+
     <Typography
       variant="caption"
       color="text.secondary"
@@ -151,7 +160,7 @@ const FormRichText = ({
             '&:focus-within': {
               borderColor: 'primary.main',
               borderWidth: 2,
-              m: '-1px' // Prevent layout shift on focus
+              m: '-1px'
             }
           }}
         >
@@ -167,6 +176,7 @@ const FormRichText = ({
         </Box>
       )}
     />
+
     {!!errors?.[name] && (
       <Typography
         variant="caption"
@@ -223,8 +233,8 @@ export const ProductCreate = () => {
       name: '',
       description: '',
       shortDescription: '',
-      additionalInfo: '', // Default Value
-      measuringGuide: '', // Default Value
+      additionalInfo: '',
+      measuringGuide: '',
       slug: '',
       categoryId: '',
       subcategoryId: '',
@@ -284,40 +294,6 @@ export const ProductCreate = () => {
       console.error(err);
     } finally {
       setUploading(false);
-    }
-  };
-
-  // Gallery Drop
-  const onDropGallery = async (acceptedFiles: File[]) => {
-    if (!acceptedFiles.length) return;
-    setUploadingGallery(true);
-
-    const url = `https://api.cloudinary.com/v1_1/${
-      import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
-    }/image/upload`;
-
-    try {
-      const uploadedUrls = await Promise.all(
-        acceptedFiles.map(async (file) => {
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append(
-            'upload_preset',
-            import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
-          );
-          const res = await axios.post(url, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-          });
-          return res.data.secure_url;
-        })
-      );
-      const newImages = [...productImages, ...uploadedUrls.filter(Boolean)];
-      setProductImages(newImages);
-      setValue('productImages', newImages);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setUploadingGallery(false);
     }
   };
 
@@ -413,6 +389,14 @@ export const ProductCreate = () => {
     setProductImages(newImages);
     setValue('productImages', newImages);
   };
+
+  const isMotorized = watch('isMotorized');
+
+  useEffect(() => {
+    if (!isMotorized) {
+      setValue('motorPrice', 0, { shouldDirty: true });
+    }
+  }, [isMotorized, setValue]);
 
   return (
     <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
@@ -588,7 +572,6 @@ export const ProductCreate = () => {
                     <Controller
                       name="isMotorized"
                       control={control}
-                      rules={{ required: 'Please select a value' }}
                       render={({ field }) => (
                         <Select
                           {...field}
@@ -618,6 +601,7 @@ export const ProductCreate = () => {
                       valueAsNumber: true,
                       min: { value: 0, message: 'Motor price must be positive' }
                     })}
+                    disabled={!isMotorized}
                     error={!!errors?.motorPrice}
                     helperText={!!errors?.motorPrice?.message}
                     margin="normal"
